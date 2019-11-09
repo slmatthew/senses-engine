@@ -7,6 +7,8 @@
 if(is_null($config) || empty($config) || !isset($config))  throw new Exception('You need to set config');
 if(!function_exists('request')) throw new Exception('Requests module is not loaded');
 
+$GLOBALS['config'] = $config;
+
 class DataHandler {
 
 	/**
@@ -14,12 +16,12 @@ class DataHandler {
 	 * @param string $type Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API). Default: "cb"
 	 * @since v0.1
 	 */
-	public function __construct(string $type) {
+	public function __construct(string $type, $be) {
 		if($type == 'cb') {
 			// ok, we shouldn't do anything
 		} elseif($type == 'lp') {
 			// we need to start longpoll
-			$this->startLp();
+			$this->startLp($be);
 		} else throw new Exception('Unknown type for DataHandler');
 	}
 
@@ -27,8 +29,8 @@ class DataHandler {
 	 * Longpolling
 	 * @since v0.1
 	 */
-	public function startLp() {
-		$lp = call('groups.getLongPollServer', ['group_id' => $config['group_id']])['response'];
+	public function startLp($be) {
+		$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['group_id']])['response'];
 		$server = $lp['server'];
 		$key = $lp['key'];
 
@@ -44,9 +46,7 @@ class DataHandler {
 					$updates = $result['updates'];
 
 					foreach($updates as $key => $data) {
-						switch($data['type']) {
-							// $this->onData()
-						}
+						$be->onData($data);
 					}
 				} elseif(isset($result['failed'])) {
 					switch($result['failed']) {
@@ -93,8 +93,8 @@ class DataHandler {
 	 * @param array $data Data from CB or LP
 	 * @since v0.1
 	 */
-	public function onData($data) {
-		// BotEngine->onData($data)
+	public function onData(array $data, $BotEngine) {
+		$BotEngine->onData($data);
 	}
 }
 
