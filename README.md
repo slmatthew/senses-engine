@@ -10,7 +10,7 @@
     * [addDataHandler](https://github.com/slmatthew/senses-engine#adddatahandler)
 * [Класс DataHandler](https://github.com/slmatthew/senses-engine#класс-datahandler)
     * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор)
-    * [onData](https://github.com/slmatthew/senses-engine#получение-данных-от-callback-api)
+    * [Получение данных от Callback API](https://github.com/slmatthew/senses-engine#получение-данных-от-callback-api)
     * [Исключения](https://github.com/slmatthew/senses-engine#исключения)
 * [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
     * [request](https://github.com/slmatthew/senses-engine#request)
