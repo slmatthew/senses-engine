@@ -77,7 +77,7 @@ class BotEngine {
 				$run = $this->runCommand(explode(' ', $data['object']['message']['text'])[0], $data);
 				if(!$run || $run === -1) $this->runCommand('default', $data);
 			} elseif($this->checkDataHandler($data['type'])) {
-				$this->dataHandlers[$name]($data);
+				$this->runDataHandler($data['type'], $data);
 			}
 		}
 	}
@@ -99,6 +99,20 @@ class BotEngine {
 	 */
 	private function checkDataHandler(string $name) {
 		return isset($this->dataHandlers[$name]);
+	}
+
+	/**
+	 * Data handlers runner
+	 * @param string $name Name of datahandler
+	 * @param array $data Event data
+	 * @since v0.1
+	 */
+	public function runDataHandler(string $name, array $data) {
+		if($this->checkDataHandler($name)) {
+			return $this->dataHandlers[$name]($data);
+		}
+
+		return -1;
 	}
 }
 
