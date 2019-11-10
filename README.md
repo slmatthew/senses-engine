@@ -15,6 +15,11 @@
 * [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
     * [request](https://github.com/slmatthew/senses-engine#request)
     * [call](https://github.com/slmatthew/senses-engine#call)
+* [Модуль Keyboard](https://github.com/slmatthew/senses-engine#модуль-keyboard)
+    * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор-1)
+    * [addButton](https://github.com/slmatthew/senses-engine#addbutton)
+    * [addLine](https://github.com/slmatthew/senses-engine#addline)
+    * [getKeyboard](https://github.com/slmatthew/senses-engine#getkeyboard)
 * [Конфигурация](https://github.com/slmatthew/senses-engine#конфигурация)
 * [Исключения](https://github.com/slmatthew/senses-engine#исключения-1)
 * [Некоторые нюансы](https://github.com/slmatthew/senses-engine#некоторые-нюансы)
@@ -169,6 +174,55 @@ echo $json['response'][0]['first_name'];
 ```php
 $json = call('messages.send', ['peer_id' => 1, 'message' => 'Hello!', 'random_id' => 0]);
 echo $json['response'];
+```
+
+## Модуль Keyboard
+Модуль используется для генерации клавиатур.
+
+### Конструктор
+| Параметр  | Тип  | Описание                                           |
+|-----------|------|----------------------------------------------------|
+| $one_time | bool | Скрывать ли клавиатуру после первого использования |
+| $inline   | bool | Должна ли клавиатура отображаться внутри сообщения |
+
+```php
+$fkb = new Keyboard(true, false);
+$skb = new Keyboard(false, true); // при $inline = true $one_time может иметь любое значение
+```
+
+### addButton
+Метод, используемый для добавления кнопки в строку.
+
+| Параметр  | Тип    | Описание                                                                                                                                              |
+|-----------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| $action   | array  | [Документация](https://vk.com/dev/bots_docs_3?f=4.2.%2B%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%2B%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85) |
+| $color    | string | Цвет кнопки. Только для кнопки с `$action['type'] == 'text'`                                                                                          |
+
+```php
+$kb->addButton([
+  'type' => 'text',
+  'label' => 'Текст кнопки',
+  'payload' => ['command' => 'start']
+], 'positive');
+```
+
+> Информация об ограничениях есть в документации.
+
+> В `$action['payload']` вы можете передавать массив, либа сама преобразует его в JSON.
+
+### addLine
+Добавление новой строки в клавиатуру.
+
+```php
+$kb->addLine();
+```
+
+### getKeyboard
+Получить построенную клавиатуру. Если в первый (и единственный) параметр передать `true`, вернётся JSON.
+
+```php
+$kb->getKeyboard(); // array
+$kb->getKeyboard(true); // string (JSON)
 ```
 
 ## Конфигурация
