@@ -1,8 +1,9 @@
 <?php
 
 if(is_null($config) || empty($config) || !isset($config))  throw new Exception('You need to set config');
+if(!defined("SEV")) define("SEV", "unknown");
 
-function request($url, $postfields = [], $agent = 'Senses Bot Engine/0.1') {
+function request($url, $postfields = [], $agent = 'Senses Bot Engine/'.SEV) {
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, $agent);
@@ -23,7 +24,7 @@ function call($m, $p = [], $o = false) {
 	if(!isset($p['v'])) $p['v'] = isset($config['version']) ? $config['version'] : '5.103';
 	if(isset($p['unsetToken']) && $p['unsetToken']) unset($p['access_token']);
 
-	$agent = $o ? "VKAndroidApp/5.11.1-2316" : "Senses Bot Engine/0.1";
+	$agent = $o ? "VKAndroidApp/5.11.1-2316" : "Senses Bot Engine/".SEV;
 
 	return request("https://api.vk.com/method/{$m}", $p, $agent);
 }

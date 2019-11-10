@@ -32,6 +32,18 @@ class BotEngine {
 	}
 
 	/**
+	 * Commands aliases constructor
+	 * @param string $name Names of commands
+	 * @param callable $handler Function-handler of commands. This construction will be used when commands are called: $handler($data)
+	 * @since v0.1
+	 */
+	public function addCommands(array $names, callable $handler) {
+		foreach($names as $key => $name) {
+			$this->commands[$name] = $handler;
+		}
+	}
+
+	/**
 	 * Commands checker
 	 * @param string $name Name of command
 	 * @since v0.1
