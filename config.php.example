@@ -2,6 +2,7 @@
 
 $config = [
 	'token' => '',
+	'secret' => '',
 	'group_id' => 1,
 	'version' => '5.103'
 ];

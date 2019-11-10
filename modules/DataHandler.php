@@ -18,7 +18,20 @@ class DataHandler {
 	 */
 	public function __construct(string $type, $be) {
 		if($type == 'cb') {
-			// ok, we shouldn't do anything
+			// we need to handle request. Add in v0.2-alpha
+			$data = file_get_contents('php://input');
+			if(!is_null($data)) {
+				$data = @json_decode($data, true);
+				if(!is_null($data)) {
+					if(isset($GLOBALS['config']['secret'])) {
+						if(isset($data['secret']) && $data['secret'] == $GLOBALS['config']['secret']) {
+							$be->onData($data);
+						} else exit('Invalid secret key');
+					} else {
+						$be->onData($data);
+					}
+				}
+			}
 		} elseif($type == 'lp') {
 			// we need to start longpoll
 			$this->startLp($be);
