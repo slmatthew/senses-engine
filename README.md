@@ -11,12 +11,12 @@
 * [Класс DataHandler](https://github.com/slmatthew/senses-engine#класс-datahandler)
     * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор)
     * [onData](https://github.com/slmatthew/senses-engine#ondata)
-    * Исключения
+    * [Исключения](https://github.com/slmatthew/senses-engine#исключения)
 * [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
     * [request](https://github.com/slmatthew/senses-engine#request)
     * [call](https://github.com/slmatthew/senses-engine#call)
 * [Конфигурация](https://github.com/slmatthew/senses-engine#конфигурация)
-* Исключения
+* [Исключения](https://github.com/slmatthew/senses-engine#исключения-1)
 * [Некоторые нюансы](https://github.com/slmatthew/senses-engine#некоторые-нюансы)
 
 ## Инициализация
