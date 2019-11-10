@@ -10,7 +10,7 @@
     * [addDataHandler](https://github.com/slmatthew/senses-engine#adddatahandler)
 * [Класс DataHandler](https://github.com/slmatthew/senses-engine#класс-datahandler)
     * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор)
-    * [onData](https://github.com/slmatthew/senses-engine#ondata)
+    * [onData](https://github.com/slmatthew/senses-engine#получение-данных-от-callback-api)
     * [Исключения](https://github.com/slmatthew/senses-engine#исключения)
 * [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
     * [request](https://github.com/slmatthew/senses-engine#request)
@@ -121,18 +121,13 @@ $dh = new DataHandler('lp', $be);
 $dh = new DataHandler('lp', $be);
 ```
 
-### onData
-Если вы используете CB, то вам необходимо вручную вызывать метод onData при получении события. Первый аргумент — JSON события, полученный так: `json_decode(file_get_contents('php://input'), true)`. Второй — экземпляр класса BotEngine.
+### Получение данных от Callback API
+Начиная с версии 0.2-alpha, весь процесс получения данных автоматизирован. Вам достаточно создать экземпляр класса DataHandler с типом `cb`, и всё должно работать.
 ```php
 $dh = new DataHandler('cb', $be);
-
-$data = file_get_contents('php://input');
-if(!is_null($data)) {
-  $data = json_decode($data, true); // можно еще добавить свои проверки
-  $dh->onData($data, $be);
-}
 ```
-> Передавать экземпляр BotEngine нужно из-за того, что при использовании LP библиотека сама инициализирует поллинг и сама вызывает метод onData, передавая ему BotEngine из конструктора. Обработка CB запросов целиком ложится на разработчика, и библиотека в этом никак не участвует.
+
+> Эта функция нуждается в тестировании.
 
 ### Исключения
 Исключение будет выброшено если:

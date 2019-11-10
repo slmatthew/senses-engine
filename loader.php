@@ -2,7 +2,7 @@
 
 if(!extension_loaded('curl')) exit('I need curl extension to run');
 
-define("SEV", "0.1-alpha");
+define("SEV", "0.2-alpha");
 
 include __DIR__.'/config.php';
 
