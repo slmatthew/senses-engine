@@ -120,7 +120,7 @@ $BotEngine->addPayloadCommands(['main', 'menu'], function($data) {
 | $textName    | string | Название текстовой команды (которая определется по тексту сообщения) |
 
 ```php
-$be->addCommandsAlias('start', 'меню'); // Нажатие кнопки с payload = {"command": "start"} будет эквивалентен сообщению с text = меню
+$be->addCommandsAlias('start', 'меню'); // Нажатие кнопки с payload = {"command": "start"} будет эквивалентно сообщению с text = меню
 ```
 
 ### checkAllCommands
