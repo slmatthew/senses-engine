@@ -84,7 +84,7 @@ class DataHandler {
 							break;
 
 						case 2: case 3:
-							$lp = call('groups.getLongPollServer', ['group_id' => $config['group_id']]);
+							$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['group_id']]);
 							if(isset($lp['response'])) {
 								$lp = $lp['response'];
 								
@@ -94,7 +94,7 @@ class DataHandler {
 								$baseurl = "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
 							} else {
-								$lp = call('groups.getLongPollServer', ['group_id' => $config['group_id']]);
+								$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['group_id']]);
 
 								if(isset($lp['response'])) {
 									$lp = $lp['response'];
