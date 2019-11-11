@@ -23,7 +23,7 @@ class BotEngine {
 
 	public $needLowerCase = true;
 
-	public function __construct(bool $needLowerCase) {
+	public function __construct(bool $needLowerCase = true) {
 		$this->needLowerCase = $needLowerCase;
 
 		$this->commands['default'] = function($data) {
