@@ -9,6 +9,10 @@ if(!function_exists('request')) throw new Exception('Requests module is not load
 
 $GLOBALS['config'] = $config;
 
+function terminal($text) {
+	if(NEED_LP_LOGS) echo "{$text}\n";
+}
+
 class DataHandler {
 
 	/**
@@ -50,18 +54,30 @@ class DataHandler {
 		$baseurl = "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d";
 		$url = sprintf($baseurl, $lp['ts']);
 
+		terminal("Starting longpoll...");
+
+		$li = 0;
+
 		while(true) {
 			$result = request($url);
 
 			if(!is_null($result)) {
+				if($li == 0) {
+					terminal("Started longpoll");
+					$li += 1;
+				}
+
 				if(isset($result['ts']) && isset($result['updates']) && !empty($result['updates'])) {
 					$url = sprintf($baseurl, $result['ts']);
 					$updates = $result['updates'];
+
+					terminal("Got updates");
 
 					foreach($updates as $key => $data) {
 						$be->onData($data);
 					}
 				} elseif(isset($result['failed'])) {
+					terminal("Request new data");
 					switch($result['failed']) {
 						case 1:
 							$url = sprintf($baseurl, $result['ts']);

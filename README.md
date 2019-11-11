@@ -8,10 +8,14 @@
     * [addCommand и addCommands](https://github.com/slmatthew/senses-engine#addcommand--addcommands)
     * [runCommand](https://github.com/slmatthew/senses-engine#runcommand)
     * [addDataHandler](https://github.com/slmatthew/senses-engine#adddatahandler)
+    * [addPayloadCommands](https://github.com/slmatthew/senses-engine#addpayloadcommands)
+    * [addCommandsAlias](https://github.com/slmatthew/senses-engine#addcommandsalias)
+    * [checkAllCommands](https://github.com/slmatthew/senses-engine#checkallcommands)
 * [Класс DataHandler](https://github.com/slmatthew/senses-engine#класс-datahandler)
     * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор)
     * [Получение данных от Callback API](https://github.com/slmatthew/senses-engine#получение-данных-от-callback-api)
     * [Исключения](https://github.com/slmatthew/senses-engine#исключения)
+    * [Логирование действий LongPoll API](https://github.com/slmatthew/senses-engine#логирование-действий-longpoll-api)
 * [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
     * [request](https://github.com/slmatthew/senses-engine#request)
     * [call](https://github.com/slmatthew/senses-engine#call)
@@ -45,16 +49,7 @@ $dh = new DataHandler('lp', $be);
 ```
 
 ## Класс BotEngine
-Список паблик методов класса BotEngine:
-```php
-public function addCommand(string $name, callable $handler) {}; // добавление команды
-public function addCommands(array $names, callable $handler) {}; // добавление нескольких команд с одним обработчиком
-public function runCommand(string $name, array $data) {}; // запуск обработчика команды если он указан
-public function onData(array $data) {}; // обработчик новых событий
-public function addDataHandler(string $name, callable $handler) {}; // добавление собственных обработчиков событий (кроме message_new)
-```
-
-Рассмотрим основные методы.
+Сердце движка. Рассмотрим основные методы.
 
 ### addCommand & addCommands
 Эти методы используются для добавления новых команд. addCommand — для одной команды, addCommands — для нескольких команд с одним обработчиком.
@@ -94,6 +89,51 @@ $BotEngine->addCommand('default', function($data) {
 
 ```php
 $BotEngine->runCommand('test', $dataFromCB);
+```
+
+### addPayloadCommands
+Добавление команды, которая будет определяться по значению поля command в payload.
+
+| Параметр | Тип      | Описание                                                    |
+| ---------|----------|-------------------------------------------------------------|
+| $names   | string   | Названия команд. Можно передать одно значение или несколько |
+| $handler | callable | Функция-обработчик                                          |
+
+```php
+$BotEngine->addPayloadCommands(['start'], function($data) {
+  // Ответ на нажатие кнопки Начать
+});
+
+$BotEngine->addPayloadCommands(['main', 'menu'], function($data) {
+  // Например, открыть клавиатуру с меню
+});
+```
+
+> Эта функция добавляет команду, которая будет реагировать на значение поля `command` в `payload` сообщения, т.е. `json_decode($data['object']['message']['payload'], true)['command']`. Следовательно, вы должны использовать слово `command` в качестве имени поля, т.е. JSON должен иметь вид `{"command": %название%}`
+
+### addCommandsAlias
+Добавляет алиас для payload-команды.
+
+| Параметр     | Тип    | Описание                                                             |
+| -------------|--------|----------------------------------------------------------------------|
+| $payloadName | string | Название payload-команды                                             |
+| $textName    | string | Название текстовой команды (которая определется по тексту сообщения) |
+
+```php
+$be->addCommandsAlias('start', 'меню'); // Нажатие кнопки с payload = {"command": "start"} будет эквивалентен сообщению с text = меню
+```
+
+### checkAllCommands
+Проверяет, есть ли команда какого-либо типа. При этом приоритет имеют payload-команды.
+
+| Параметр     | Тип    | Описание                   |
+| -------------|--------|----------------------------|
+| $payloadName | string | Название payload-команды   |
+| $textName    | string | Название текстовой команды |
+| $data        | array  | Сообщение                  |
+
+```php
+$BotEngine->checkAllCommands('start', 'меню', $data);
 ```
 
 ### addDataHandler
@@ -136,6 +176,9 @@ $dh = new DataHandler('cb', $be);
 Исключение будет выброшено если:
 * будет передан неверный тип получения данных. Исключение с текстом *Unknown type for DataHandler*
 * не получится получить новые данные для LP. Исключение с текстом *Can't to get new Longpoll data*
+
+### Логирование действий LongPoll API
+Вы можете включать и выключать базовое логирование событий LongPoll API. Чтобы включить логирование, измените значение константы `NEED_LP_LOGS` в файле `loader.php` на `true`, а чтобы выключить — `false`.
 
 ## Requests
 В библиотеке существует вспомогательный модуль Requests, предназначенный (удивительно) для запросов к VK API. Это не класс, а просто две функции, которые вы можете использовать в своём коде.

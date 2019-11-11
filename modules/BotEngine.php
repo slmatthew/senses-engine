@@ -11,6 +11,14 @@ class BotEngine {
 	 * [name1 => handler1, name2 => handler2]
 	 */
 	public $commands = [];
+	public $payloadCommands = []; // This commands will be detected from payload
+
+	/**
+	 * Structure:
+	 * [alias1 => name1, alias2 => name2]
+	 */
+	public $aliases = [];
+
 	public $dataHandlers = [];
 
 	public function __construct() {
@@ -28,7 +36,12 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	public function addCommand(string $name, callable $handler) {
-		$this->commands[$name] = $handler;
+		if(strlen($name) > 0) {
+			$this->commands[$name] = $handler;
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -39,8 +52,84 @@ class BotEngine {
 	 */
 	public function addCommands(array $names, callable $handler) {
 		foreach($names as $key => $name) {
+			if(strlen($name) == 0) continue;
 			$this->commands[$name] = $handler;
 		}
+	}
+
+	/**
+	 * Payload ommands constructor (handle payload param from message object: {"command": "start"})
+	 * @param string $name Name of command
+	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
+	 * @since v0.4
+	 */
+	public function addPayloadCommands(array $names, callable $handler) {
+		if(count($names) == 1) {
+			if(strlen($names[0]) == 0) return false;
+			$this->payloadCommands[$names[0]] = $handler;
+		} else {
+			foreach($names as $key => $name) {
+				if(strlen($name) == 0) continue;
+				$this->payloadCommands[$name] = $handler;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Payload and text commands aliases
+	 * @param string $payloadName
+	 * @param string $textName
+	 * @since v0.4
+	 */
+	public function addCommandsAlias(string $payloadName, string $textName) {
+		if($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName)) {
+			$this->aliases[$payloadName] = $textName;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Payload and text commands checker
+	 * @param string $payloadName Payload command name
+	 * @param string $textName Text command name
+	 * @param array $data Message data
+	 * @since v0.4
+	 */
+	public function checkAllCommands(string $payloadName, string $textName, array $data) {
+		if($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName) && isset($this->aliases[$payloadName]) && $this->aliases[$payloadName] == $textName) {
+			return $this->runCommand($textName, $data);
+		} elseif($this->checkPayloadCommand($payloadName)) {
+			return $this->runPayloadCommand($payloadName, $data);
+		} elseif($this->checkCommand($textName)) {
+			return $this->runCommand($textName, $data);
+		} else return 0;
+	}
+
+	/**
+	 * Payload commands checker
+	 * @param string $name Name of command
+	 * @since v0.4
+	 */
+	private function checkPayloadCommand(string $name) {
+		return isset($this->payloadCommands[$name]);
+	}
+
+	/**
+	 * Payload commands runner
+	 * @param string $name Name of command
+	 * @param array $data Message data
+	 * @since v0.4
+	 */
+	public function runPayloadCommand(string $name, array $data) {
+		if($this->checkPayloadCommand($name)) {
+			return $this->payloadCommands[$name]($data);
+		}
+
+		return -1;
 	}
 
 	/**
@@ -74,8 +163,15 @@ class BotEngine {
 	public function onData(array $data) {
 		if(!is_null($data)) {
 			if($data['type'] == 'message_new') {
-				$run = $this->runCommand(explode(' ', $data['object']['message']['text'])[0], $data);
-				if(!$run || $run === -1) $this->runCommand('default', $data);
+				$text = strtolower($data['object']['message']['text']);
+				$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
+
+				$check = isset($data['object']['message']['payload']) && isset(json_decode($data['object']['message']['payload'], true)['command']);
+				if($check) {
+					$this->checkAllCommands(json_decode($data['object']['message']['payload'], true)['command'], $exp[0], $data);
+				} else {
+					$this->checkAllCommands('', $exp[0], $data);
+				}
 			} elseif($this->checkDataHandler($data['type'])) {
 				$this->runDataHandler($data['type'], $data);
 			}
