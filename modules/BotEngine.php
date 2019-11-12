@@ -128,7 +128,7 @@ class BotEngine {
 			return $this->runPayloadCommand($payloadName, $data);
 		} elseif($this->checkCommand($textName)) {
 			return $this->runCommand($textName, $data);
-		} else return 0;
+		} else return $this->runCommand('default', $data);
 	}
 
 	/**
