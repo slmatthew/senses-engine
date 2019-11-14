@@ -29,9 +29,11 @@ class DataHandler {
 				if(!is_null($data)) {
 					if(isset($GLOBALS['config']['secret'])) {
 						if(isset($data['secret']) && $data['secret'] == $GLOBALS['config']['secret']) {
+							if($data['type'] != 'confirmation') echo 'ok';
 							$be->onData($data);
 						} else exit('Invalid secret key');
 					} else {
+						if($data['type'] != 'confirmation') echo 'ok';
 						$be->onData($data);
 					}
 				}
