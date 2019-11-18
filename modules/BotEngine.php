@@ -40,7 +40,7 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	public function addCommand(string $name, callable $handler) {
-		if($this->needLowerCase) $name = strtolower($name);
+		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if(strlen($name) > 0) {
 			$this->commands[$name] = $handler;
@@ -59,7 +59,7 @@ class BotEngine {
 	public function addCommands(array $names, callable $handler) {
 		foreach($names as $key => $name) {
 			if(strlen($name) == 0) continue;
-			if($this->needLowerCase) $name = strtolower($name);
+			if($this->needLowerCase) $name = mb_strtolower($name);
 
 			$this->commands[$name] = $handler;
 		}
@@ -74,13 +74,13 @@ class BotEngine {
 	public function addPayloadCommands(array $names, callable $handler) {
 		if(count($names) == 1) {
 			if(strlen($names[0]) == 0) return false;
-			if($this->needLowerCase) $names[0] = strtolower($names[0]);
+			if($this->needLowerCase) $names[0] = mb_strtolower($names[0]);
 
 			$this->payloadCommands[$names[0]] = $handler;
 		} else {
 			foreach($names as $key => $name) {
 				if(strlen($name) == 0) continue;
-				if($this->needLowerCase) $name = strtolower($name);
+				if($this->needLowerCase) $name = mb_strtolower($name);
 
 				$this->payloadCommands[$name] = $handler;
 			}
@@ -97,8 +97,8 @@ class BotEngine {
 	 */
 	public function addCommandsAlias(string $payloadName, string $textName) {
 		if($this->needLowerCase) {
-			$payloadName = strtolower($payloadName);
-			$textName = strtolower($textName);
+			$payloadName = mb_strtolower($payloadName);
+			$textName = mb_strtolower($textName);
 		}
 
 		if($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName)) {
@@ -118,8 +118,8 @@ class BotEngine {
 	 */
 	public function checkAllCommands(string $payloadName, string $textName, array $data) {
 		if($this->needLowerCase) {
-			$payloadName = strtolower($payloadName);
-			$textName = strtolower($textName);
+			$payloadName = mb_strtolower($payloadName);
+			$textName = mb_strtolower($textName);
 		}
 
 		if($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName) && isset($this->aliases[$payloadName]) && $this->aliases[$payloadName] == $textName) {
@@ -137,7 +137,7 @@ class BotEngine {
 	 * @since v0.4
 	 */
 	private function checkPayloadCommand(string $name) {
-		if($this->needLowerCase) $name = strtolower($name);
+		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		return isset($this->payloadCommands[$name]);
 	}
@@ -149,7 +149,7 @@ class BotEngine {
 	 * @since v0.4
 	 */
 	public function runPayloadCommand(string $name, array $data) {
-		if($this->needLowerCase) $name = strtolower($name);
+		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if($this->checkPayloadCommand($name)) {
 			return $this->payloadCommands[$name]($data);
@@ -164,7 +164,7 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	private function checkCommand(string $name) {
-		if($this->needLowerCase) $name = strtolower($name);
+		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		return isset($this->commands[$name]);
 	}
@@ -176,7 +176,7 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	public function runCommand(string $name, array $data) {
-		if($this->needLowerCase) $name = strtolower($name);
+		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if($this->checkCommand($name)) {
 			return $this->commands[$name]($data);
@@ -193,7 +193,7 @@ class BotEngine {
 	public function onData(array $data) {
 		if(!is_null($data)) {
 			if($data['type'] == 'message_new') {
-				$text = strtolower($data['object']['message']['text']);
+				$text = mb_strtolower($data['object']['message']['text']);
 				$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
 				$check = isset($data['object']['message']['payload']) && isset(json_decode($data['object']['message']['payload'], true)['command']);
@@ -215,7 +215,7 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	public function addDataHandler(string $name, callable $handler) {
-		$name = strtolower($name);
+		$name = mb_strtolower($name);
 
 		$this->dataHandlers[$name] = $handler;
 	}
@@ -226,7 +226,7 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	private function checkDataHandler(string $name) {
-		$name = strtolower($name);
+		$name = mb_strtolower($name);
 
 		return isset($this->dataHandlers[$name]);
 	}
@@ -238,7 +238,7 @@ class BotEngine {
 	 * @since v0.1
 	 */
 	public function runDataHandler(string $name, array $data) {
-		$name = strtolower($name);
+		$name = mb_strtolower($name);
 
 		if($this->checkDataHandler($name)) {
 			return $this->dataHandlers[$name]($data);
