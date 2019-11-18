@@ -101,8 +101,13 @@ class BotEngine {
 			$textName = mb_strtolower($textName);
 		}
 
-		if($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName)) {
+		if(
+			($this->checkPayloadCommand($payloadName) && !$this->checkCommand($textName)) || 
+			(!$this->checkPayloadCommand($payloadName) && $this->checkCommand($textName)) || 
+			($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName))
+		) {
 			$this->aliases[$payloadName] = $textName;
+			$this->aliases[$textName] = $payloadName;
 			return true;
 		}
 
@@ -122,10 +127,32 @@ class BotEngine {
 			$textName = mb_strtolower($textName);
 		}
 
-		if($this->checkPayloadCommand($payloadName) && $this->checkCommand($textName) && isset($this->aliases[$payloadName]) && $this->aliases[$payloadName] == $textName) {
-			return $this->runCommand($textName, $data);
+		if(isset($this->aliases[$payloadName])) {
+			if($this->aliases[$payloadName] == $textName) {
+				if($this->checkPayloadCommand($payloadName)) {
+					return $this->runPayloadCommand($payloadName, $data); 
+				} elseif($this->checkCommand($textName)) {
+					return $this->runCommand($textName, $data); 
+				} else return $this->runCommand('default', $data);
+			} elseif($this->checkPayloadCommand($payloadName)) {
+				return $this->runPayloadCommand($payloadName, $data);
+			} elseif($this->checkCommand($this->aliases[$payloadName])) {
+				return $this->runCommand($this->aliases[$payloadName], $data);
+			} else return $this->runCommand('default', $data);
 		} elseif($this->checkPayloadCommand($payloadName)) {
 			return $this->runPayloadCommand($payloadName, $data);
+		} elseif(isset($this->aliases[$textName])) {
+			if($this->aliases[$textName] == $payloadName) {
+				if($this->checkCommand($textName)) {
+					return $this->runCommand($textName, $data); 
+				} elseif($this->checkPayloadCommand($payloadName)) {
+					return $this->runPayloadCommand($payloadName, $data); 
+				} else return $this->runCommand('default', $data);
+			} elseif($this->checkCommand($textName)) {
+				return $this->runCommand($textName, $data);
+			} elseif($this->checkPayloadCommand($this->aliases[$textName])) {
+				return $this->runPayloadCommand($this->aliases[$textName], $data);
+			} else return $this->runCommand('default', $data);
 		} elseif($this->checkCommand($textName)) {
 			return $this->runCommand($textName, $data);
 		} else return $this->runCommand('default', $data);
