@@ -163,7 +163,7 @@ class BotEngine {
 	 * @param string $name Name of command
 	 * @since v0.4
 	 */
-	private function checkPayloadCommand(string $name) {
+	protected function checkPayloadCommand(string $name) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		return isset($this->payloadCommands[$name]);
@@ -190,7 +190,7 @@ class BotEngine {
 	 * @param string $name Name of command
 	 * @since v0.1
 	 */
-	private function checkCommand(string $name) {
+	protected function checkCommand(string $name) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		return isset($this->commands[$name]);
@@ -252,7 +252,7 @@ class BotEngine {
 	 * @param string $name Name of event type
 	 * @since v0.1
 	 */
-	private function checkDataHandler(string $name) {
+	protected function checkDataHandler(string $name) {
 		$name = mb_strtolower($name);
 
 		return isset($this->dataHandlers[$name]);
