@@ -229,6 +229,10 @@ class BotEngine {
 				} else {
 					$this->checkAllCommands('', $exp[0], $data);
 				}
+
+				if($this->checkDataHandler('message_new')) {
+					$this->runDataHandler('message_new', $data);
+				}
 			} elseif($this->checkDataHandler($data['type'])) {
 				$this->runDataHandler($data['type'], $data);
 			}

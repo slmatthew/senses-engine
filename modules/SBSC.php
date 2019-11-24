@@ -36,7 +36,9 @@ class SBSCommands extends BotEngine {
 					}
 				}
 
-				// TODO: add data handler to message_new
+				if($this->checkDataHandler('message_new')) {
+					$this->runDataHandler('message_new', $data);
+				}
 			} elseif($this->checkDataHandler($data['type'])) {
 				$this->runDataHandler($data['type'], $data);
 			}
