@@ -20,6 +20,8 @@ class SBSCommands extends BotEngine {
 	public function onData(array $data) {
 		if(!is_null($data)) {
 			if($data['type'] == 'message_new') {
+				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
+				
 				$user_id = $data['object']['message']['from_id'];
 				if(isset($this->users["{$user_id}"]) && !is_null($this->users["{$user_id}"]) && $this->checkSbsCommand($this->users["{$user_id}"]['command']) !== false) {
 					$u = $this->users["{$data['object']['message']['from_id']}"];

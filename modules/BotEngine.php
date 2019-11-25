@@ -220,6 +220,8 @@ class BotEngine {
 	public function onData(array $data) {
 		if(!is_null($data)) {
 			if($data['type'] == 'message_new') {
+				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
+				
 				$text = mb_strtolower($data['object']['message']['text']);
 				$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
@@ -228,10 +230,6 @@ class BotEngine {
 					$this->checkAllCommands(json_decode($data['object']['message']['payload'], true)['command'], $exp[0], $data);
 				} else {
 					$this->checkAllCommands('', $exp[0], $data);
-				}
-
-				if($this->checkDataHandler('message_new')) {
-					$this->runDataHandler('message_new', $data);
 				}
 			} elseif($this->checkDataHandler($data['type'])) {
 				$this->runDataHandler($data['type'], $data);

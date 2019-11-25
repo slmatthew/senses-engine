@@ -15,6 +15,7 @@
     * [addPayloadCommands](https://github.com/slmatthew/senses-engine#addpayloadcommands)
     * [addCommandsAlias](https://github.com/slmatthew/senses-engine#addcommandsalias)
     * [checkAllCommands](https://github.com/slmatthew/senses-engine#checkallcommands)
+    * [И ещё кое-что](https://github.com/slmatthew/senses-engine#и-ещё-кое-что)
 * [Класс SBSC (Step-by-step commands)](https://github.com/slmatthew/senses-engine#класс-sbsc-step-by-step-commands)
     * [addSbsCommand](https://github.com/slmatthew/senses-engine#addsbscommand)
     * [checkSbsCommand](https://github.com/slmatthew/senses-engine#checksbscommand)
@@ -158,6 +159,23 @@ $BotEngine->checkAllCommands('start', 'меню', $data);
 ```php
 $BotEngine->addDataHandler('group_leave', function($data) {
 	echo '-1 subscriber :(';
+});
+```
+
+### И ещё кое-что
+С версии `0.5.1` вы можете самостоятельно отключать обработку команд в определенных случаях. [Добавьте DataHandler](https://github.com/slmatthew/senses-engine#adddatahandler) для события `message_new`, функция которого будет возвращать `false`. В таком случае обработка команд будет пропущена.
+
+```php
+$be->addDataHandler('message_new', function($data) {
+  if($data['object']['message']['peer_id'] == 1) {
+    // Это же Дуров!
+
+    return false;
+  }
+
+  // Это не Дуров, проверяем команды
+
+  return true;
 });
 ```
 
