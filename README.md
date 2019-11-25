@@ -1,6 +1,10 @@
 # Senses Engine
 **Senses Engine** — движок для ботов ВКонтакте.
 
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/slmatthew/senses-engine?label=Senses%20Engine)
+![GitHub last commit](https://img.shields.io/github/last-commit/slmatthew/senses-engine)
+![GitHub repo size](https://img.shields.io/github/repo-size/slmatthew/senses-engine)
+
 ## Содержание
 * [Начало](https://github.com/slmatthew/senses-engine#senses-engine)
 * [Инициализация](https://github.com/slmatthew/senses-engine#инициализация)
