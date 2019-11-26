@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @package settings
+ */
+
+/**
+ * Configuration
+ * @var array
+ */
 $config = [
 	'token' => '',
 	'secret' => '',

@@ -1,17 +1,40 @@
 <?php
 
+/**
+ * Create, edit and get keyboard for VK
+ * @author slmatthew
+ * @package keyboard
+ */
+
 class Keyboard {
 
+	/**
+	 * Should VK hide the keyboard after first use
+	 * @var bool
+	 */
 	public $one_time = false;
+
+	/**
+	 * Should keyboard be inline
+	 * @var bool
+	 */
 	public $inline = false;
 
+	/**
+	 * @ignore
+	 */
 	public $buttons = [];
+
+	/**
+	 * @ignore
+	 */
 	public $currentIndex = 0;
 
 	/**
 	 * Constructor
 	 * @param bool $one_time Should VK hide the keyboard after first use
 	 * @param bool $inline Should keyboard be inline
+	 * @return void
 	 * @since v0.3
 	 */
 	public function __construct(bool $one_time, bool $inline) {
@@ -23,6 +46,7 @@ class Keyboard {
 	 * Button constructor
 	 * @param array $action https://vk.com/dev/bots_docs_3
 	 * @param string $color Button color
+	 * @return void
 	 * @since v0.3
 	 */
 	public function addButton(array $action, string $color = '') {
@@ -42,6 +66,7 @@ class Keyboard {
 
 	/**
 	 * Line constructor
+	 * @return void
 	 * @since v0.3
 	 */
 	public function addLine() {
@@ -51,7 +76,7 @@ class Keyboard {
 	/**
 	 * Keyboard getter
 	 * @param bool $json Should function return array or json
-	 * @return array | string
+	 * @return array|string
 	 * @since v0.3
 	 */
 	public function getKeyboard(bool $json = false) {

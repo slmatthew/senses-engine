@@ -2,20 +2,27 @@
 
 /**
  * Step-by-step commands class
+ * @author slmatthew
  * @since v0.5
+ * @package BotEngine
  */
 
 class SBSCommands extends BotEngine {
+	/**
+	 * @ignore
+	 */
 	public $sbsc = [
 		'payload' => [],
 		'text' => []
 	];
+
+	/**
+	 * @ignore
+	 */
 	public $users = [];
 
 	/**
-	 * Data handler
-	 * @param array $data Data from CB or LP
-	 * @since v0.5
+	 * @ignore
 	 */
 	public function onData(array $data) {
 		if(!is_null($data)) {
@@ -52,6 +59,7 @@ class SBSCommands extends BotEngine {
 	 * @param string $payloadName Payload command name
 	 * @param string $textName Text command name
 	 * @param array $data Message data
+	 * @return bool
 	 * @since v0.5
 	 */
 	public function checkAllCommands(string $payloadName, string $textName, array $data) {
@@ -104,6 +112,7 @@ class SBSCommands extends BotEngine {
 	 * @param string $command Command
 	 * @param int $steps Count of steps
 	 * @param callable $handler Command handler
+	 * @return bool
 	 * @since v0.5
 	 */
 	public function addSbsCommand(string $type, string $command, int $steps, callable $handler) {
@@ -123,6 +132,7 @@ class SBSCommands extends BotEngine {
 	 * @param string $type Command type: payload/text
 	 * @param string $name Command name
 	 * @param array $data Data from CB or LP
+	 * @return bool
 	 * @since v0.5
 	 */
 	public function handleSbsCommand(string $type, string $name, array $data) {
@@ -138,7 +148,7 @@ class SBSCommands extends BotEngine {
 				$ed['from_id'] = $user_id;
 
 				if($cmd['handler']($ed, $data)) {
-					$this->users = $this->deleteFromArray($this->users, "{$user_id}");
+					unset($this->users["{$user_id}"]);
 				}
 
 				return true;
@@ -176,6 +186,7 @@ class SBSCommands extends BotEngine {
 	/**
 	 * Step-by-step command checker
 	 * @param string $name Command name
+	 * @return string|bool
 	 * @since v0.5
 	 */
 	public function checkSbsCommand(string $name) {
@@ -183,16 +194,6 @@ class SBSCommands extends BotEngine {
 		if(isset($this->sbsc['text'][$name])) return 'text';
 
 		return false;
-	}
-
-	private function deleteFromArray($array, $deleteKey) {
-		$newarray = [];
-		foreach($array as $key => $value) {
-			if($key == $deleteKey) continue;
-			$newarray[$key] = $value;
-		}
-
-		return $newarray;
 	}
 }
 

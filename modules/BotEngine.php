@@ -2,27 +2,45 @@
 
 /**
  * Heart of engine
+ * @author slmatthew
+ * @package botengine
  */
 
 class BotEngine {
 	
 	/**
-	 * Structure:
-	 * [name1 => handler1, name2 => handler2]
+	 * @ignore
 	 */
 	public $commands = [];
+
+	/**
+	 * @ignore
+	 */
 	public $payloadCommands = []; // This commands will be detected from payload
 
 	/**
-	 * Structure:
-	 * [alias1 => name1, alias2 => name2]
+	 * @ignore
 	 */
 	public $aliases = [];
 
+	/**
+	 * @ignore
+	 */
 	public $dataHandlers = [];
 
+	/**
+	 * Commands will be handled in lower case
+	 * @var bool
+	 * @since v0.1
+	 */
 	public $needLowerCase = true;
 
+	/**
+	 * BotEngine constructor
+	 * @param bool $needLowerCase Commands will be handled in lower case
+	 * @return void
+	 * @since v0.1
+	 */
 	public function __construct(bool $needLowerCase = true) {
 		$this->needLowerCase = $needLowerCase;
 
@@ -37,6 +55,7 @@ class BotEngine {
 	 * Commands constructor
 	 * @param string $name Name of command
 	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
+	 * @return bool
 	 * @since v0.1
 	 */
 	public function addCommand(string $name, callable $handler) {
@@ -54,6 +73,7 @@ class BotEngine {
 	 * Commands aliases constructor
 	 * @param string $name Names of commands
 	 * @param callable $handler Function-handler of commands. This construction will be used when commands are called: $handler($data)
+	 * @return void
 	 * @since v0.1
 	 */
 	public function addCommands(array $names, callable $handler) {
@@ -69,6 +89,7 @@ class BotEngine {
 	 * Payload ommands constructor (handle payload param from message object: {"command": "start"})
 	 * @param string $name Name of command
 	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
+	 * @return bool
 	 * @since v0.4
 	 */
 	public function addPayloadCommands(array $names, callable $handler) {
@@ -93,6 +114,7 @@ class BotEngine {
 	 * Payload and text commands aliases
 	 * @param string $payloadName
 	 * @param string $textName
+	 * @return bool
 	 * @since v0.4
 	 */
 	public function addCommandsAlias(string $payloadName, string $textName) {
@@ -119,6 +141,7 @@ class BotEngine {
 	 * @param string $payloadName Payload command name
 	 * @param string $textName Text command name
 	 * @param array $data Message data
+	 * @return bool
 	 * @since v0.4
 	 */
 	public function checkAllCommands(string $payloadName, string $textName, array $data) {
@@ -161,6 +184,7 @@ class BotEngine {
 	/**
 	 * Payload commands checker
 	 * @param string $name Name of command
+	 * @return bool
 	 * @since v0.4
 	 */
 	protected function checkPayloadCommand(string $name) {
@@ -173,6 +197,7 @@ class BotEngine {
 	 * Payload commands runner
 	 * @param string $name Name of command
 	 * @param array $data Message data
+	 * @return int|bool
 	 * @since v0.4
 	 */
 	public function runPayloadCommand(string $name, array $data) {
@@ -188,6 +213,7 @@ class BotEngine {
 	/**
 	 * Commands checker
 	 * @param string $name Name of command
+	 * @return bool
 	 * @since v0.1
 	 */
 	protected function checkCommand(string $name) {
@@ -200,6 +226,7 @@ class BotEngine {
 	 * Commands runner
 	 * @param string $name Name of command
 	 * @param array $data Message data
+	 * @return bool
 	 * @since v0.1
 	 */
 	public function runCommand(string $name, array $data) {
@@ -213,9 +240,7 @@ class BotEngine {
 	}
 
 	/**
-	 * Data handler
-	 * @param array $data Data from CB or LP
-	 * @since v0.1
+	 * @ignore
 	 */
 	public function onData(array $data) {
 		if(!is_null($data)) {
@@ -241,6 +266,7 @@ class BotEngine {
 	 * Data handlers constructor
 	 * @param string $name Name of event type
 	 * @param callable $handler Data handler
+	 * @return void
 	 * @since v0.1
 	 */
 	public function addDataHandler(string $name, callable $handler) {
@@ -252,6 +278,7 @@ class BotEngine {
 	/**
 	 * Data handlers checker
 	 * @param string $name Name of event type
+	 * @return bool
 	 * @since v0.1
 	 */
 	protected function checkDataHandler(string $name) {
@@ -264,6 +291,7 @@ class BotEngine {
 	 * Data handlers runner
 	 * @param string $name Name of datahandler
 	 * @param array $data Event data
+	 * @return int|bool
 	 * @since v0.1
 	 */
 	public function runDataHandler(string $name, array $data) {

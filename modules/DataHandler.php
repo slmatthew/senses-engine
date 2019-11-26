@@ -1,7 +1,9 @@
 <?php
 
 /**
- * It's a file for handle the data from VK
+ * Class for handle the data from VK
+ * @author slmatthew
+ * @package datahandler
  */
 
 if(is_null($config) || empty($config) || !isset($config))  throw new Exception('You need to set config');
@@ -18,6 +20,7 @@ class DataHandler {
 	/**
 	 * Init DataHandler class
 	 * @param string $type Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API). Default: "cb"
+	 * @param BotEngine $be BotEngine class
 	 * @since v0.1
 	 */
 	public function __construct(string $type, $be) {
@@ -46,6 +49,7 @@ class DataHandler {
 
 	/**
 	 * Longpolling
+	 * @param BotEngine $be BotEngine class
 	 * @since v0.1
 	 */
 	public function startLp($be) {
