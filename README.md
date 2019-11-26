@@ -5,6 +5,9 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/slmatthew/senses-engine)
 ![GitHub repo size](https://img.shields.io/github/repo-size/slmatthew/senses-engine)
 
+[![slmatthew VK](https://img.shields.io/badge/slmatthew-VK-blue)](https://vk.com/slmatthew)
+[![slmatthew TG](https://img.shields.io/badge/slmatthew-TG-blue)](https://t.me/slmatthew)
+
 ## Содержание
 * [Начало](https://github.com/slmatthew/senses-engine#senses-engine)
 * [Инициализация](https://github.com/slmatthew/senses-engine#инициализация)
