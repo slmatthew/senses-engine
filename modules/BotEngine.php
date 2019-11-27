@@ -71,7 +71,7 @@ class BotEngine {
 
 	/**
 	 * Commands aliases constructor
-	 * @param string $name Names of commands
+	 * @param array $names Names of commands
 	 * @param callable $handler Function-handler of commands. This construction will be used when commands are called: $handler($data)
 	 * @return void
 	 * @since v0.1
@@ -86,8 +86,8 @@ class BotEngine {
 	}
 
 	/**
-	 * Payload ommands constructor (handle payload param from message object: {"command": "start"})
-	 * @param string $name Name of command
+	 * Payload commands constructor (handle payload param from message object: {"command": "start"})
+	 * @param array $names Name of command
 	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
 	 * @return bool
 	 * @since v0.4

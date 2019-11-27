@@ -21,6 +21,8 @@ class DataHandler {
 	 * Init DataHandler class
 	 * @param string $type Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API). Default: "cb"
 	 * @param BotEngine $be BotEngine class
+     * @return void
+     * @throws Exception
 	 * @since v0.1
 	 */
 	public function __construct(string $type, $be) {
@@ -50,6 +52,8 @@ class DataHandler {
 	/**
 	 * Longpolling
 	 * @param BotEngine $be BotEngine class
+     * @return void
+     * @throws Exception
 	 * @since v0.1
 	 */
 	public function startLp($be) {
@@ -126,6 +130,7 @@ class DataHandler {
 	/**
 	 * Data provider
 	 * @param array $data Data from CB or LP
+     * @return void
 	 * @since v0.1
 	 */
 	public function onData(array $data, $BotEngine) {
