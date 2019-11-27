@@ -1,5 +1,6 @@
 /test/
 /output/
+/.idea/
 
 config.php
 todo.txt
