@@ -4,7 +4,7 @@
  * Step-by-step commands class
  * @author slmatthew
  * @since v0.5
- * @package BotEngine
+ * @package botengine
  */
 
 class SBSCommands extends BotEngine {
