@@ -19,7 +19,7 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, $agent);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // only for dev mode
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, CURL_VERIFY);
 	if(!empty($postfields)) {
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
