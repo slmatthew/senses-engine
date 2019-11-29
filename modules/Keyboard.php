@@ -30,6 +30,11 @@ class Keyboard {
 	 */
 	public $currentIndex = 0;
 
+	public const PRIMARY_BUTTON = 'primary';
+	public const SECONDARY_BUTTON = 'secondary';
+	public const NEGATIVE_BUTTON = 'negative';
+	public const POSITIVE_BUTTON = 'positive';
+
 	/**
 	 * Constructor
 	 * @param bool $one_time Should VK hide the keyboard after first use
@@ -37,9 +42,17 @@ class Keyboard {
 	 * @return void
 	 * @since v0.3
 	 */
-	public function __construct(bool $one_time, bool $inline) {
+	public function __construct(bool $one_time = false, bool $inline = false) {
 		$this->one_time = $one_time;
 		$this->inline = $inline;
+	}
+
+	public function oneTime(bool $enabled) {
+		$this->one_time = $enabled;
+	}
+
+	public function inline(bool $enabled) {
+		$this->one_time = $enabled;
 	}
 
 	/**
@@ -65,6 +78,71 @@ class Keyboard {
 	}
 
 	/**
+	 * Text button constructor
+	 * @param string $label Text on the button
+	 * @param array $payload Payload
+	 * @param string $color Button color
+	 * @return void
+	 * @since 0.6
+	 */
+	public function addTextButton(string $label, array $payload = [], string $color = self::PRIMARY_BUTTON) {
+		$this->addButton([
+			'type' => 'text',
+			'label' => $label,
+			'payload' => $this->toJson($payload)
+		], $color);
+	}
+
+	/**
+	 * Location button constructor
+	 * @param array $payload Payload
+	 * @return void
+	 * @since 0.6
+	 */
+	public function addLocationButton(array $payload = []) {
+		$this->addButton([
+			'type' => 'location',
+			'payload' => $this->toJson($payload)
+		]);
+	}
+
+	/**
+	 * VK Pay button constructor
+	 * @param array $hash Hash
+	 * @param array $payload Payload
+	 * @return void
+	 * @since 0.6
+	 */
+	public function addPayButton(array $hash, array $payload = []) {
+		$this->addButton([
+			'type' => 'vkpay',
+			'hash' => http_build_query($hash),
+			'payload' => $this->toJson($payload)
+		]);
+	}
+
+	/**
+	 * Text button constructor
+	 * @param int $app_id Your application ID
+	 * @param int $owner_id Community or user id (for user ids owner_id < 0)
+	 * @param string $label Text on the button
+	 * @param string $hash Hash: https://vk.com/app123#{hash}
+	 * @param array $payload
+	 * @return void
+	 * @since 0.6
+	 */
+	public function addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []) {
+		$this->addButton([
+			'type' => 'open_app',
+			'app_id' => $app_id,
+			'owner_id' => $owner_id,
+			'label' => $label,
+			'hash' => $hash,
+			'payload' => $this->toJson($payload)
+		]);
+	}
+
+	/**
 	 * Line constructor
 	 * @return void
 	 * @since v0.3
@@ -79,7 +157,7 @@ class Keyboard {
 	 * @return array|string
 	 * @since v0.3
 	 */
-	public function getKeyboard(bool $json = false) {
+	public function get(bool $json = false) {
 		$kb = [
 			'one_time' => $this->one_time,
 			'buttons' => $this->buttons,
@@ -88,6 +166,11 @@ class Keyboard {
 
 		return $json ? json_encode($kb, JSON_UNESCAPED_UNICODE) : $kb;
 	}
+
+	/**
+	 * @ignore
+	 */
+	private function toJson(array $array) { return json_encode($array, JSON_UNESCAPED_UNICODE); }
 }
 
 ?>

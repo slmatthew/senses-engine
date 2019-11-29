@@ -35,8 +35,9 @@
 * [Модуль Keyboard](https://github.com/slmatthew/senses-engine#модуль-keyboard)
     * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор-1)
     * [addButton](https://github.com/slmatthew/senses-engine#addbutton)
+    * [Другой способ добавления кнопок](https://github.com/slmatthew/senses-engine#другой-способ-добавления-кнопок)
     * [addLine](https://github.com/slmatthew/senses-engine#addline)
-    * [getKeyboard](https://github.com/slmatthew/senses-engine#getkeyboard)
+    * [get](https://github.com/slmatthew/senses-engine#get)
 * [Конфигурация](https://github.com/slmatthew/senses-engine#конфигурация)
 * [Исключения](https://github.com/slmatthew/senses-engine#исключения-1)
 * [Некоторые нюансы](https://github.com/slmatthew/senses-engine#некоторые-нюансы)
@@ -376,6 +377,27 @@ $kb->addButton([
 
 > В `$action['payload']` вы можете передавать массив, либа сама преобразует его в JSON.
 
+### Другой способ добавления кнопок
+С версии `0.6` вы можете использовать другой способ добавления кнопок по их типу, а так же использовать константы класса для определения цвета.
+
+| Имя константы    | Значение  |
+|------------------|-----------|
+| PRIMARY_BUTTON   | primary   |
+| SECONDARY_BUTTON | secondary |
+| NEGATIVE_BUTTON  | negative  |
+| POSITIVE_BUTTON  | positive  |
+
+Ниже приведены все новые функции с параметрами, описанными в [документации](https://vk.com/dev/bots_docs_3).
+
+```php
+$kb->addTextButton(string $label, array $payload = [], string $color = $kb::PRIMARY_BUTTON);
+$kb->addLocationButton(array $payload = []);
+$kb->addPayButton(array $hash, array $payload = []);
+$kb->addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []);
+```
+
+> *Обратите внимание:* в функции `addPayButton` параметр `$hash` имеет тип `array` в отличие от документации.
+
 ### addLine
 Добавление новой строки в клавиатуру.
 
@@ -383,13 +405,15 @@ $kb->addButton([
 $kb->addLine();
 ```
 
-### getKeyboard
+### get
 Получить построенную клавиатуру. Если в первый (и единственный) параметр передать `true`, вернётся JSON.
 
 ```php
-$kb->getKeyboard(); // array
-$kb->getKeyboard(true); // string (JSON)
+$kb->get(); // array
+$kb->get(true); // string (JSON)
 ```
+
+> До версии `0.6` функция имела название `getKeyboard`.
 
 ## Конфигурация
 В репозитории есть файл `config.php.example`. Это — пример конфига. На его основе вы можете создать свой конфиг, в котором обязательно должны быть следующие поля:
