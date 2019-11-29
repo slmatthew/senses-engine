@@ -164,7 +164,7 @@ class Keyboard {
 			'inline' => $this->inline
 		];
 
-		return $json ? json_encode($kb, JSON_UNESCAPED_UNICODE) : $kb;
+		return $json ? $this->toJson($kb) : $kb;
 	}
 
 	/**
