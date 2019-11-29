@@ -47,10 +47,22 @@ class Keyboard {
 		$this->inline = $inline;
 	}
 
+	/**
+	 * Should VK hide the keyboard after first use
+	 * @param bool $enabled True or false
+	 * @return void
+	 * @since 0.6
+	 */
 	public function oneTime(bool $enabled) {
 		$this->one_time = $enabled;
 	}
 
+	/**
+	 * Should keyboard be inline
+	 * @param bool $enabled True or false
+	 * @return void
+	 * @since 0.6
+	 */
 	public function inline(bool $enabled) {
 		$this->one_time = $enabled;
 	}
