@@ -68,7 +68,7 @@ class Keyboard {
 	 * @since 0.6
 	 */
 	public function inline(bool $enabled) {
-		$this->one_time = $enabled;
+		$this->inline = $enabled;
 
 		return $this;
 	}
