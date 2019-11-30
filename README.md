@@ -34,6 +34,7 @@
     * [call](https://github.com/slmatthew/senses-engine#call)
 * [Модуль Keyboard](https://github.com/slmatthew/senses-engine#модуль-keyboard)
     * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор-1)
+    * [inline и oneTime](https://github.com/slmatthew/senses-engine#inline-и-onetime)
     * [addButton](https://github.com/slmatthew/senses-engine#addbutton)
     * [Другой способ добавления кнопок](https://github.com/slmatthew/senses-engine#другой-способ-добавления-кнопок)
     * [addLine](https://github.com/slmatthew/senses-engine#addline)
@@ -357,6 +358,14 @@ $fkb = new Keyboard(true, false);
 $skb = new Keyboard(false, true); // при $inline = true $one_time может иметь любое значение
 ```
 
+### inline и oneTime
+Вы можете задать значение `one_time` и `inline` после создания экземпляра класса. Для этого используйте методы `oneTime()` и `inline()`, которые принимают единственный bool-параметр `$enabled`.
+
+```php
+$kb->oneTime(false);
+$kb->inline(true);
+```
+
 ### addButton
 Метод, используемый для добавления кнопки в строку.
 
@@ -365,12 +374,26 @@ $skb = new Keyboard(false, true); // при $inline = true $one_time может 
 | $action   | array  | [Документация](https://vk.com/dev/bots_docs_3?f=4.2.%2B%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%2B%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85) |
 | $color    | string | Цвет кнопки. Только для кнопки с `$action['type'] == 'text'`                                                                                          |
 
+Этот метод возвращает класс Keyboard, что означает, что вы можете сразу добавлять новую кнопку. Пример ниже.
+
 ```php
 $kb->addButton([
   'type' => 'text',
   'label' => 'Текст кнопки',
   'payload' => ['command' => 'start']
 ], 'positive');
+
+$kb
+  ->addButton([
+    'type' => 'text',
+    'label' => 'Текст кнопки',
+    'payload' => ['command' => 'start']
+  ], 'positive')
+  ->addButton([
+    'type' => 'text',
+    'label' => 'Текст кнопки',
+    'payload' => ['command' => 'start']
+  ], 'positive');
 ```
 
 > Информация об ограничениях есть в документации.
@@ -387,7 +410,7 @@ $kb->addButton([
 | NEGATIVE_BUTTON  | negative  |
 | POSITIVE_BUTTON  | positive  |
 
-Ниже приведены все новые функции с параметрами, описанными в [документации](https://vk.com/dev/bots_docs_3).
+Ниже приведены все новые функции с параметрами, описанными в [документации](https://vk.com/dev/bots_docs_3). Их можно также добавлять друг за другом (так же, как и с методом `addButton`, пример выше).
 
 ```php
 $kb->addTextButton(string $label, array $payload = [], string $color = $kb::PRIMARY_BUTTON);
@@ -431,9 +454,9 @@ $kb->get(true); // string (JSON)
 ```php
 // Для прода
 $config = [
-	'token' => 'x6pstvcdeyp5y8c82gthdgc22h7za5aq5pf6cf7su3yf3ur2eassz8uxuxk6q2aacy5m6e5e3kq5eybw3upsk',
-	'group_id' => 1,
-	'version' => '5.103'
+  'token' => 'x6pstvcdeyp5y8c82gthdgc22h7za5aq5pf6cf7su3yf3ur2eassz8uxuxk6q2aacy5m6e5e3kq5eybw3upsk',
+  'group_id' => 1,
+  'version' => '5.103'
 ];
 
 // Для локальной разработки
