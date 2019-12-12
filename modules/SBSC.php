@@ -24,9 +24,20 @@ class SBSCommands extends BotEngine {
 	/**
 	 * @ignore
 	 */
-	public function onData(array $data) {
+	public function onData(array $data, string $type) {
 		if(!is_null($data)) {
-			if($data['type'] == 'message_new') {
+			if($type == 'user') {
+				if($data[0] == 4) {
+					if($this->checkDataHandler('4') && $this->runDataHandler('4', $data) === false) return;
+
+					$text = mb_strtolower($data[5]);
+					$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
+
+					$this->checkAllCommands('', $exp[0], $data);
+				} elseif($this->checkDataHandler("{$data[0]}")) {
+					$this->runDataHandler("{$data[0]}", $data);
+				}
+			} elseif($data['type'] == 'message_new') {
 				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
 				
 				$user_id = $data['object']['message']['from_id'];

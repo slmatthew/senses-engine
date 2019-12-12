@@ -9,7 +9,7 @@ if(!extension_loaded('curl')) exit('I need curl extension to run');
 /**
  * @ignore
  */
-define("SEV", "0.5");
+define("SEV", "0.6");
 
 /**
  * @var bool Should engine show LP logs
@@ -26,7 +26,5 @@ include __DIR__.'/modules/BotEngine.php';
 include __DIR__.'/modules/SBSC.php';
 include __DIR__.'/modules/DataHandler.php';
 include __DIR__.'/modules/Keyboard.php';
-include __DIR__.'/modules/Attachments.php';
-include __DIR__.'/modules/Upload.php';
 
 ?>

@@ -9,39 +9,40 @@
 [![slmatthew TG](https://img.shields.io/badge/slmatthew-TG-blue)](https://t.me/slmatthew)
 
 ## Содержание
-* [Начало](https://github.com/slmatthew/senses-engine#senses-engine)
-* [Инициализация](https://github.com/slmatthew/senses-engine#инициализация)
-* [Класс BotEngine](https://github.com/slmatthew/senses-engine#класс-botengine)
-    * [addCommand и addCommands](https://github.com/slmatthew/senses-engine#addcommand--addcommands)
-    * [runCommand](https://github.com/slmatthew/senses-engine#runcommand)
-    * [addDataHandler](https://github.com/slmatthew/senses-engine#adddatahandler)
-    * [addPayloadCommands](https://github.com/slmatthew/senses-engine#addpayloadcommands)
-    * [addCommandsAlias](https://github.com/slmatthew/senses-engine#addcommandsalias)
-    * [checkAllCommands](https://github.com/slmatthew/senses-engine#checkallcommands)
-    * [И ещё кое-что](https://github.com/slmatthew/senses-engine#и-ещё-кое-что)
-* [Класс SBSC (Step-by-step commands)](https://github.com/slmatthew/senses-engine#класс-sbsc-step-by-step-commands)
-    * [addSbsCommand](https://github.com/slmatthew/senses-engine#addsbscommand)
-    * [checkSbsCommand](https://github.com/slmatthew/senses-engine#checksbscommand)
-    * [handleSbsCommand](https://github.com/slmatthew/senses-engine#handlesbscommand)
-    * [checkAllCommands](https://github.com/slmatthew/senses-engine#checkallcommands-1)
-* [Класс DataHandler](https://github.com/slmatthew/senses-engine#класс-datahandler)
-    * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор)
-    * [Получение данных от Callback API](https://github.com/slmatthew/senses-engine#получение-данных-от-callback-api)
-    * [Исключения](https://github.com/slmatthew/senses-engine#исключения)
-    * [Логирование действий LongPoll API](https://github.com/slmatthew/senses-engine#логирование-действий-longpoll-api)
-* [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
-    * [request](https://github.com/slmatthew/senses-engine#request)
-    * [call](https://github.com/slmatthew/senses-engine#call)
-* [Модуль Keyboard](https://github.com/slmatthew/senses-engine#модуль-keyboard)
-    * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор-1)
-    * [inline и oneTime](https://github.com/slmatthew/senses-engine#inline-и-onetime)
-    * [addButton](https://github.com/slmatthew/senses-engine#addbutton)
-    * [Другой способ добавления кнопок](https://github.com/slmatthew/senses-engine#другой-способ-добавления-кнопок)
-    * [addLine](https://github.com/slmatthew/senses-engine#addline)
-    * [get](https://github.com/slmatthew/senses-engine#get)
-* [Конфигурация](https://github.com/slmatthew/senses-engine#конфигурация)
-* [Исключения](https://github.com/slmatthew/senses-engine#исключения-1)
-* [Некоторые нюансы](https://github.com/slmatthew/senses-engine#некоторые-нюансы)
+* [Начало](#senses-engine)
+* [Инициализация](#инициализация)
+* [Класс BotEngine](#класс-botengine)
+    * [addCommand и addCommands](#addcommand--addcommands)
+    * [runCommand](#runcommand)
+    * [addDataHandler](#adddatahandler)
+    * [addPayloadCommands](#addpayloadcommands)
+    * [addCommandsAlias](#addcommandsalias)
+    * [checkAllCommands](#checkallcommands)
+    * [И ещё кое-что](#и-ещё-кое-что)
+* [Класс SBSC (Step-by-step commands)](#класс-sbsc-step-by-step-commands)
+    * [addSbsCommand](#addsbscommand)
+    * [checkSbsCommand](#checksbscommand)
+    * [handleSbsCommand](#handlesbscommand)
+    * [checkAllCommands](#checkallcommands-1)
+* [Класс DataHandler](#класс-datahandler)
+    * [Конструктор](#конструктор)
+    * [Получение данных от Callback API](#получение-данных-от-callback-api)
+    * [Исключения](#исключения)
+    * [Логирование действий LongPoll API](#логирование-действий-longpoll-api)
+* [Модуль Requests](#requests)
+    * [request](#request)
+    * [call](#call)
+* [Модуль Keyboard](#модуль-keyboard)
+    * [Конструктор](#конструктор-1)
+    * [inline и oneTime](#inline-и-onetime)
+    * [addButton](#addbutton)
+    * [Другой способ добавления кнопок](#другой-способ-добавления-кнопок)
+    * [addLine](#addline)
+    * [get](#get)
+* [User Longpoll](#user-longpoll)
+* [Конфигурация](#конфигурация)
+* [Исключения](#исключения-1)
+* [Некоторые нюансы](#некоторые-нюансы)
 
 ## Инициализация
 Ниже показано, как правильно подключать движок к боту:
@@ -168,7 +169,7 @@ $BotEngine->addDataHandler('group_leave', function($data) {
 ```
 
 ### И ещё кое-что
-С версии `0.5.1` вы можете самостоятельно отключать обработку команд в определенных случаях. [Добавьте DataHandler](https://github.com/slmatthew/senses-engine#adddatahandler) для события `message_new`, функция которого будет возвращать `false`. В таком случае обработка команд будет пропущена.
+С версии `0.5.1` вы можете самостоятельно отключать обработку команд в определенных случаях. [Добавьте DataHandler](#adddatahandler) для события `message_new`, функция которого будет возвращать `false`. В таком случае обработка команд будет пропущена.
 
 ```php
 $be->addDataHandler('message_new', function($data) {
@@ -185,7 +186,7 @@ $be->addDataHandler('message_new', function($data) {
 ```
 
 ## Класс SBSC (Step-by-step commands)
-Класс, основанный на [BotEngine](https://github.com/slmatthew/senses-engine#класс-botengine) и позволяющий создать команды с поэтапным вводом данных (step-by-step commands). Вместо BotEngine вы можете создавать экземпляр класса SBSCommands:
+Класс, основанный на [BotEngine](#класс-botengine) и позволяющий создать команды с поэтапным вводом данных (step-by-step commands). Вместо BotEngine вы можете создавать экземпляр класса SBSCommands:
 ```php
 $be = new SBSCommands();
 
@@ -273,7 +274,7 @@ $be->handleSbsCommand('text', 'заказ', $data);
 | $textName    | string | Название текстовой команды |
 | $data        | array  | Сообщение                  |
 
-[Пример использования](https://github.com/slmatthew/senses-engine#checkallcommands)
+[Пример использования](#checkallcommands)
 
 ## Класс DataHandler
 Экземпляр DataHandler необходимо создавать **после** BotEngine, т.к. последний необходим для обработки данных. Структура должна выглядеть так:
@@ -438,14 +439,22 @@ $kb->get(true); // string (JSON)
 
 > До версии `0.6` функция имела название `getKeyboard`.
 
+## User Longpoll
+С версии `0.6` движок умеет работать с User Longpoll. В файл с конфигом были внесены изменения: добавлено новое поле `type`, изменено названия поля `group_id` на `api_id`. Информация по конфигу есть в следующем пункте.
+
+Чтобы движок начал работать с User LP, в конфиг-файле нужно указать `type = user`. Далее работа с командами идет как обычно, за исключением того, что пользователи не могут отправлять клавиатуру и обрабатывать payload-команды. Также, в поле `$data` приходит массив [из longpoll](https://vk.com/dev/using_longpoll_2?f=3.%2B%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%2B%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D0%B9), вам нужно обрабатывать всё вручную. Буду рад pr с модулем, который будет конвертировать данные в нормальный формат.
+
+> Вместо названий событий при указании `datahandler` используйте код события. Например, вместо `$be->addDataHandler('message_new', function() {})` используйте `$be->addDataHandler('4', function() {})`. Первый параметр должен быть строкой.
+
 ## Конфигурация
 В репозитории есть файл `config.php.example`. Это — пример конфига. На его основе вы можете создать свой конфиг, в котором обязательно должны быть следующие поля:
 
 | Поле     | Тип     | Описание                                                                         |
 |----------|---------|--------------------------------------------------------------------------------- |
+| type     | string  | `community` или `user`. Влияет на используемый longpoll (`user` или `bots`)      |
 | token    | string  | access_token из настроек сообщества                                              |
 | secret   | string  | Секретный ключ или пустая строка                                                 |
-| group_id | int     | ID сообщества (положительное число)                                              |
+| api_id   | int     | ID сообщества или пользователя. Всегда положительное число                       |
 | version  | string  | Версия VK API                                                                    |
 | dev      | mixed[] | Если указан этот параметр, то в модуле Requests `CURLOPT_SSL_VERIFYPEER = false` |
 
@@ -454,15 +463,17 @@ $kb->get(true); // string (JSON)
 ```php
 // Для прода
 $config = [
+  'type' => 'community',
   'token' => 'x6pstvcdeyp5y8c82gthdgc22h7za5aq5pf6cf7su3yf3ur2eassz8uxuxk6q2aacy5m6e5e3kq5eybw3upsk',
-  'group_id' => 1,
+  'api_id' => 1,
   'version' => '5.103'
 ];
 
 // Для локальной разработки
 $config = [
+  'type' => 'community',
   'token' => 'x6pstvcdeyp5y8c82gthdgc22h7za5aq5pf6cf7su3yf3ur2eassz8uxuxk6q2aacy5m6e5e3kq5eybw3upsk',
-  'group_id' => 1,
+  'api_id' => 1,
   'version' => '5.103',
   'dev' => true
 ];
