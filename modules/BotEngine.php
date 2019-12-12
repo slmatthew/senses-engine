@@ -254,6 +254,8 @@ class BotEngine {
 					$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
 					$this->checkAllCommands('', $exp[0], $data);
+				} elseif($this->checkDataHandler("{$data[0]}")) {
+					$this->runDataHandler("{$data[0]}", $data);
 				}
 			} elseif($data['type'] == 'message_new') {
 				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
