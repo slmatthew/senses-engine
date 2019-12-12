@@ -9,40 +9,40 @@
 [![slmatthew TG](https://img.shields.io/badge/slmatthew-TG-blue)](https://t.me/slmatthew)
 
 ## Содержание
-* [Начало](https://github.com/slmatthew/senses-engine#senses-engine)
-* [Инициализация](https://github.com/slmatthew/senses-engine#инициализация)
-* [Класс BotEngine](https://github.com/slmatthew/senses-engine#класс-botengine)
-    * [addCommand и addCommands](https://github.com/slmatthew/senses-engine#addcommand--addcommands)
-    * [runCommand](https://github.com/slmatthew/senses-engine#runcommand)
-    * [addDataHandler](https://github.com/slmatthew/senses-engine#adddatahandler)
-    * [addPayloadCommands](https://github.com/slmatthew/senses-engine#addpayloadcommands)
-    * [addCommandsAlias](https://github.com/slmatthew/senses-engine#addcommandsalias)
-    * [checkAllCommands](https://github.com/slmatthew/senses-engine#checkallcommands)
-    * [И ещё кое-что](https://github.com/slmatthew/senses-engine#и-ещё-кое-что)
-* [Класс SBSC (Step-by-step commands)](https://github.com/slmatthew/senses-engine#класс-sbsc-step-by-step-commands)
-    * [addSbsCommand](https://github.com/slmatthew/senses-engine#addsbscommand)
-    * [checkSbsCommand](https://github.com/slmatthew/senses-engine#checksbscommand)
-    * [handleSbsCommand](https://github.com/slmatthew/senses-engine#handlesbscommand)
-    * [checkAllCommands](https://github.com/slmatthew/senses-engine#checkallcommands-1)
-* [Класс DataHandler](https://github.com/slmatthew/senses-engine#класс-datahandler)
-    * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор)
-    * [Получение данных от Callback API](https://github.com/slmatthew/senses-engine#получение-данных-от-callback-api)
-    * [Исключения](https://github.com/slmatthew/senses-engine#исключения)
-    * [Логирование действий LongPoll API](https://github.com/slmatthew/senses-engine#логирование-действий-longpoll-api)
-* [Модуль Requests](https://github.com/slmatthew/senses-engine#requests)
-    * [request](https://github.com/slmatthew/senses-engine#request)
-    * [call](https://github.com/slmatthew/senses-engine#call)
-* [Модуль Keyboard](https://github.com/slmatthew/senses-engine#модуль-keyboard)
-    * [Конструктор](https://github.com/slmatthew/senses-engine#конструктор-1)
-    * [inline и oneTime](https://github.com/slmatthew/senses-engine#inline-и-onetime)
-    * [addButton](https://github.com/slmatthew/senses-engine#addbutton)
-    * [Другой способ добавления кнопок](https://github.com/slmatthew/senses-engine#другой-способ-добавления-кнопок)
-    * [addLine](https://github.com/slmatthew/senses-engine#addline)
-    * [get](https://github.com/slmatthew/senses-engine#get)
-* [User Longpoll](https://github.com/slmatthew/senses-engine#user-longpoll)
-* [Конфигурация](https://github.com/slmatthew/senses-engine#конфигурация)
-* [Исключения](https://github.com/slmatthew/senses-engine#исключения-1)
-* [Некоторые нюансы](https://github.com/slmatthew/senses-engine#некоторые-нюансы)
+* [Начало](#senses-engine)
+* [Инициализация](#инициализация)
+* [Класс BotEngine](#класс-botengine)
+    * [addCommand и addCommands](#addcommand--addcommands)
+    * [runCommand](#runcommand)
+    * [addDataHandler](#adddatahandler)
+    * [addPayloadCommands](#addpayloadcommands)
+    * [addCommandsAlias](#addcommandsalias)
+    * [checkAllCommands](#checkallcommands)
+    * [И ещё кое-что](#и-ещё-кое-что)
+* [Класс SBSC (Step-by-step commands)](#класс-sbsc-step-by-step-commands)
+    * [addSbsCommand](#addsbscommand)
+    * [checkSbsCommand](#checksbscommand)
+    * [handleSbsCommand](#handlesbscommand)
+    * [checkAllCommands](#checkallcommands-1)
+* [Класс DataHandler](#класс-datahandler)
+    * [Конструктор](#конструктор)
+    * [Получение данных от Callback API](#получение-данных-от-callback-api)
+    * [Исключения](#исключения)
+    * [Логирование действий LongPoll API](#логирование-действий-longpoll-api)
+* [Модуль Requests](#requests)
+    * [request](#request)
+    * [call](#call)
+* [Модуль Keyboard](#модуль-keyboard)
+    * [Конструктор](#конструктор-1)
+    * [inline и oneTime](#inline-и-onetime)
+    * [addButton](#addbutton)
+    * [Другой способ добавления кнопок](#другой-способ-добавления-кнопок)
+    * [addLine](#addline)
+    * [get](#get)
+* [User Longpoll](#user-longpoll)
+* [Конфигурация](#конфигурация)
+* [Исключения](#исключения-1)
+* [Некоторые нюансы](#некоторые-нюансы)
 
 ## Инициализация
 Ниже показано, как правильно подключать движок к боту:
@@ -169,7 +169,7 @@ $BotEngine->addDataHandler('group_leave', function($data) {
 ```
 
 ### И ещё кое-что
-С версии `0.5.1` вы можете самостоятельно отключать обработку команд в определенных случаях. [Добавьте DataHandler](https://github.com/slmatthew/senses-engine#adddatahandler) для события `message_new`, функция которого будет возвращать `false`. В таком случае обработка команд будет пропущена.
+С версии `0.5.1` вы можете самостоятельно отключать обработку команд в определенных случаях. [Добавьте DataHandler](#adddatahandler) для события `message_new`, функция которого будет возвращать `false`. В таком случае обработка команд будет пропущена.
 
 ```php
 $be->addDataHandler('message_new', function($data) {
@@ -186,7 +186,7 @@ $be->addDataHandler('message_new', function($data) {
 ```
 
 ## Класс SBSC (Step-by-step commands)
-Класс, основанный на [BotEngine](https://github.com/slmatthew/senses-engine#класс-botengine) и позволяющий создать команды с поэтапным вводом данных (step-by-step commands). Вместо BotEngine вы можете создавать экземпляр класса SBSCommands:
+Класс, основанный на [BotEngine](#класс-botengine) и позволяющий создать команды с поэтапным вводом данных (step-by-step commands). Вместо BotEngine вы можете создавать экземпляр класса SBSCommands:
 ```php
 $be = new SBSCommands();
 
@@ -274,7 +274,7 @@ $be->handleSbsCommand('text', 'заказ', $data);
 | $textName    | string | Название текстовой команды |
 | $data        | array  | Сообщение                  |
 
-[Пример использования](https://github.com/slmatthew/senses-engine#checkallcommands)
+[Пример использования](#checkallcommands)
 
 ## Класс DataHandler
 Экземпляр DataHandler необходимо создавать **после** BotEngine, т.к. последний необходим для обработки данных. Структура должна выглядеть так:
