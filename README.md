@@ -454,7 +454,7 @@ $kb->get(true); // string (JSON)
 | type     | string  | `community` или `user`. Влияет на используемый longpoll (`user` или `bots`)      |
 | token    | string  | access_token из настроек сообщества                                              |
 | secret   | string  | Секретный ключ или пустая строка                                                 |
-| api_id   | int     | ID сообщества (положительное число)                                              |
+| api_id   | int     | ID сообщества или пользователя. Всегда положительное число                       |
 | version  | string  | Версия VK API                                                                    |
 | dev      | mixed[] | Если указан этот параметр, то в модуле Requests `CURLOPT_SSL_VERIFYPEER = false` |
 
