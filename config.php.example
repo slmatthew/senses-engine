@@ -9,9 +9,10 @@
  * @var array
  */
 $config = [
+	'type' => 'community',
 	'token' => '',
 	'secret' => '',
-	'group_id' => 1,
+	'api_id' => 1,
 	'version' => '5.103'
 ];
 
