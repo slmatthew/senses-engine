@@ -26,7 +26,7 @@ class DataHandler {
 	 * @since v0.1
 	 */
 	public function __construct(string $type, $be) {
-		if($type == 'cb') {
+		if($type == 'cb' && $GLOBALS['config']['type'] == 'community') {
 			// we need to handle request. Add in v0.2-alpha
 			$data = file_get_contents('php://input');
 			if(!is_null($data)) {
@@ -45,26 +45,32 @@ class DataHandler {
 			}
 		} elseif($type == 'lp') {
 			// we need to start longpoll
-			$this->startLp($be);
+			$this->startLp($be, $GLOBALS['config']['type']);
 		} else throw new Exception('Unknown type for DataHandler');
 	}
 
 	/**
 	 * Longpolling
 	 * @param BotEngine $be BotEngine class
-     * @return void
-     * @throws Exception
+	 * @param string $type Longpolling type: user or community
+   * @return void
+   * @throws Exception
 	 * @since v0.1
 	 */
-	public function startLp($be) {
-		$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['group_id']])['response'];
+	public function startLp($be, string $type) {
+		if($type == 'community') {
+			$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
+		} elseif($type == 'user') {
+			$lp = call('messages.getLongPollServer', ['lp_version' => 7])['response'];
+		} else return false;
+
 		$server = $lp['server'];
 		$key = $lp['key'];
 
-		$baseurl = "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d";
+		$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
 		$url = sprintf($baseurl, $lp['ts']);
 
-		terminal("Starting longpoll...");
+		terminal("Starting {$type} longpoll...");
 
 		$li = 0;
 
@@ -73,7 +79,7 @@ class DataHandler {
 
 			if(!is_null($result)) {
 				if($li == 0) {
-					terminal("Started longpoll");
+					terminal("Started longpoll. Got first updates");
 					$li += 1;
 				}
 
@@ -84,7 +90,7 @@ class DataHandler {
 					terminal("Got updates");
 
 					foreach($updates as $key => $data) {
-						$be->onData($data);
+						$be->onData($data, $type);
 					}
 				} elseif(isset($result['failed'])) {
 					terminal("Request new data");
@@ -94,17 +100,26 @@ class DataHandler {
 							break;
 
 						case 2: case 3:
-							$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['group_id']]);
+							if($type == 'community') {
+								$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
+							} elseif($type == 'user') {
+								$lp = call('messages.getLongPollServer', ['lp_version' => 7])['response'];
+							}
+
 							if(isset($lp['response'])) {
 								$lp = $lp['response'];
 								
 								$server = $lp['server'];
 								$key = $lp['key'];
 
-								$baseurl = "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d";
+								$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
 							} else {
-								$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['group_id']]);
+								if($type == 'community') {
+									$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
+								} elseif($type == 'user') {
+									$lp = call('messages.getLongPollServer', ['lp_version' => 7])['response'];
+								}
 
 								if(isset($lp['response'])) {
 									$lp = $lp['response'];
@@ -112,7 +127,7 @@ class DataHandler {
 									$server = $lp['server'];
 									$key = $lp['key'];
 
-									$baseurl = "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d";
+									$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
 								} else throw new Exception('Can\'t to get new Longpoll data');
 							}
@@ -125,16 +140,6 @@ class DataHandler {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Data provider
-	 * @param array $data Data from CB or LP
-     * @return void
-	 * @since v0.1
-	 */
-	public function onData(array $data, $BotEngine) {
-		$BotEngine->onData($data);
 	}
 }
 

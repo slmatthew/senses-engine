@@ -443,9 +443,10 @@ $kb->get(true); // string (JSON)
 
 | Поле     | Тип     | Описание                                                                         |
 |----------|---------|--------------------------------------------------------------------------------- |
+| type     | string  | `community` или `user`. Влияет на используемый longpoll (`user` или `bots`)      |
 | token    | string  | access_token из настроек сообщества                                              |
 | secret   | string  | Секретный ключ или пустая строка                                                 |
-| group_id | int     | ID сообщества (положительное число)                                              |
+| api_id   | int     | ID сообщества (положительное число)                                              |
 | version  | string  | Версия VK API                                                                    |
 | dev      | mixed[] | Если указан этот параметр, то в модуле Requests `CURLOPT_SSL_VERIFYPEER = false` |
 
@@ -454,15 +455,17 @@ $kb->get(true); // string (JSON)
 ```php
 // Для прода
 $config = [
+  'type' => 'community',
   'token' => 'x6pstvcdeyp5y8c82gthdgc22h7za5aq5pf6cf7su3yf3ur2eassz8uxuxk6q2aacy5m6e5e3kq5eybw3upsk',
-  'group_id' => 1,
+  'api_id' => 1,
   'version' => '5.103'
 ];
 
 // Для локальной разработки
 $config = [
+  'type' => 'community',
   'token' => 'x6pstvcdeyp5y8c82gthdgc22h7za5aq5pf6cf7su3yf3ur2eassz8uxuxk6q2aacy5m6e5e3kq5eybw3upsk',
-  'group_id' => 1,
+  'api_id' => 1,
   'version' => '5.103',
   'dev' => true
 ];

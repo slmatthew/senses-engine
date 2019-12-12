@@ -6,6 +6,8 @@
  * @package botengine
  */
 
+$GLOBALS['config'] = $config;
+
 class BotEngine {
 	
 	/**
@@ -46,7 +48,7 @@ class BotEngine {
 
 		$this->commands['default'] = function($data) {
 			if(function_exists('request')) {
-				call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Unknown command', 'random_id' => 0]);
+				call('messages.send', ['peer_id' => ($GLOBALS['config']['type'] == 'user' && $data[0] == 4) ? $data[3] : $data['object']['message']['peer_id'], 'message' => 'Unknown command', 'random_id' => 0]);
 			}
 		};
 	}
@@ -242,9 +244,18 @@ class BotEngine {
 	/**
 	 * @ignore
 	 */
-	public function onData(array $data) {
+	public function onData(array $data, string $type) {
 		if(!is_null($data)) {
-			if($data['type'] == 'message_new') {
+			if($type == 'user') {
+				if($data[0] == 4) {
+					if($this->checkDataHandler('4') && $this->runDataHandler('4', $data) === false) return;
+
+					$text = mb_strtolower($data[5]);
+					$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
+
+					$this->checkAllCommands('', $exp[0], $data);
+				}
+			} elseif($data['type'] == 'message_new') {
 				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
 				
 				$text = mb_strtolower($data['object']['message']['text']);
