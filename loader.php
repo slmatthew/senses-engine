@@ -14,7 +14,7 @@ define("SEV", "0.6");
 /**
  * @var bool Should engine show LP logs
  */
-define("NEED_LP_LOGS", true);
+define("NEED_LP_LOGS", false);
 
 include __DIR__.'/config.php';
 
