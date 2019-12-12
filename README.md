@@ -39,6 +39,7 @@
     * [Другой способ добавления кнопок](https://github.com/slmatthew/senses-engine#другой-способ-добавления-кнопок)
     * [addLine](https://github.com/slmatthew/senses-engine#addline)
     * [get](https://github.com/slmatthew/senses-engine#get)
+* [User Longpoll](https://github.com/slmatthew/senses-engine#user-longpoll)
 * [Конфигурация](https://github.com/slmatthew/senses-engine#конфигурация)
 * [Исключения](https://github.com/slmatthew/senses-engine#исключения-1)
 * [Некоторые нюансы](https://github.com/slmatthew/senses-engine#некоторые-нюансы)
@@ -437,6 +438,11 @@ $kb->get(true); // string (JSON)
 ```
 
 > До версии `0.6` функция имела название `getKeyboard`.
+
+## User Longpoll
+С версии `0.6` движок умеет работать с User Longpoll. В файл с конфигом были внесены изменения: добавлено новое поле `type`, изменено названия поля `group_id` на `api_id`. Информация по конфигу есть в следующем пункте.
+
+Чтобы движок начал работать с User LP, в конфиг-файле нужно указать `type = user`. Далее работа с командами идет как обычно, за исключением того, что пользователи не могут отправлять клавиатуру и обрабатывать payload-команды. Также, в поле `$data` приходит массив [из longpoll](https://vk.com/dev/using_longpoll_2?f=3.%2B%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%2B%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D0%B9), вам нужно обрабатывать всё вручную. Буду рад pr с модулем, который будет конвертировать данные в нормальный формат.
 
 ## Конфигурация
 В репозитории есть файл `config.php.example`. Это — пример конфига. На его основе вы можете создать свой конфиг, в котором обязательно должны быть следующие поля:
