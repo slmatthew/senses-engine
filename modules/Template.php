@@ -39,10 +39,7 @@ class Template {
 	 * @since v0.6
 	 */
 	public function addCarouselElement(string $title, string $description, string $photo_id, array $buttons, array $action) {
-		//if(!empty($buttons) || (strlen($photo_id) == 0 && strlen($title) == 0) || (strlen($title) > 0 && strlen($description) == 0)) return false;
-		echo (!empty($buttons) ? "true" : "false")."\n";
-		echo ((strlen($photo_id) == 0 && strlen($title) == 0) ? "true" : "false")."\n";
-		echo ((strlen($title) > 0 && strlen($description) == 0) ? "true" : "false")."\n";
+		if(empty($buttons) || (strlen($photo_id) == 0 && strlen($title) == 0) || (strlen($title) > 0 && strlen($description) == 0)) return false;
 
 		$element = [];
 
