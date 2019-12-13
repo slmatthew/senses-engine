@@ -26,5 +26,6 @@ include __DIR__.'/modules/BotEngine.php';
 include __DIR__.'/modules/SBSC.php';
 include __DIR__.'/modules/DataHandler.php';
 include __DIR__.'/modules/Keyboard.php';
+include __DIR__.'/modules/Template.php';
 
 ?>
