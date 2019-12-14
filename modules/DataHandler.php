@@ -6,8 +6,8 @@
  * @package datahandler
  */
 
-if(is_null($config) || empty($config) || !isset($config))  throw new Exception('You need to set config');
-if(!function_exists('request')) throw new Exception('Requests module is not loaded');
+if(is_null($config) || empty($config) || !isset($config))  throw new ConfigException('You need to set config');
+if(!function_exists('request')) throw new RequestsException('Requests module is not loaded');
 
 $GLOBALS['config'] = $config;
 
@@ -46,7 +46,7 @@ class DataHandler {
 		} elseif($type == 'lp') {
 			// we need to start longpoll
 			$this->startLp($be, $GLOBALS['config']['type']);
-		} else throw new Exception('Unknown type for DataHandler');
+		} else throw new TypeException('Unknown type for DataHandler');
 	}
 
 	/**
@@ -129,7 +129,7 @@ class DataHandler {
 
 									$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
-								} else throw new Exception('Can\'t to get new Longpoll data');
+								} else throw new LongpollException('Can\'t to get new Longpoll data');
 							}
 							break;
 

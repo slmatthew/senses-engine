@@ -44,8 +44,8 @@ $dh = new DataHandler('lp', $be);
 
 ## Исключения
 Исключения во всей библиотеке могут быть выброшены если:
-* не будет задан конфиг. Исключение с текстом *You need to set config*
-* не будет функции request (т.е. не будет подключен модуль Requests). Исключение с текстом *Requests module is not loaded*
+* не будет задан конфиг. `ConfigException` с текстом *You need to set config*
+* не будет функции request (т.е. не будет подключен модуль Requests). `RequestsException` с текстом *Requests module is not loaded*
 
 ## Некоторые нюансы
 Библиотеку можно использовать только на новых версиях PHP, где появились анонимные функции.

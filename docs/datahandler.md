@@ -22,8 +22,8 @@ $dh = new DataHandler('cb', $be);
 
 ## Исключения
 Исключение будет выброшено если:
-* будет передан неверный тип получения данных. Исключение с текстом *Unknown type for DataHandler*
-* не получится получить новые данные для LP. Исключение с текстом *Can't to get new Longpoll data*
+* будет передан неверный тип получения данных. `TypeException` с текстом *Unknown type for DataHandler*
+* не получится получить новые данные для LP. `LongpollException` с текстом *Can't to get new Longpoll data*
 
 ## Логирование действий LongPoll API
 Вы можете включать и выключать базовое логирование событий LongPoll API. Чтобы включить логирование, измените значение константы `NEED_LP_LOGS` в файле `loader.php` на `true`, а чтобы выключить — `false`.
