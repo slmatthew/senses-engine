@@ -46,11 +46,7 @@ class BotEngine {
 	public function __construct(bool $needLowerCase = true) {
 		$this->needLowerCase = $needLowerCase;
 
-		$this->commands['default'] = function($data) {
-			if(function_exists('request')) {
-				call('messages.send', ['peer_id' => ($GLOBALS['config']['type'] == 'user' && $data[0] == 4) ? $data[3] : $data['object']['message']['peer_id'], 'message' => 'Unknown command', 'random_id' => 0]);
-			}
-		};
+		$this->commands['default'] = function($data) { };
 	}
 
 	/**
