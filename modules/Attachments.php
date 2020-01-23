@@ -81,10 +81,10 @@ class Attachments {
 		$a = [
 			$this->attach['type'],
 			$this->attach['owner_id'],
-			$this->attach['id']
+			"_".$this->attach['id']
 		];
 
-		if(isset($this->attach['access_key'])) $a[] = $this->attach['access_key'];
+		if(isset($this->attach['access_key'])) $a[] = "_".$this->attach['access_key'];
 
 		return implode('', $a);
 	}
