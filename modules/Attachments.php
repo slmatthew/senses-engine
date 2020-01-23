@@ -7,15 +7,31 @@
  */
 
 class Attachments {
-
+	/**
+	 * @ignore
+	 */
 	protected $attach = [
 		'type' => false
 	];
 
+	/**
+	 * Create Attachments class
+	 * @param array|string $attach Array with attachment data or string like photo1_1 or photo1_1_ACCESSKEY
+	 * @throws ParameterException
+	 * @return bool
+	 * @since v0.6
+	 */
 	public function __construct($attach = []) {
 		return $this->create($attach);
 	}
 
+	/**
+	 * This function add attachment info to variable in class
+	 * @param array|string $attach Array with attachment data or string like photo1_1 or photo1_1_ACCESSKEY
+	 * @throws ParameterException
+	 * @return bool
+	 * @since v0.6
+	 */
 	public function create($attach) {
 		if(gettype($attach) == 'array') {
 			if(isset($attach['type']) && isset($attach['owner_id']) && isset($attach['id'])) {
@@ -46,8 +62,19 @@ class Attachments {
 		return false;
 	}
 
+	/**
+	 * Get attachment info from class
+	 * @return array
+	 * @since v0.6
+	 */
 	public function get() { return $this->attach['type'] === false ? [] : $this->attach; }
 
+	/**
+	 * Get attachment info in string format
+	 * @throws EmptyAttachException
+	 * @return string
+	 * @since v0.6
+	 */
 	public function getString() {
 		if($this->attach['type'] === false) throw new EmptyAttachException('No attachment provided');
 
