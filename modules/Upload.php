@@ -1,12 +1,6 @@
 <?php
 
 /**
- * Upload files
- * @author slmatthew
- * @package attachments
- */
-
-/**
  * @ignore
  */
 class UploadHeart {
@@ -62,7 +56,21 @@ class UploadHeart {
 	}
 }
 
+/**
+ * Upload files
+ * @author slmatthew
+ * @package attachments
+ */
 class Upload {
+	/**
+	 * Function for upload photos
+	 * @param array|string $files Array with files urls or one file url
+	 * @param array $uploadParams photos.getUploadServer parameters
+	 * @param array $saveParams photos.save parameters
+	 * @throws ApiException
+	 * @return array
+	 * @since v0.6
+	 */
 	public function photoAlbum($files, array $uploadParams, array $saveParams) {
 		$r = call('photos.getUploadServer', $params);
 		if(isset($r['response'])) {
