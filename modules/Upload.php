@@ -72,7 +72,7 @@ class Upload {
 	 * @since v0.6
 	 */
 	public function photoAlbum($files, array $uploadParams, array $saveParams) {
-		$r = call('photos.getUploadServer', $params);
+		$r = call('photos.getUploadServer', $uploadParams);
 		if(isset($r['response'])) {
 			$u = new UploadHeart($files, $r['response']['upload_url'])->upload(count($files), 'file');
 			if(isset($u['server'])) {
