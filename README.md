@@ -18,6 +18,7 @@
 * [Модуль Keyboard](https://github.com/slmatthew/senses-engine/blob/master/docs/keyboard.md)
 * [Модуль Template](https://github.com/slmatthew/senses-engine/blob/master/docs/template.md)
 * [User Longpoll](https://github.com/slmatthew/senses-engine/blob/master/docs/userlp.md)
+* [LP Decoder](https://github.com/slmatthew/senses-engine/blob/master/docs/lpdecoder.md)
 * [Конфигурация](https://github.com/slmatthew/senses-engine/blob/master/docs/config.md)
 * [Исключения](#исключения)
 * [Некоторые нюансы](#некоторые-нюансы)

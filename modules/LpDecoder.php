@@ -33,10 +33,7 @@ class LpDecoder {
 			$this->id = (int)$event[0];
 			$this->event = $event;
 			$this->success = true;
-			return $this;
 		}
-
-		return false;
 	}
 
 	/**
