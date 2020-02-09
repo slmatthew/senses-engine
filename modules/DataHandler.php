@@ -61,13 +61,15 @@ class DataHandler {
 		if($type == 'community') {
 			$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
 		} elseif($type == 'user') {
-			$lp = call('messages.getLongPollServer', ['lp_version' => 7])['response'];
+			$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 		} else return false;
+
+		$userlp_mode = 2 | 8 | 32 | 64 | 128;
 
 		$server = $lp['server'];
 		$key = $lp['key'];
 
-		$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
+		$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 		$url = sprintf($baseurl, $lp['ts']);
 
 		terminal("Starting {$type} longpoll...");
@@ -103,7 +105,7 @@ class DataHandler {
 							if($type == 'community') {
 								$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
 							} elseif($type == 'user') {
-								$lp = call('messages.getLongPollServer', ['lp_version' => 7])['response'];
+								$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 							}
 
 							if(isset($lp['response'])) {
@@ -112,13 +114,13 @@ class DataHandler {
 								$server = $lp['server'];
 								$key = $lp['key'];
 
-								$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
+								$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
 							} else {
 								if($type == 'community') {
 									$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
 								} elseif($type == 'user') {
-									$lp = call('messages.getLongPollServer', ['lp_version' => 7])['response'];
+									$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 								}
 
 								if(isset($lp['response'])) {
@@ -127,7 +129,7 @@ class DataHandler {
 									$server = $lp['server'];
 									$key = $lp['key'];
 
-									$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode=2&version=7&ts=%d";
+									$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
 								} else throw new LongpollException('Can\'t to get new Longpoll data');
 							}
