@@ -28,5 +28,7 @@ include __DIR__.'/modules/SBSC.php';
 include __DIR__.'/modules/DataHandler.php';
 include __DIR__.'/modules/Keyboard.php';
 include __DIR__.'/modules/Template.php';
+include __DIR__.'/modules/LpDecoder.php';
+include __DIR__.'/modules/Audio.php';
 
 ?>

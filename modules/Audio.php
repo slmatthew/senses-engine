@@ -8,23 +8,93 @@ class VkAudio {
 
 	private $audioToken = '';
 
-	public function __construct() {
+	public function __construct(bool $needRefresh = false) {
+		global $config;
+
 		if($config['type'] != 'user') throw new ClientException('');
 
+		if($needRefresh) {
+			$this->refreshToken();
+		} else {
+			$this->audioToken = $config['token'];
+		}
+	}
+
+	private function refreshToken() {
 		$refresh = $this->request('auth.refreshToken', ['receipt' => self::RECEIPT]);
 		if(isset($refresh['error'])) throw new TokenRefreshException(json_encode($refresh));
 
 		$this->audioToken = $refresh['response']['token'];
 	}
 
+	/* API methods */
 	public function get(array $params = []) {
+		global $config;
+
 		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
 		if(!isset($params['count'])) $params['count'] = 25;
 
 		return $this->request('audio.get', $params);
 	}
 
-	private function request(string $url, array $postfields = []) { return request($url, $postfields, 'VKAndroidApp/5.11.1-2316'); }
+	public function add(int $audio_id, int $owner_id, array $params = []) {
+		$params['audio_id'] = $audio_id;
+		$params['owner_id'] = $owner_id;
+
+		return $this->request('audio.add', $params);
+	}
+
+	public function addAlbum(string $title, array $params = []) {
+		$params['title'] = $title;
+
+		return $this->request('audio.addAlbum', $params);
+	}
+
+	public function delete(int $audio_id, int $owner_id, array $params = []) {
+		$params['audio_id'] = $audio_id;
+		$params['owner_id'] = $owner_id;
+
+		return $this->request('audio.delete', $params);
+	}
+
+	public function deleteAlbum(int $album_id, array $params = []) {
+		$params['album_id'] = $album_id;
+
+		return $this->request('audio.deleteAlbum', $params);
+	}
+
+	public function edit(int $owner_id, int $audio_id, array $params = []) {
+		$params['owner_id'] = $owner_id;
+		$params['audio_id'] = $audio_id;
+
+		return $this->request('audio.deleteAlbum', $params);
+	}
+
+	public function editAlbum(int $album_id, string $title, array $params = []) {
+		$params['album_id'] = $album_id;
+		$params['title'] = $title;
+
+		return $this->request('audio.editAlbum', $params);
+	}
+
+	public function getAlbums(array $params = []) {
+		global $config;
+
+		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['count'])) $params['count'] = 50;
+
+		return $this->request('audio.getAlbums', $params);
+	}
+
+	public function getBroadcastList(array $params = []) {
+		if(!isset($params['filter'])) $params['filter'] = 'all';
+
+		return $this->request('audio.getBroadcastList', $params);
+	}
+
+	/* end API methods */
+
+	private function request(string $method, array $params) { return call($method, $params, true); }
 }
 
 ?>
