@@ -44,10 +44,10 @@ class VkAudio {
 		return $this->request('audio.add', $params);
 	}
 
-	public function addAlbum(string $title, array $params = []) {
+	public function addPlaylist(string $title, array $params = []) {
 		$params['title'] = $title;
 
-		return $this->request('audio.addAlbum', $params);
+		return $this->request('audio.addPlaylist', $params);
 	}
 
 	public function delete(int $audio_id, int $owner_id, array $params = []) {
@@ -57,33 +57,34 @@ class VkAudio {
 		return $this->request('audio.delete', $params);
 	}
 
-	public function deleteAlbum(int $album_id, array $params = []) {
-		$params['album_id'] = $album_id;
+	public function deletePlaylist(int $owner_id, int $playlist_id, array $params = []) {
+		$params['owner_id'] = $owner_id;
+		$params['playlist_id'] = $playlist_id;
 
-		return $this->request('audio.deleteAlbum', $params);
+		return $this->request('audio.deletePlaylist', $params);
 	}
 
 	public function edit(int $owner_id, int $audio_id, array $params = []) {
 		$params['owner_id'] = $owner_id;
 		$params['audio_id'] = $audio_id;
 
-		return $this->request('audio.deleteAlbum', $params);
+		return $this->request('audio.edit', $params);
 	}
 
-	public function editAlbum(int $album_id, string $title, array $params = []) {
-		$params['album_id'] = $album_id;
-		$params['title'] = $title;
+	public function editPlaylist(int $owner_id, int $playlist_id, array $params = []) {
+		$params['owner_id'] = $owner_id;
+		$params['playlist_id'] = $playlist_id;
 
-		return $this->request('audio.editAlbum', $params);
+		return $this->request('audio.editPlaylist', $params);
 	}
 
-	public function getAlbums(array $params = []) {
+	public function getPlaylists(array $params = []) {
 		global $config;
 
 		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
 		if(!isset($params['count'])) $params['count'] = 50;
 
-		return $this->request('audio.getAlbums', $params);
+		return $this->request('audio.getPlaylists', $params);
 	}
 
 	public function getBroadcastList(array $params = []) {
@@ -91,6 +92,66 @@ class VkAudio {
 
 		return $this->request('audio.getBroadcastList', $params);
 	}
+
+	public function getById(array $audios, array $params = []) {
+		$params['audios'] = implode(',', $audios);
+
+		return $this->request('audio.getById', $params);
+	}
+
+	public function getCount(int $owner_id, array $params = []) {
+		$params['owner_id'] = $owner_id;
+
+		return $this->request('audio.getCount', $params);
+	}
+
+	public function getLyrics(int $lyrics_id, array $params = []) {
+		$params['lyrics_id'] = $lyrics_id;
+
+		return $this->request('audio.getLyrics', $params);
+	}
+
+	public function getPopular(array $params = []) {
+		if(!isset($params['count'])) $params['count'] = 100;
+
+		return $this->request('audio.getPopular', $params);
+	}
+
+	public function getRecommendations(array $params = []) {
+		if(!isset($params['count'])) $params['count'] = 100;
+
+		return $this->request('audio.getRecommendations', $params);
+	}
+
+	public function getUploadServer(array $params = []) { return $this->request('audio.getUploadServer', $params); }
+
+	public function moveToPlaylist(array $audio_ids, array $params = []) {
+		$params['audio_ids'] = implode(',', $audio_ids);
+
+		return $this->request('audio.moveToPlaylist', $params);
+	}
+
+	public function reorder(int $audio_id, array $params = []) {
+		$params['audio_id'] = $audio_id;
+
+		return $this->request('audio.reorder', $params);
+	}
+
+	public function restore(int $audio_id, array $params = []) {
+		$params['audio_id'] = $audio_id;
+
+		return $this->request('audio.restore', $params);
+	}
+
+	public function save(int $server, string $audio, array $params = []) {
+		$params['server'] = $server;
+		$params['audio'] = $audio;
+
+		return $this->request('audio.save', $params);
+	}
+
+	public function search(array $params = []) { return $this->request('audio.search', $params); }
+	public function setBroadcast(array $params = []) { return $this->request('audio.setBroadcast', $params); }
 
 	/* end API methods */
 
