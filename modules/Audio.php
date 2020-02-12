@@ -125,10 +125,11 @@ class VkAudio {
 
 	public function getUploadServer(array $params = []) { return $this->request('audio.getUploadServer', $params); }
 
-	public function moveToPlaylist(array $audio_ids, array $params = []) {
+	public function addToPlaylist(int $owner_id, array $audio_ids, array $params = []) {
+		$params['owner_id'] = $owner_id;
 		$params['audio_ids'] = implode(',', $audio_ids);
 
-		return $this->request('audio.moveToPlaylist', $params);
+		return $this->request('audio.addToPlaylist', $params);
 	}
 
 	public function reorder(int $audio_id, array $params = []) {
