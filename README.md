@@ -16,6 +16,7 @@
 * [Модуль Template](https://github.com/slmatthew/senses-engine/blob/master/docs/template.md)
 * [User Longpoll](https://github.com/slmatthew/senses-engine/blob/master/docs/userlp.md)
 	- [LP Decoder](https://github.com/slmatthew/senses-engine/blob/master/docs/lpdecoder.md)
+* [Audio](https://github.com/slmatthew/senses-engine/blob/master/docs/audio.md)
 * [Конфигурация](https://github.com/slmatthew/senses-engine/blob/master/docs/config.md)
 * [Исключения](#исключения)
 * [Некоторые нюансы](#некоторые-нюансы)
@@ -52,6 +53,6 @@ $dh = new DataHandler('lp', $be);
 
 ## Roadmap
 - [x] Перевод событий User LP в нормальный вид
+- [x] Работа с audio.*
 - [ ] Execute
 - [ ] Удобная работа с вложениями
-- [ ] Работа с audio.*
