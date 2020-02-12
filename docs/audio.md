@@ -1,5 +1,32 @@
 # Audio
-Модуль для работы с методами секции `auth`.
+Модуль для работы с методами секции `audio`.
+
+## Навигация
+* [Конструктор](#конструктор)
+* [Исключения](#исключения)
+	- [Параметры и пример](#параметры-и-пример)
+* [Работа с методами API](#работа-с-методами-api)
+	- [audio.get](#get)
+	- [audio.add](#add)
+	- [audio.addplaylist](#addPlaylist)
+	- [audio.delete](#delete)
+	- [audio.deleteplaylist](#deletePlaylist)
+	- [audio.edit](#edit)
+	- [audio.editplaylist](#editPlaylist)
+	- [audio.getplaylists](#getPlaylists)
+	- [audio.getbroadcastlist](#getBroadcastList)
+	- [audio.getbyid](#getById)
+	- [audio.getcount](#getCount)
+	- [audio.getlyrics](#getLyrics)
+	- [audio.getpopular](#getPopular)
+	- [audio.getrecommendations](#getRecommendations)
+	- [audio.getuploadserver](#getUploadServer)
+	- [audio.addtoplaylist](#addToPlaylist)
+	- [audio.reorder](#reorder)
+	- [audio.restore](#restore)
+	- [audio.save](#save)
+	- [audio.search](#search)
+	- [audio.setbroadcast](#setBroadcast)
 
 ## Конструктор
 Чтобы начать работу с этим классом, вам необходим токен пользователя. Его необходимо получить от имени приложения *VK для Android* (тестировалось только с таким токеном).
