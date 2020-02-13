@@ -50,11 +50,7 @@ class BotEngine {
 	}
 
 	/**
-	 * Commands constructor
-	 * @param string $name Name of command
-	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
-	 * @return bool
-	 * @since v0.1
+	 * @deprecated
 	 */
 	public function addCommand(string $name, callable $handler) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
