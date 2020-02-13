@@ -22,12 +22,14 @@ class DataHandler {
 	 * @param string $type Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API). Default: "cb"
 	 * @param BotEngine $be BotEngine class
 	 * @throws TypeException
-   * @return void
+	 * @return void
 	 * @since v0.1
 	 */
-	public function __construct(string $type, $be) {
+	public function __construct(string $type, BotEngine $be) {
 		if($type == 'cb' && $GLOBALS['config']['type'] == 'community') {
 			// we need to handle request. Add in v0.2-alpha
+			ini_set('display_errors', 0);
+
 			$data = file_get_contents('php://input');
 			if(!is_null($data)) {
 				$data = @json_decode($data, true);
@@ -53,11 +55,11 @@ class DataHandler {
 	 * Longpolling
 	 * @param BotEngine $be BotEngine class
 	 * @param string $type Longpolling type: user or community
-   * @throws LongpollException
-   * @return void
+	 * @throws LongpollException
+	 * @return void
 	 * @since v0.1
 	 */
-	public function startLp($be, string $type) {
+	public function startLp(BotEngine $be, string $type) {
 		if($type == 'community') {
 			$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
 		} elseif($type == 'user') {
@@ -81,7 +83,7 @@ class DataHandler {
 
 			if(!is_null($result)) {
 				if($li == 0) {
-					terminal("Started longpoll. Got first updates");
+					terminal("Longpoll successfuly started. Got first updates");
 					$li += 1;
 				}
 
