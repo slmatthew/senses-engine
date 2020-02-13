@@ -9,7 +9,7 @@ if(!extension_loaded('curl')) exit('I need curl extension to run');
 /**
  * @ignore
  */
-define("SEV", "0.6");
+define("SEV", "0.7");
 
 /**
  * @var bool Should engine show LP logs
