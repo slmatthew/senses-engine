@@ -1,29 +1,30 @@
 # Класс BotEngine
 Сердце движка. Рассмотрим основные методы.
 
-## addCommand & addCommands
-Эти методы используются для добавления новых команд. addCommand — для одной команды, addCommands — для нескольких команд с одним обработчиком.
+```php
+$be = new BotEngine();
+```
 
-| Параметр       | Тип            | Описание                                                                                      |
-| ---------------|----------------|-----------------------------------------------------------------------------------------------|
-| $name / $names | string / array | Название команды или массив с названиями команд (для addCommand и addCommands соответственно) |
-| $handler       | callable       | Функция-обработчик. Будет вызвана при получении команды                                       |
+## addCommands
+> **Обратите внимание**: Метод `addCommand` объявлен устаревшим с версии `0.7`.
+
+Этот метод используется для добавления новых команд.
+
+| Параметр | Тип      | Описание                                                |
+| ---------|----------|---------------------------------------------------------|
+| $names   | array    | Массив с названиями команд                              |
+| $handler | callable | Функция-обработчик. Будет вызвана при получении команды |
 
 ```php
-$BotEngine->addCommand('привет', function($data) {
-  call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Привет!', 'random_id' => 0]);
-  return true;
-});
-
-$BotEngine->addCommands(['Команда', 'Раз', 'Два', 'Три'], function($data) {
-  call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Вот такие вот дела', 'random_id' => 0]);
+$be->addCommands(['команда', 'command', 'cmd'], function($data) {
+  call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Ответ на команду', 'random_id' => 0]);
   return true;
 });
 ```
 
 Функция-обработчик всегда должна возвращать `true`, иначе будет запущен дефолтный обработчик. Его также можно изменить:
 ```php
-$BotEngine->addCommand('default', function($data) {
+$be->addCommands(['default'], function($data) {
   call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Я не знаю, как на это ответить', 'random_id' => 0]);
   return true;
 });
@@ -40,7 +41,7 @@ $BotEngine->addCommand('default', function($data) {
 | $data    | array  | Данные, полученные от CB или от LP                                                                                                                 |
 
 ```php
-$BotEngine->runCommand('test', $dataFromCB);
+$be->runCommand('test', $dataFromCB);
 ```
 
 ## addPayloadCommands
@@ -52,11 +53,11 @@ $BotEngine->runCommand('test', $dataFromCB);
 | $handler | callable | Функция-обработчик                                          |
 
 ```php
-$BotEngine->addPayloadCommands(['start'], function($data) {
+$be->addPayloadCommands(['start'], function($data) {
   // Ответ на нажатие кнопки Начать
 });
 
-$BotEngine->addPayloadCommands(['main', 'menu'], function($data) {
+$be->addPayloadCommands(['main', 'menu'], function($data) {
   // Например, открыть клавиатуру с меню
 });
 ```
@@ -85,7 +86,7 @@ $be->addCommandsAlias('start', 'меню'); // Нажатие кнопки с pa
 | $data        | array  | Сообщение                  |
 
 ```php
-$BotEngine->checkAllCommands('start', 'меню', $data);
+$be->checkAllCommands('start', 'меню', $data);
 ```
 
 ## addDataHandler
@@ -97,7 +98,7 @@ $BotEngine->checkAllCommands('start', 'меню', $data);
 | $handler | callable | Функция-обработчик. Будет вызвана при получении события |
 
 ```php
-$BotEngine->addDataHandler('group_leave', function($data) {
+$be->addDataHandler('group_leave', function($data) {
 	echo '-1 subscriber :(';
 });
 ```
