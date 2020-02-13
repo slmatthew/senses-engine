@@ -323,6 +323,37 @@ class VkAudio {
 	 */
 	public function setBroadcast(array $params = []) { return $this->request('audio.setBroadcast', $params); }
 
+	/**
+	 * execute.getPlaylist
+	 * @param array $params Parameters
+	 * @return array
+	 * @since v0.7
+	 */
+	public function getPlaylist(array $params = []) {
+		global $config;
+
+		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['need_playlists'])) $params['need_playlists'] = 1;
+
+		return $this->request('execute.getPlaylist', $params);
+	}
+
+	/**
+	 * execute.getMusicPage
+	 * @param array $params Parameters
+	 * @return array
+	 * @since v0.7
+	 */
+	public function getMusicPage(array $params = []) {
+		global $config;
+
+		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['func_v'])) $params['func_v'] = 3;
+		if(!isset($params['need_playlists'])) $params['need_playlists'] = 1;
+
+		return $this->request('execute.getMusicPage', $params);
+	}
+
 	/* end API methods */
 
 	/**
