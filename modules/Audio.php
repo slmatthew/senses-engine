@@ -354,6 +354,14 @@ class VkAudio {
 		return $this->request('execute.getMusicPage', $params);
 	}
 
+	/**
+	 * audio.getCatalog
+	 * @param array $params Parameters
+	 * @return array
+	 * @since v0.8
+	 */
+	public function getCatalog(array $params = []) { return $this->request('audio.getCatalog', $params); }
+
 	/* end API methods */
 
 	/**
@@ -378,9 +386,13 @@ class VkAudio {
 	}
 
 	/**
-	 * @ignore
+	 * Request to VK API
+	 * @param string $method Method name
+	 * @param array $params Method parameters
+	 * @return array
+	 * @since v0.8
 	 */
-	private function request(string $method, array $params) { return call($method, $params, true); }
+	public function request(string $method, array $params) { return call($method, $params, true); }
 }
 
 ?>

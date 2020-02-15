@@ -30,6 +30,7 @@
 	- [audio.setBroadcast](#setbroadcast)
 	- [execute.getPlaylist](#getplaylist)
 	- [execute.getMusicPage](#getmusicpage)
+	- [audio.getCatalog](#getCatalog)
 
 ## Конструктор
 Чтобы начать работу с этим классом, вам необходим токен пользователя. Его необходимо получить от имени приложения *VK для Android* (тестировалось только с таким токеном).
@@ -330,3 +331,8 @@ $audio->getPlaylist();
 ```php
 $audio->getMusicPage(['owner_id' => 305360617]);
 ```
+
+### getCatalog
+Метод возвращает список музыки ВКонтакте по категориям: «Чарт ВКонтакте», «Рэп и Хип-хоп», «Рок» и так далее.
+
+В поле `items` находятся объекты, описывающие категорию. Документация будет дополнена
