@@ -1,9 +1,17 @@
+<p align="center">
+  <img alt="Senses Engine logo" src="https://static.slmatthew.ru/senses/image.png"/>
+</p>
+
+<p align="center">
+	<img src="https://img.shields.io/badge/php-%3E%3D7.0-red" alt="PHP version" />
+	<img src="https://img.shields.io/badge/VK%20API-%3E%3D5.103-lightgrey" alt="VK API version" />
+	<img src="https://img.shields.io/github/v/release/slmatthew/senses-engine.svg?color=red" alt="Latest Stable Version" />
+	<img src="https://img.shields.io/github/last-commit/slmatthew/senses-engine" alt="Latest commit" />
+	<img src="https://img.shields.io/github/license/slmatthew/senses-engine" alt="License" />
+</p>
+
 # Senses Engine
 **Senses Engine** — движок для ботов ВКонтакте.
-
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/slmatthew/senses-engine?label=Senses%20Engine)](https://github.com/slmatthew/senses-engine/tags)
-[![GitHub last commit](https://img.shields.io/github/last-commit/slmatthew/senses-engine)](https://github.com/slmatthew/senses-engine/commits/master)
-![GitHub repo size](https://img.shields.io/github/repo-size/slmatthew/senses-engine)
 
 ## Содержание
 * [Начало](#senses-engine)
