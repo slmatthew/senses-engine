@@ -9,7 +9,7 @@ class Execute {
 
 	public function getCode() {
 		$code = [];
-		foreach($this->code as $key => $val) {
+		foreach($this->code as $_ => $val) {
 			$code[] = "API.{$val[0]}(".json_encode($val[1], JSON_UNESCAPED_UNICODE).")";
 		}
 

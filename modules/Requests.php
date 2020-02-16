@@ -4,7 +4,7 @@
  * @package requests
  */
 
-if(is_null($config) || empty($config) || !isset($config))  throw new ConfigException('You need to set config');
+if(!isset($config) || is_null($config) || empty($config))  throw new ConfigException('You need to set config');
 if(!defined("SEV")) define("SEV", "unknown");
 
 /**

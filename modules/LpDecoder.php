@@ -101,7 +101,7 @@ class LpDecoder {
 							default: break;
 						}
 
-						foreach($e[6] as $key => $val) {
+						foreach($e[6] as $key => $_) {
 							if(mb_substr($key, 0, 6) == 'source') unset($e[6][$key]);
 						}
 					}

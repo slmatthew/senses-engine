@@ -1,12 +1,13 @@
 <?php
 
+if(!isset($config) || is_null($config) || empty($config))  throw new ConfigException('You need to set config');
+$GLOBALS['config'] = $config;
+
 /**
  * Heart of engine
  * @author slmatthew
  * @package botengine
  */
-
-$GLOBALS['config'] = $config;
 
 class BotEngine {
 	
@@ -57,7 +58,7 @@ class BotEngine {
 	 * @since v0.8
 	 */
 	public function onCommands(array $names, callable $handler) {
-		foreach($names as $key => $name) {
+		foreach($names as $_ => $name) {
 			if(strlen($name) == 0) continue;
 			if($this->needLowerCase) $name = mb_strtolower($name);
 
@@ -79,7 +80,7 @@ class BotEngine {
 
 			$this->payloadCommands[$names[0]] = $handler;
 		} else {
-			foreach($names as $key => $name) {
+			foreach($names as $_ => $name) {
 				if(strlen($name) == 0) continue;
 				if($this->needLowerCase) $name = mb_strtolower($name);
 

@@ -6,7 +6,7 @@
  * @package datahandler
  */
 
-if(is_null($config) || empty($config) || !isset($config))  throw new ConfigException('You need to set config');
+if(!isset($config) || is_null($config) || empty($config))  throw new ConfigException('You need to set config');
 if(!function_exists('request')) throw new RequestsException('Requests module is not loaded');
 
 $GLOBALS['config'] = $config;
@@ -37,11 +37,11 @@ class DataHandler {
 					if(isset($GLOBALS['config']['secret'])) {
 						if(isset($data['secret']) && $data['secret'] == $GLOBALS['config']['secret']) {
 							if($data['type'] != 'confirmation') echo 'ok';
-							$be->onData($data);
+							$be->onData($data, $GLOBALS['config']['type']);
 						} else exit('Invalid secret key');
 					} else {
 						if($data['type'] != 'confirmation') echo 'ok';
-						$be->onData($data);
+						$be->onData($data, $GLOBALS['config']['type']);
 					}
 				}
 			}
