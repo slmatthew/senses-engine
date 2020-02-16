@@ -1,5 +1,7 @@
 <?php
 
+namespace Senses;
+
 /**
  * Template constructor (template param in messages.send)
  * @author slmatthew

@@ -1,5 +1,7 @@
 <?php
 
+namespace Senses;
+
 class ConfigException extends \Exception { }
 class TypeException extends \Exception { }
 class RequestsException extends \Exception { }

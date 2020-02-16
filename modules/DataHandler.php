@@ -1,5 +1,7 @@
 <?php
 
+namespace Senses;
+
 /**
  * Class for handle the data from VK
  * @author slmatthew

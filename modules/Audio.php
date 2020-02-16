@@ -1,5 +1,7 @@
 <?php
 
+namespace Senses;
+
 if(is_null($config) || empty($config) || !isset($config))  throw new ConfigException('You need to set config');
 if(!function_exists('request')) throw new RequestsException('Requests module is not loaded');
 

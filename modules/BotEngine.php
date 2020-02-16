@@ -1,5 +1,7 @@
 <?php
 
+namespace Senses;
+
 /**
  * Heart of engine
  * @author slmatthew

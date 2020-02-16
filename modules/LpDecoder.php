@@ -1,5 +1,7 @@
 <?php
 
+namespace Senses;
+
 /**
  * User LP events decoder
  * @author slmatthew
