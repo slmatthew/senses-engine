@@ -24,6 +24,7 @@ if(isset($config['dev'])) define("CURL_VERIFY", false);
 else define("CURL_VERIFY", true);
 
 include_once __DIR__.'/modules/Exceptions.php';
+include_once __DIR__.'/modules/Message.php';
 include_once __DIR__.'/modules/Requests.php';
 include_once __DIR__.'/modules/BotEngine.php';
 include_once __DIR__.'/modules/SBSC.php';

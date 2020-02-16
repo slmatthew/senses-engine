@@ -1,7 +1,5 @@
 <?php
 
-namespace Senses;
-
 /**
  * Heart of engine
  * @author slmatthew
@@ -52,27 +50,13 @@ class BotEngine {
 	}
 
 	/**
-	 * @deprecated
-	 */
-	public function addCommand(string $name, callable $handler) {
-		if($this->needLowerCase) $name = mb_strtolower($name);
-
-		if(strlen($name) > 0) {
-			$this->commands[$name] = $handler;
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Commands aliases constructor
 	 * @param array $names Names of commands
 	 * @param callable $handler Function-handler of commands. This construction will be used when commands are called: $handler($data)
 	 * @return void
-	 * @since v0.1
+	 * @since v0.8
 	 */
-	public function addCommands(array $names, callable $handler) {
+	public function onCommands(array $names, callable $handler) {
 		foreach($names as $key => $name) {
 			if(strlen($name) == 0) continue;
 			if($this->needLowerCase) $name = mb_strtolower($name);
@@ -86,9 +70,9 @@ class BotEngine {
 	 * @param array $names Name of command
 	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
 	 * @return bool
-	 * @since v0.4
+	 * @since v0.8
 	 */
-	public function addPayloadCommands(array $names, callable $handler) {
+	public function onPayload(array $names, callable $handler) {
 		if(count($names) == 1) {
 			if(strlen($names[0]) == 0) return false;
 			if($this->needLowerCase) $names[0] = mb_strtolower($names[0]);
@@ -111,9 +95,9 @@ class BotEngine {
 	 * @param string $payloadName
 	 * @param string $textName
 	 * @return bool
-	 * @since v0.4
+	 * @since v0.8
 	 */
-	public function addCommandsAlias(string $payloadName, string $textName) {
+	public function registerAlias(string $payloadName, string $textName) {
 		if($this->needLowerCase) {
 			$payloadName = mb_strtolower($payloadName);
 			$textName = mb_strtolower($textName);
@@ -140,7 +124,7 @@ class BotEngine {
 	 * @return bool
 	 * @since v0.4
 	 */
-	public function checkAllCommands(string $payloadName, string $textName, array $data) {
+	public function checkAllCommands(string $payloadName, string $textName, array $data, object $some = null) {
 		if($this->needLowerCase) {
 			$payloadName = mb_strtolower($payloadName);
 			$textName = mb_strtolower($textName);
@@ -149,32 +133,32 @@ class BotEngine {
 		if(isset($this->aliases[$payloadName])) {
 			if($this->aliases[$payloadName] == $textName) {
 				if($this->checkPayloadCommand($payloadName)) {
-					return $this->runPayloadCommand($payloadName, $data); 
+					return $this->runPayloadCommand($payloadName, $data, $some); 
 				} elseif($this->checkCommand($textName)) {
-					return $this->runCommand($textName, $data); 
-				} else return $this->runCommand('default', $data);
+					return $this->runCommand($textName, $data, $some); 
+				} else return $this->runCommand('default', $data, $some);
 			} elseif($this->checkPayloadCommand($payloadName)) {
-				return $this->runPayloadCommand($payloadName, $data);
+				return $this->runPayloadCommand($payloadName, $data, $some);
 			} elseif($this->checkCommand($this->aliases[$payloadName])) {
 				return $this->runCommand($this->aliases[$payloadName], $data);
-			} else return $this->runCommand('default', $data);
+			} else return $this->runCommand('default', $data, $some);
 		} elseif($this->checkPayloadCommand($payloadName)) {
-			return $this->runPayloadCommand($payloadName, $data);
+			return $this->runPayloadCommand($payloadName, $data, $some);
 		} elseif(isset($this->aliases[$textName])) {
 			if($this->aliases[$textName] == $payloadName) {
 				if($this->checkCommand($textName)) {
-					return $this->runCommand($textName, $data); 
+					return $this->runCommand($textName, $data, $some); 
 				} elseif($this->checkPayloadCommand($payloadName)) {
-					return $this->runPayloadCommand($payloadName, $data); 
-				} else return $this->runCommand('default', $data);
+					return $this->runPayloadCommand($payloadName, $data, $some); 
+				} else return $this->runCommand('default', $data, $some);
 			} elseif($this->checkCommand($textName)) {
-				return $this->runCommand($textName, $data);
+				return $this->runCommand($textName, $data, $some);
 			} elseif($this->checkPayloadCommand($this->aliases[$textName])) {
 				return $this->runPayloadCommand($this->aliases[$textName], $data);
-			} else return $this->runCommand('default', $data);
+			} else return $this->runCommand('default', $data, $some);
 		} elseif($this->checkCommand($textName)) {
-			return $this->runCommand($textName, $data);
-		} else return $this->runCommand('default', $data);
+			return $this->runCommand($textName, $data, $some);
+		} else return $this->runCommand('default', $data, $some);
 	}
 
 	/**
@@ -196,11 +180,11 @@ class BotEngine {
 	 * @return int|bool
 	 * @since v0.4
 	 */
-	public function runPayloadCommand(string $name, array $data) {
+	public function runPayloadCommand(string $name, array $data, object $some = null) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if($this->checkPayloadCommand($name)) {
-			return $this->payloadCommands[$name]($data);
+			return $this->payloadCommands[$name]($data, $some);
 		}
 
 		return -1;
@@ -225,11 +209,11 @@ class BotEngine {
 	 * @return bool
 	 * @since v0.1
 	 */
-	public function runCommand(string $name, array $data) {
+	public function runCommand(string $name, array $data, object $some = null) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if($this->checkCommand($name)) {
-			return $this->commands[$name]($data);
+			return $this->commands[$name]($data, $some);
 		}
 
 		return -1;
@@ -247,7 +231,9 @@ class BotEngine {
 					$text = mb_strtolower($data[5]);
 					$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
-					$this->checkAllCommands('', $exp[0], $data);
+					$some = new MessageUser($data);
+
+					$this->checkAllCommands('', $exp[0], $data, $some);
 				} elseif($this->checkDataHandler("{$data[0]}")) {
 					$this->runDataHandler("{$data[0]}", $data);
 				}
@@ -257,11 +243,13 @@ class BotEngine {
 				$text = mb_strtolower($data['object']['message']['text']);
 				$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
+				$some = new Message($data);
+
 				$check = isset($data['object']['message']['payload']) && isset(json_decode($data['object']['message']['payload'], true)['command']);
 				if($check) {
-					$this->checkAllCommands(json_decode($data['object']['message']['payload'], true)['command'], $exp[0], $data);
+					$this->checkAllCommands(json_decode($data['object']['message']['payload'], true)['command'], $exp[0], $data, $some);
 				} else {
-					$this->checkAllCommands('', $exp[0], $data);
+					$this->checkAllCommands('', $exp[0], $data, $some);
 				}
 			} elseif($this->checkDataHandler($data['type'])) {
 				$this->runDataHandler($data['type'], $data);
@@ -274,9 +262,9 @@ class BotEngine {
 	 * @param string $name Name of event type
 	 * @param callable $handler Data handler
 	 * @return void
-	 * @since v0.1
+	 * @since v0.8
 	 */
-	public function addDataHandler(string $name, callable $handler) {
+	public function on(string $name, callable $handler) {
 		$name = mb_strtolower($name);
 
 		$this->dataHandlers[$name] = $handler;
