@@ -1,7 +1,5 @@
 <?php
 
-namespace Senses;
-
 /**
  * Step-by-step commands class
  * @author slmatthew

@@ -1,7 +1,5 @@
 <?php
 
-namespace Senses;
-
 /**
  * Create, edit and get keyboard for VK
  * @author slmatthew

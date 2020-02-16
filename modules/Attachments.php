@@ -1,7 +1,5 @@
 <?php
 
-namespace Senses;
-
 /**
  * Upload files
  * @author slmatthew
