@@ -1,7 +1,5 @@
 <?php
 
-namespace Senses;
-
 /**
  * @package settings
  */
