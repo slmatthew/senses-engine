@@ -372,11 +372,11 @@ class VkAudio {
 	 */
 	public function getMp3Link(array $audio) {
 		$url = $audio['url'];
-		if(mb_substr($url, 0, 10) == 'https://cs' && stripos($url, '/audios/') === false) {
+		if(mb_substr($url, 0, 10) === 'https://cs' && stripos($url, '/audios/') === false) {
 			if(preg_match('/https:\/\/(.*)\/(.*)\/(.*)\/index\.m3u8\?extra=(.*)/i', $url, $m)) {
 				return "https://{$m[1]}/{$m[3]}.mp3?extra={$m[4]}";
 			}
-		} elseif(mb_substr($url, 0, 10) == 'https://ps' && stripos($url, '/audios/') !== false) {
+		} elseif(mb_substr($url, 0, 10) === 'https://ps' && stripos($url, '/audios/') !== false) {
 			if(preg_match('/https:\/\/(.*)\/(.*)\/(.*)\/(.*)\/index\.m3u8\?extra=(.*)/i', $url, $m)) {
 				return "https://{$m[1]}/{$m[3]}/{$m[4]}.mp3?extra={$m[5]}";
 			}

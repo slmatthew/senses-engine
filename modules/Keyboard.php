@@ -83,7 +83,7 @@ class Keyboard {
 	public function addButton(array $action, string $color = '') {
 		if(isset($action['payload'])) $action['payload'] = json_encode($action['payload'], JSON_UNESCAPED_UNICODE);
 
-		if(isset($action['type']) && $action['type'] == 'text') {
+		if(isset($action['type']) && $action['type'] === 'text') {
 			$this->buttons[$this->currentIndex][] = [
 				'action' => $action,
 				'color' => $color

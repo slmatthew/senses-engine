@@ -132,7 +132,7 @@ class BotEngine {
 		}
 
 		if(isset($this->aliases[$payloadName])) {
-			if($this->aliases[$payloadName] == $textName) {
+			if($this->aliases[$payloadName] === $textName) {
 				if($this->checkPayloadCommand($payloadName)) {
 					return $this->runPayloadCommand($payloadName, $data, $some); 
 				} elseif($this->checkCommand($textName)) {
@@ -146,7 +146,7 @@ class BotEngine {
 		} elseif($this->checkPayloadCommand($payloadName)) {
 			return $this->runPayloadCommand($payloadName, $data, $some);
 		} elseif(isset($this->aliases[$textName])) {
-			if($this->aliases[$textName] == $payloadName) {
+			if($this->aliases[$textName] === $payloadName) {
 				if($this->checkCommand($textName)) {
 					return $this->runCommand($textName, $data, $some); 
 				} elseif($this->checkPayloadCommand($payloadName)) {
@@ -225,7 +225,7 @@ class BotEngine {
 	 */
 	public function onData(array $data, string $type) {
 		if(!is_null($data)) {
-			if($type == 'user') {
+			if($type === 'user') {
 				if($data[0] == 4) {
 					if($this->checkDataHandler('4') && $this->runDataHandler('4', $data) === false) return;
 
@@ -238,7 +238,7 @@ class BotEngine {
 				} elseif($this->checkDataHandler("{$data[0]}")) {
 					$this->runDataHandler("{$data[0]}", $data);
 				}
-			} elseif($data['type'] == 'message_new') {
+			} elseif($data['type'] === 'message_new') {
 				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
 				
 				$text = mb_strtolower($data['object']['message']['text']);

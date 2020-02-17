@@ -26,7 +26,7 @@ class DataHandler {
 	 * @since v0.1
 	 */
 	public function __construct(string $type, BotEngine $be) {
-		if($type == 'cb' && $GLOBALS['config']['type'] == 'community') {
+		if($type === 'cb' && $GLOBALS['config']['type'] === 'community') {
 			// we need to handle request. Add in v0.2-alpha
 			ini_set('display_errors', 0);
 
@@ -45,7 +45,7 @@ class DataHandler {
 					}
 				}
 			}
-		} elseif($type == 'lp') {
+		} elseif($type === 'lp') {
 			// we need to start longpoll
 			$this->startLp($be, $GLOBALS['config']['type']);
 		} else throw new TypeException('Unknown type for DataHandler');
@@ -60,9 +60,9 @@ class DataHandler {
 	 * @since v0.1
 	 */
 	public function startLp(BotEngine $be, string $type) {
-		if($type == 'community') {
+		if($type === 'community') {
 			$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
-		} elseif($type == 'user') {
+		} elseif($type === 'user') {
 			$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 		} else return false;
 
@@ -71,7 +71,7 @@ class DataHandler {
 		$server = $lp['server'];
 		$key = $lp['key'];
 
-		$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
+		$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 		$url = sprintf($baseurl, $lp['ts']);
 
 		terminal("Starting {$type} longpoll...");
@@ -104,9 +104,9 @@ class DataHandler {
 							break;
 
 						case 2: case 3:
-							if($type == 'community') {
+							if($type === 'community') {
 								$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
-							} elseif($type == 'user') {
+							} elseif($type === 'user') {
 								$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 							}
 
@@ -116,12 +116,12 @@ class DataHandler {
 								$server = $lp['server'];
 								$key = $lp['key'];
 
-								$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
+								$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
 							} else {
-								if($type == 'community') {
+								if($type === 'community') {
 									$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
-								} elseif($type == 'user') {
+								} elseif($type === 'user') {
 									$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 								}
 
@@ -131,7 +131,7 @@ class DataHandler {
 									$server = $lp['server'];
 									$key = $lp['key'];
 
-									$baseurl = $type == 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
+									$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
 								} else throw new LongpollException('Can\'t to get new Longpoll data');
 							}

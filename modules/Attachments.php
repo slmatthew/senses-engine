@@ -33,7 +33,7 @@ class Attachments {
 	 * @since v0.6
 	 */
 	public function create($attach) {
-		if(gettype($attach) == 'array') {
+		if(gettype($attach) === 'array') {
 			if(isset($attach['type']) && isset($attach['owner_id']) && isset($attach['id'])) {
 				$this->attach = [
 					'type' => $attach['type'],
@@ -44,7 +44,7 @@ class Attachments {
 
 				return true;
 			} else throw new ParameterException('Invalid $attach value');
-		} elseif(gettype($attach) == 'string') {
+		} elseif(gettype($attach) === 'string') {
 			$m = [];
 			
 			if(preg_match('/(photo|video|audio|doc|audio_message|graffiti|wall|market|poll|gift)([-\d]+)_(\d+)_?(\w+)?/u', $attach, $m) && !empty($m)) {

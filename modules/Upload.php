@@ -1,5 +1,7 @@
 <?php
 
+/** @linter disable */
+
 /**
  * @ignore
  */

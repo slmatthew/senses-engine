@@ -102,7 +102,7 @@ class LpDecoder {
 						}
 
 						foreach($e[6] as $key => $_) {
-							if(mb_substr($key, 0, 6) == 'source') unset($e[6][$key]);
+							if(mb_substr($key, 0, 6) === 'source') unset($e[6][$key]);
 						}
 					}
 
@@ -232,9 +232,9 @@ class LpDecoder {
 				$kind = isset($data["attach{$id}_kind"]) ? $data["attach{$id}_kind"] : '';
 				$type = $data["attach{$id}_type"];
 
-				if($kind == 'audiomsg') $type = 'audio_message';
-				if($kind == 'graffiti') $type = 'graffiti';
-				if($type == 'group') $type = 'event';
+				if($kind === 'audiomsg') $type = 'audio_message';
+				if($kind === 'graffiti') $type = 'graffiti';
+				if($type === 'group') $type = 'event';
 
 				$attachs[] = [
 					'type' => $type
