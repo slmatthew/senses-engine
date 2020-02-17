@@ -27,7 +27,7 @@ include_once __DIR__.'/modules/Exceptions.php';
 include_once __DIR__.'/modules/Message.php';
 include_once __DIR__.'/modules/Requests.php';
 include_once __DIR__.'/modules/BotEngine.php';
-include_once __DIR__.'/modules/SBSC.php';
+//include_once __DIR__.'/modules/SBSC.php';
 include_once __DIR__.'/modules/DataHandler.php';
 include_once __DIR__.'/modules/Keyboard.php';
 include_once __DIR__.'/modules/Template.php';
