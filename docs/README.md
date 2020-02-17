@@ -10,3 +10,6 @@
 	* User LP
 		* [Обзор](userlp/)
 		* [LpDecoder (декодер событий)](userlp/decoder.md)
+	* [Message](helpers/message.md)
+	* [Execute](helpers/execute.md)
+	* [Клавиатура](helpers/keyboard.md)
