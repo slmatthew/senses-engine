@@ -49,7 +49,7 @@ include './loader.php';
 
 $be = new BotEngine();
 
-$be->addCommands(['test', 'тест', 'тестирование'], function($data, $msg) {
+$be->onCommands(['test', 'тест', 'тестирование'], function($data, $msg) {
   $msg->reply('Ответ на тестовую команду');
 });
 
