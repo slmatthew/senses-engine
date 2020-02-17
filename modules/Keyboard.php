@@ -175,7 +175,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since v0.3
 	 */
-	public function addLine() {
+	public function row() {
 		$this->currentIndex = $this->currentIndex + 1;
 
 		return $this;
@@ -183,18 +183,18 @@ class Keyboard {
 
 	/**
 	 * Keyboard getter
-	 * @param bool $json Should function return array or json
+	 * @param bool $array Should function return json or array
 	 * @return array|string
-	 * @since v0.3
+	 * @since v0.8
 	 */
-	public function get(bool $json = false) {
+	public function get(bool $array = false) {
 		$kb = [
 			'one_time' => $this->one_time,
 			'buttons' => $this->buttons,
 			'inline' => $this->inline
 		];
 
-		return $json ? $this->toJson($kb) : $kb;
+		return $array ? $kb : $this->toJson($kb);
 	}
 
 	/**
