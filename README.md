@@ -1,9 +1,9 @@
 <p align="center">
-  <img alt="Senses Engine logo" src="https://static.slmatthew.ru/senses/image.png"/>
+	<img alt="Senses Engine logo" title="Senses Engine logo" src="https://repository-images.githubusercontent.com/220678708/660ed700-4127-11ea-9937-59c3788d6295"/>
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/php-%3E%3D7.0-red" alt="PHP version" />
+	<img src="https://img.shields.io/badge/php-%3E%3D7.0-blue" alt="PHP version" />
 	<img src="https://img.shields.io/badge/VK%20API-%3E%3D5.103-lightgrey" alt="VK API version" />
 	<img src="https://img.shields.io/github/v/release/slmatthew/senses-engine.svg?color=red" alt="Latest Stable Version" />
 	<img src="https://img.shields.io/github/last-commit/slmatthew/senses-engine" alt="Latest commit" />
@@ -11,58 +11,56 @@
 </p>
 
 # Senses Engine
-**Senses Engine** — движок для ботов ВКонтакте.
+**Senses Engine** — библиотека для создания ботов ВКонтакте.
 
-## Содержание
+[Документация](https://github.com/slmatthew/senses-engine/tree/master/docs)
+
+## Оглавление
 * [Начало](#senses-engine)
-* [Инициализация](#инициализация)
-* [Класс BotEngine](https://github.com/slmatthew/senses-engine/blob/master/docs/botengine.md)
-* [Класс SBSC (Step-by-step commands)](https://github.com/slmatthew/senses-engine/blob/master/docs/sbsc.md)
-* [Класс DataHandler](https://github.com/slmatthew/senses-engine/blob/master/docs/datahandler.md)
-* [Модуль Requests](https://github.com/slmatthew/senses-engine/blob/master/docs/requests.md)
-* [Модуль Keyboard](https://github.com/slmatthew/senses-engine/blob/master/docs/keyboard.md)
-* [Модуль Template](https://github.com/slmatthew/senses-engine/blob/master/docs/template.md)
-* [User Longpoll](https://github.com/slmatthew/senses-engine/blob/master/docs/userlp.md)
-	- [LP Decoder](https://github.com/slmatthew/senses-engine/blob/master/docs/lpdecoder.md)
-* [Audio](https://github.com/slmatthew/senses-engine/blob/master/docs/audio.md)
-* [Конфигурация](https://github.com/slmatthew/senses-engine/blob/master/docs/config.md)
-* [Исключения](#исключения)
-* [Некоторые нюансы](#некоторые-нюансы)
-* [Roadmap](#roadmap)
+* [Обзор](#present)
+	- [Старый способ подключения](#old-way)
+* [Roadmap](#rmap)
 
-## Инициализация
-Ниже показано, как правильно подключать движок к боту:
+<a name="present"></a>
+## Обзор
+Представьте, что вам необходимо создать бота ВКонтакте, получающего данные с помощью Longpoll. Вы пишете функцию для работы с VK API, паралелльно реализовывая цикличные запросы к LP-серверу через `while`.
+
+Теперь посмотрите сюда.
 ```php
-include '../loader.php';
+include './loader.php';
+
+$vk = new vk('lp');
+
+$vk->bot->onCommands(['test'], function($data, $msg) {
+  $msg->reply('Ответ на тестовую команду');
+});
+
+$vk->listen();
+```
+
+Всё стало гораздо проще. Весь код для работы с VK API скрыт внутри функций библиотеки, вам остаётся лишь добавлять команды и модифицировать классы под себя.
+
+<a name="old-way"></a>
+### Старый способ подключения
+До версии `0.8` использовался другой способ создания ботов. Он используется под капотом нового класса `vk`. Рекомендуется использовать новый способ.
+
+```php
+include './loader.php';
 
 $be = new BotEngine();
 
-$be->addCommand('привет', function($data) {
-  call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Привет!', 'random_id' => 0]);
-  return true;
-});
-
-$be->addCommands(['Команда', 'Раз', 'Два', 'Три'], function($data) {
-  call('messages.send', ['peer_id' => $data['object']['message']['peer_id'], 'message' => 'Вот такие вот дела', 'random_id' => 0]);
-  return true;
+$be->addCommands(['test', 'тест', 'тестирование'], function($data, $msg) {
+  $msg->reply('Ответ на тестовую команду');
 });
 
 $dh = new DataHandler('lp', $be);
 ```
 
-## Исключения
-Исключения во всей библиотеке могут быть выброшены если:
-* не будет задан конфиг. `ConfigException` с текстом *You need to set config*
-* не будет функции request (т.е. не будет подключен модуль Requests). `RequestsException` с текстом *Requests module is not loaded*
-
-## Некоторые нюансы
-Библиотеку можно использовать только на новых версиях PHP, где появились анонимные функции.
-Библиотека настроена для версии API 5.103 и выше.
-
+<a name="rmap"></a>
 ## Roadmap
 - [x] Перевод событий User LP в нормальный вид
 - [x] Работа с audio.*
+- [x] Execute
 - [ ] Мультиаккаунт
 - [ ] Работа с авторизацией
-- [ ] Execute
 - [ ] Удобная работа с вложениями
