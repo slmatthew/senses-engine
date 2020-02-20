@@ -141,7 +141,7 @@ class BotEngine {
 			} elseif($this->checkPayloadCommand($payloadName)) {
 				return $this->runPayloadCommand($payloadName, $data, $some);
 			} elseif($this->checkCommand($this->aliases[$payloadName])) {
-				return $this->runCommand($this->aliases[$payloadName], $data);
+				return $this->runCommand($this->aliases[$payloadName], $data, $some);
 			} else return $this->runCommand('default', $data, $some);
 		} elseif($this->checkPayloadCommand($payloadName)) {
 			return $this->runPayloadCommand($payloadName, $data, $some);
@@ -155,7 +155,7 @@ class BotEngine {
 			} elseif($this->checkCommand($textName)) {
 				return $this->runCommand($textName, $data, $some);
 			} elseif($this->checkPayloadCommand($this->aliases[$textName])) {
-				return $this->runPayloadCommand($this->aliases[$textName], $data);
+				return $this->runPayloadCommand($this->aliases[$textName], $data, $some);
 			} else return $this->runCommand('default', $data, $some);
 		} elseif($this->checkCommand($textName)) {
 			return $this->runCommand($textName, $data, $some);
@@ -246,9 +246,9 @@ class BotEngine {
 
 				$some = new Message($data);
 
-				$check = isset($data['object']['message']['payload']) && isset(json_decode($data['object']['message']['payload'], true)['command']);
+				$check = isset($data['object']['message']['payload']) && isset(json_decode(json_decode($data['object']['message']['payload'], true), true)['command']);
 				if($check) {
-					$this->checkAllCommands(json_decode($data['object']['message']['payload'], true)['command'], $exp[0], $data, $some);
+					$this->checkAllCommands(json_decode(json_decode($data['object']['message']['payload'], true), true)['command'], $exp[0], $data, $some);
 				} else {
 					$this->checkAllCommands('', $exp[0], $data, $some);
 				}
