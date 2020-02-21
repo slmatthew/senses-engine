@@ -13,7 +13,7 @@ $config = [
 	'token' => '',
 	'secret' => '',
 	'api_id' => 1,
-	'version' => '5.103'
+	'version' => '5.118'
 ];
 
 ?>
