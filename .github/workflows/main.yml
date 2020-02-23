@@ -10,18 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Create folder for zip files
       - run: mkdir senses-zip
         
       - name: Create ZIP files
-      - uses: montudor/action-zip@v0.1.0
+        uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./senses-zip/senses.zip ./loader.php ./config.php.example ./modules
 
       - name: Upload files to release
-      - uses: danyadev/upload-to-release@master
+        uses: danyadev/upload-to-release@master
         with:
-          files: senses-zip/senses.zip
+          files: |
+          [./senses-zip/senses.zip, senses.zip, application/zip]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
