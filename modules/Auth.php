@@ -202,11 +202,7 @@ class AuthPassword extends RequestExtended {
 	/**
 	 * @ignore
 	 */
-	private function oauthToken(array $params) {
-		global $config;
-
-		return $this->request("https://{$this->oauth_host}/token?".http_build_query($params), [], self::UA);
-	}
+	private function oauthToken(array $params) { return $this->request("https://{$this->oauth_host}/token?".http_build_query($params), [], self::UA); }
 }
 
 /**
@@ -261,7 +257,7 @@ class AuthImplictUser extends RequestExtended {
 	public function link() {
 		if(empty($this->params)) throw new AuthEmptyParamsException();
 
-		return "https://{$oauth_host}/authorize?".http_build_query($this->params);
+		return "https://{$this->oauth_host}/authorize?".http_build_query($this->params);
 	}
 
 	/**
@@ -336,7 +332,7 @@ class AuthFlowUser extends RequestExtended {
 	public function link() {
 		if(empty($this->params)) throw new AuthEmptyParamsException();
 
-		return "https://{$oauth_host}/authorize?".http_build_query($this->params);
+		return "https://{$this->oauth_host}/authorize?".http_build_query($this->params);
 	}
 
 	/**
