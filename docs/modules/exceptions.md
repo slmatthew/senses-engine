@@ -42,3 +42,19 @@
 <a name="refresh"></a>
 ## TokenRefreshException
 Причина: получена ошибка при выполнении метода `auth.refresh`
+
+<a name="authreq"></a>
+## AuthRequestException
+Ошибка при запросе к oauth-серверу
+
+<a name="authbanned"></a>
+## AuthBannedException
+Аккаунт заблокирован.
+
+<a name="authapp"></a>
+## AuthAppException
+Указано неизвестное приложение.
+
+<a name="authemptyparams"></a>
+## AuthEmptyParamsException
+Не указаны параметры.
