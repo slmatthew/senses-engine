@@ -41,7 +41,7 @@ function call(string $method, array $params, bool $official = false) {
 	global $config;
 
 	if(!isset($params['access_token'])) $params['access_token'] = isset($config['token']) ? $config['token'] : '';
-	if(!isset($params['v'])) $params['v'] = isset($config['version']) ? $config['version'] : '5.103';
+	if(!isset($params['v'])) $params['v'] = isset($config['version']) ? $config['version'] : '5.118';
 	if(isset($params['unsetToken']) && $params['unsetToken']) unset($params['access_token']);
 
 	$agent = $official ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/".SEV;
