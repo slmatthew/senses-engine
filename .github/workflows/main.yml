@@ -20,6 +20,7 @@ jobs:
       - name: Upload files to release
         uses: danyadev/upload-to-release@master
         with:
-          files: ./senses-zip/senses.zip
+          files: |
+            [./senses-zip/senses.zip, senses.zip, application/zip]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
