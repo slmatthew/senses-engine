@@ -50,9 +50,6 @@ class Template {
 		if(isset($action) && !empty($action)) $element['action'] = $action;
 
 		$this->elements[] = $element;
-
-		echo json_encode($this->elements, JSON_UNESCAPED_UNICODE)."\n";
-		echo json_encode($element, JSON_UNESCAPED_UNICODE)."\n";
 	}
 
 	/**
@@ -66,9 +63,6 @@ class Template {
 			'type' => $this->type,
 			'elements' => $this->elements
 		];
-
-		echo json_encode($template, JSON_UNESCAPED_UNICODE);
-		echo "\n";
 
 		return $json ? $this->toJson($template) : $template;
 	}
