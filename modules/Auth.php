@@ -275,7 +275,7 @@ class AuthImplictUser extends RequestExtended {
  * @author slmatthew
  * @package auth
  */
-class AuthImplictGroup extends AuthUserImplict {
+class AuthImplictGroup extends AuthImplictUser {
 	/**
 	 * @param int $client_id Your API_ID
 	 * @param string $redirect_uri Redirect URI. If length == 0, will be used DEFAULT_REDIRECT_URI
