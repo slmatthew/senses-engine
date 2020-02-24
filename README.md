@@ -6,6 +6,7 @@
 	<img src="https://img.shields.io/badge/php-%3E%3D7.0-blue" alt="PHP version" />
 	<img src="https://img.shields.io/badge/VK%20API-%3E%3D5.103-lightgrey" alt="VK API version" />
 	<img src="https://img.shields.io/github/v/release/slmatthew/senses-engine.svg?color=red" alt="Latest Stable Version" />
+	<img src="https://github.com/slmatthew/senses-engine/workflows/Create%20ZIP%20files/badge.svg" alt="ZIP Files status" />
 	<img src="https://img.shields.io/github/last-commit/slmatthew/senses-engine" alt="Latest commit" />
 	<img src="https://img.shields.io/github/license/slmatthew/senses-engine" alt="License" />
 </p>
