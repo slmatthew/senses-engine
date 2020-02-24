@@ -9,6 +9,7 @@ class ParameterException extends \Exception { }
 class ApiException extends \Exception { }
 class ClientException extends \Exception { }
 class TokenRefreshException extends \Exception { }
+class UploadException extends \Exception { }
 
 class AuthBannedException extends \Exception { }
 class AuthAppException extends \Exception { }
