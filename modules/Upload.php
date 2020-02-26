@@ -8,7 +8,7 @@ class UploadRequests {
 	 * @ignore
 	 */
 	protected function plainRequest(string $url, array $fields) {
-		$ch = curl_init($this->url);
+		$ch = curl_init($url);
 
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -186,7 +186,7 @@ class PhotosUpload extends UploadManager {
 
 	/**
 	 * Upload files to wall
-	 * @param string $files Path to file
+	 * @param string $file Path to file
 	 * @param int $group_id group_id
 	 * @param array $serverParams photos.getWallUploadServer parameters
 	 * @param array $saveParams photos.saveWallPhoto parameters
@@ -214,7 +214,7 @@ class PhotosUpload extends UploadManager {
 
 	/**
 	 * Upload main photo
-	 * @param string $files Path to file
+	 * @param string $file Path to file
 	 * @param int $owner_id owner_id (by default is api_id from config)
 	 * @param array $serverParams photos.getOwnerPhotoUploadServer parameters
 	 * @param array $uploadFields Upload parameters
@@ -245,7 +245,7 @@ class PhotosUpload extends UploadManager {
 
 	/**
 	 * Upload files to messages
-	 * @param string $files Path to file
+	 * @param string $file Path to file
 	 * @param int $peer_id peer_id
 	 * @param array $serverParams photos.getMessagesUploadServer parameters
 	 * @param array $saveParams photos.saveMessagesPhoto parameters
@@ -272,7 +272,7 @@ class PhotosUpload extends UploadManager {
 
 	/**
 	 * Upload chat main photo
-	 * @param string $files Path to file
+	 * @param string $file Path to file
 	 * @param int $chat_id chat_id
 	 * @param array $serverParams photos.getChatUploadServer parameters
 	 * @throws UploadException
