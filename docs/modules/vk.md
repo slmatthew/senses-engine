@@ -24,6 +24,13 @@ $vk = new vk('lp');
 $vk->newBot();
 ```
 
+## setConfirmation
+Задать строку для подтверждения Callback API сервера.
+
+```php
+$vk->setConfirmation('1234abcd');
+```
+
 ## listen
 Начать слушать события. Возвращает `$this->client`, содержащее экземпляр класса [DataHandler](datahandler.md).
 

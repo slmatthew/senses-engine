@@ -25,7 +25,7 @@ class DataHandler {
 	 * @return void
 	 * @since v0.1
 	 */
-	public function __construct(string $type, BotEngine $be) {
+	public function __construct(string $type, BotEngine $be, string $confirm_string = '') {
 		if($type === 'cb' && $GLOBALS['config']['type'] === 'community') {
 			// we need to handle request. Add in v0.2-alpha
 			ini_set('display_errors', 0);
@@ -36,11 +36,21 @@ class DataHandler {
 				if(!is_null($data)) {
 					if(isset($GLOBALS['config']['secret'])) {
 						if(isset($data['secret']) && $data['secret'] == $GLOBALS['config']['secret']) {
-							if($data['type'] != 'confirmation') echo 'ok';
+							if($data['type'] === 'confirmation' && $confirm_string) {
+								echo $confirm_string;
+							} elseif($data['type'] !== 'confirmation') {
+								echo 'ok';
+							}
+
 							$be->onData($data, $GLOBALS['config']['type']);
 						} else exit('Invalid secret key');
 					} else {
-						if($data['type'] != 'confirmation') echo 'ok';
+						if($data['type'] === 'confirmation' && $confirm_string) {
+							echo $confirm_string;
+						} elseif($data['type'] !== 'confirmation') {
+							echo 'ok';
+						}
+						
 						$be->onData($data, $GLOBALS['config']['type']);
 					}
 				}

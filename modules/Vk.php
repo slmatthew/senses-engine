@@ -2,17 +2,17 @@
 
 class vk {
 	/**
-	 * @var BotEngine .
+	 * @var BotEngine
 	 */
 	public $bot = null;
 
 	/**
-	 * @var DataHandler .
+	 * @var DataHandler
 	 */
 	public $client = null;
 
 	/**
-	 * @var VkAudio .
+	 * @var VkAudio
 	 */
 	public $audio = null;
 
@@ -20,6 +20,11 @@ class vk {
 	 * @var string Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API)
 	 */
 	public $client_type = 'lp';
+
+	/**
+	 * @var string Confirmation string
+	 */
+	private $confirm_string = '';
 
 	/**
 	 * @param string $client_type Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API)
@@ -49,8 +54,17 @@ class vk {
 	 * @return DataHandler
 	 */
 	public function listen() {
-		$this->client = new DataHandler($this->client_type, $this->bot);
+		$this->client = new DataHandler($this->client_type, $this->bot, $this->confirm_string);
 		return $this->client;
+	}
+
+	/**
+	 * Set confirmation string for Callback API
+	 * @param string $confirm_string Confirmation string
+	 * @return void
+	 */
+	public function setConfirmation(string $confirm_string) {
+		$this->confirm_string = $confirm_string;
 	}
 
 	/**
