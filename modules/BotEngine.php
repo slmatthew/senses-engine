@@ -64,6 +64,8 @@ class BotEngine {
 
 			$this->commands[$name] = $handler;
 		}
+
+		return true;
 	}
 
 	/**
@@ -89,6 +91,17 @@ class BotEngine {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Universal commands constructor
+	 * @param array $names Commands names
+	 * @param callable $handler Function-handler
+	 * @param bool $is_payload Register payload command?
+	 * @return bool
+	 */
+	public function hear(array $names, callable $handler, bool $is_payload = false): bool {
+		return $is_payload ? $this->onPayload($names, $handler) : $this->onCommands($names, $handler);
 	}
 
 	/**
@@ -247,7 +260,7 @@ class BotEngine {
 				$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
 				$some = new Message($data);
-				// I need not use $some->isOut() check becaouse it is message_new event
+				// I need not use $some->isOut() check because it is message_new event
 
 				$check = isset($data['object']['message']['payload']) && isset(json_decode(json_decode($data['object']['message']['payload'], true), true)['command']);
 				if($check) {
