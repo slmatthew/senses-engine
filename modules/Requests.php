@@ -37,7 +37,7 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
  * @return array
  * @since v0.1
  */
-function call(string $method, array $params, bool $official = false) {
+function call(string $method, array $params = [], bool $official = false) {
 	global $config;
 
 	if(!isset($params['access_token'])) $params['access_token'] = isset($config['token']) ? $config['token'] : '';
