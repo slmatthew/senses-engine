@@ -58,6 +58,25 @@ $be->onPayload(['start', 'menu'], function($data, $msg) {
 });
 ```
 
+## hear
+Универсальный конструктор команд. Под капотом используются `onCommands` и `onPayload`.
+
+| Параметр    | Тип      | Описание                                                   |
+|-------------|----------|------------------------------------------------------------|
+| $names      | array    | Массив с названиями команд                                 |
+| $handler    | callable | Функция-обработчик                                         |
+| $is_payload | bool     | Добавить payload-команду или обычную. По умолчанию `false` |
+
+```php
+$be->hear(['default'], function($data, $msg) {
+	$msg->send('Неизвестная команда');
+});
+
+$msg->hear(['payloadtest'], function($data, $msg) {
+	$msg->send('Тестовая payload-команда');
+}, true);
+```
+
 ## registerAlias
 Создать алиас для команды.
 

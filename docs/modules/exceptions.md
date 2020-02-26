@@ -58,3 +58,7 @@
 <a name="authemptyparams"></a>
 ## AuthEmptyParamsException
 Не указаны параметры.
+
+<a name="msgapi"></a>
+## MessageApiException
+Невозможно использовать этот метод для текущего сообщения.
