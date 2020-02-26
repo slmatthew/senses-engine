@@ -1,20 +1,21 @@
 <p align="center">
-	<img alt="Senses Engine logo" title="Senses Engine logo" src="https://repository-images.githubusercontent.com/220678708/660ed700-4127-11ea-9937-59c3788d6295"/>
+	<a href="https://slmatthew.dev/project/senses" target="_blank"><img alt="Senses Engine logo" title="Senses Engine logo" src="https://repository-images.githubusercontent.com/220678708/660ed700-4127-11ea-9937-59c3788d6295"/></a>
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/php-%3E%3D7.0-blue" alt="PHP version" />
-	<img src="https://img.shields.io/badge/VK%20API-%3E%3D5.103-lightgrey" alt="VK API version" />
-	<img src="https://img.shields.io/github/v/release/slmatthew/senses-engine.svg?color=red" alt="Latest Stable Version" />
-	<img src="https://github.com/slmatthew/senses-engine/workflows/Create%20ZIP%20files/badge.svg" alt="ZIP Files status" />
-	<img src="https://img.shields.io/github/last-commit/slmatthew/senses-engine" alt="Latest commit" />
-	<img src="https://img.shields.io/github/license/slmatthew/senses-engine" alt="License" />
+	<a href="https://php.net" target="_blank"><img src="https://img.shields.io/badge/php-%3E%3D7.0-blue" alt="PHP version" /></a>
+	<a href="https://vk.com/dev/versions" target="_blank"><img src="https://img.shields.io/badge/VK%20API-%3E%3D5.103-lightgrey" alt="VK API version" /></a>
+	<a href="https://github.com/slmatthew/senses-engine/releases/latest" target="_blank"><img src="https://img.shields.io/github/v/release/slmatthew/senses-engine.svg?color=red" alt="Latest Stable Version" /></a>
+	<a href="https://github.com/slmatthew/senses-engine/actions" target="_blank"><img src="https://github.com/slmatthew/senses-engine/workflows/Create%20ZIP%20files/badge.svg" alt="ZIP Files status" /></a>
+	<a href="https://github.com/slmatthew/senses-engine/commits/master" target="_blank"><img src="https://img.shields.io/github/last-commit/slmatthew/senses-engine" alt="Latest commit" /></a>
+	<a href="https://github.com/slmatthew/senses-engine/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/slmatthew/senses-engine" alt="License" /></a>
 </p>
 
 # Senses Engine
 **Senses Engine** — библиотека для создания ботов ВКонтакте.
 
-[Документация](https://github.com/slmatthew/senses-engine/tree/master/docs)
+| 📖 [Documentation](docs/) | 🤖 [Examples](docs/examples/) |
+|---------------------------|--------------------------------|
 
 ## Оглавление
 * [Начало](#senses-engine)
