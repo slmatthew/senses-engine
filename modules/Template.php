@@ -40,7 +40,7 @@ class Template {
 	public function addCarouselElement(string $title, array $buttons, string $description = '', string $photo_id = '', array $action = []) {
 		if($this->type !== 'carousel') throw new ParameterException();
 
-		if(empty($buttons) || (!$photo_id && !$title) || ($title && !$description)) return false;
+		if(empty($buttons) || (!$photo_id && !$title) || ($title && !$description)) throw new ParameterException();
 
 		$element = [];
 
