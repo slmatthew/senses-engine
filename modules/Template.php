@@ -31,23 +31,22 @@ class Template {
 	/**
 	 * Add carousel element to template
 	 * @param string $title Card title
+	 * @param array $buttons Buttons array. Can be obtain via TemplateButtons
 	 * @param string $description Card description
 	 * @param string $photo_id Photo ID
-	 * @param array $buttons Buttons array. Can be obtain via TemplateButtons
 	 * @param array $action Docs: https://vk.cc/a8hzdu
 	 * @return void
-	 * @since v0.6
 	 */
-	public function addCarouselElement(string $title, string $description, string $photo_id, array $buttons, array $action) {
-		if(empty($buttons) || (strlen($photo_id) == 0 && strlen($title) == 0) || (strlen($title) > 0 && strlen($description) == 0)) return false;
+	public function addCarouselElement(string $title, array $buttons, string $description = '', string $photo_id = '', array $action = []) {
+		if(empty($buttons) || (!$photo_id && !$title) || ($title && !$description)) return false;
 
 		$element = [];
 
-		if(isset($title) && strlen($title) > 0) $element['title'] = $title;
-		if(isset($description) && strlen($description) > 0) $element['description'] = $description;
-		if(isset($photo_id) && strlen($photo_id) > 0) $element['photo_id'] = $photo_id;
-		if(isset($buttons) && !empty($buttons)) $element['buttons'] = $buttons;
-		if(isset($action) && !empty($action)) $element['action'] = $action;
+		if($title) $element['title'] = $title;
+		if($description) $element['description'] = $description;
+		if($photo_id) $element['photo_id'] = $photo_id;
+		if($buttons) $element['buttons'] = $buttons;
+		if($action) $element['action'] = $action;
 
 		$this->elements[] = $element;
 	}
@@ -70,7 +69,7 @@ class Template {
 	/**
 	 * @ignore
 	 */
-	private function toJson(array $array) { return json_encode($array, JSON_UNESCAPED_UNICODE); }
+	private function toJson(array $array): string { return json_encode($array, JSON_UNESCAPED_UNICODE); }
 }
 
 /**
@@ -92,22 +91,13 @@ class TemplateButtons {
 	public const POSITIVE_BUTTON = 'positive';
 
 	/**
-	 * TemplateButtons constructor
-	 * @return TemplateButtons
-	 * @since v0.6
-	 */
-	public function __construct() {
-		return $this;
-	}
-
-	/**
 	 * Button constructor
 	 * @param array $action https://vk.com/dev/bots_docs_3
 	 * @param string $color Button color
 	 * @return TemplateButtons
 	 * @since v0.6
 	 */
-	public function addButton(array $action, string $color = '') {
+	public function addButton(array $action, string $color = ''): TemplateButtons {
 		if(isset($action['payload'])) $action['payload'] = json_encode($action['payload'], JSON_UNESCAPED_UNICODE);
 
 		if(isset($action['type']) && $action['type'] === 'text') {
@@ -132,7 +122,7 @@ class TemplateButtons {
 	 * @return TemplateButtons
 	 * @since 0.6
 	 */
-	public function addTextButton(string $label, array $payload = [], string $color = self::PRIMARY_BUTTON) {
+	public function addTextButton(string $label, array $payload = [], string $color = self::PRIMARY_BUTTON): TemplateButtons {
 		$this->addButton([
 			'type' => 'text',
 			'label' => $label,
@@ -148,7 +138,7 @@ class TemplateButtons {
 	 * @return TemplateButtons
 	 * @since 0.6
 	 */
-	public function addLocationButton(array $payload = []) {
+	public function addLocationButton(array $payload = []): TemplateButtons {
 		$this->addButton([
 			'type' => 'location',
 			'payload' => $this->toJson($payload)
@@ -164,7 +154,7 @@ class TemplateButtons {
 	 * @return TemplateButtons
 	 * @since 0.6
 	 */
-	public function addPayButton(array $hash, array $payload = []) {
+	public function addPayButton(array $hash, array $payload = []): TemplateButtons {
 		$this->addButton([
 			'type' => 'vkpay',
 			'hash' => http_build_query($hash),
@@ -184,7 +174,7 @@ class TemplateButtons {
 	 * @return TemplateButtons
 	 * @since 0.6
 	 */
-	public function addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []) {
+	public function addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []): TemplateButtons {
 		$this->addButton([
 			'type' => 'open_app',
 			'app_id' => $app_id,
@@ -202,12 +192,12 @@ class TemplateButtons {
 	 * @return array
 	 * @since v0.6
 	 */
-	public function get() { return $this->buttons; }
+	public function get(): array { return $this->buttons; }
 
 	/**
 	 * @ignore
 	 */
-	private function toJson(array $array) { return json_encode($array, JSON_UNESCAPED_UNICODE); }
+	private function toJson(array $array): string { return json_encode($array, JSON_UNESCAPED_UNICODE); }
 }
 
 ?>
