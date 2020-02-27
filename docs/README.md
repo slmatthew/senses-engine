@@ -14,3 +14,5 @@
 	* [Message — работа с сообщением](helpers/message.md)
 	* [Execute — упаковка методов](helpers/execute.md)
 	* [Keyboard — создание клавиатуры](helpers/keyboard.md)
+	* [Template — шаблоны сообщений](helpers/template.md)
+* [Примеры](examples/)
