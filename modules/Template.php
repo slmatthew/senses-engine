@@ -30,14 +30,14 @@ class Template {
 
 	/**
 	 * Add carousel element to template
-	 * @param string $title Card title
 	 * @param array $buttons Buttons array. Can be obtain via TemplateButtons
+	 * @param string $title Card title
 	 * @param string $description Card description
 	 * @param string $photo_id Photo ID
 	 * @param array $action Docs: https://vk.cc/a8hzdu
 	 * @return void
 	 */
-	public function addCarouselElement(string $title, array $buttons, string $description = '', string $photo_id = '', array $action = []) {
+	public function addCarouselElement(array $buttons, string $title = '', string $description = '', string $photo_id = '', array $action = []) {
 		if($this->type !== 'carousel') throw new ParameterException();
 
 		if(empty($buttons) || (!$photo_id && !$title) || ($title && !$description)) throw new ParameterException();
