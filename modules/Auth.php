@@ -132,7 +132,7 @@ class AuthPassword extends RequestExtended {
 				'desc' => 'need_captcha',
 				'captcha_sid' => $data['captcha_sid'],
 				'send' => function(string $code) use($app, $username, $password, $trusted_hash) {
-					return $this->authByPassword($app, $username, $password, $trusted_hash, [
+					return $this->auth($app, $username, $password, $trusted_hash, [
 						'captcha_sid' => $data['captcha_sid'],
 						'captcha_key' => $code
 					]);
@@ -147,7 +147,7 @@ class AuthPassword extends RequestExtended {
 			'data' => $res,
 			'needSendCode' => isset($data['error']),
 			'sendCode' => function($code) use($app, $username, $password, $trusted_hash) {
-				return $this->authByPassword($app, $username, $password, $trusted_hash, [
+				return $this->auth($app, $username, $password, $trusted_hash, [
 					'code' => $code
 				]);
 			}
@@ -181,12 +181,12 @@ class AuthPassword extends RequestExtended {
 
 		$client = self::CLIENTS[$apps[$app]];
 
-		return call('auth.validatePhone', [
-			'unsetToken' => true,
+		return $this->request('https://api.vk.com/method/auth.validatePhone', [
 			'client_id' => $client[0],
 			'client_secret' => $client[1],
 			'api_id' => $client[0],
-			'sid' => $sid
+			'sid' => $sid,
+			'v' => '5.118'
 		]);
 	}
 
