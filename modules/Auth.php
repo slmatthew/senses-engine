@@ -181,12 +181,12 @@ class AuthPassword extends RequestExtended {
 
 		$client = self::CLIENTS[$apps[$app]];
 
-		return $this->request('https://api.vk.com/method/auth.validatePhone', [
+		return call('https://api.vk.com/method/auth.validatePhone', [
+			'unsetToken' => true,
 			'client_id' => $client[0],
 			'client_secret' => $client[1],
 			'api_id' => $client[0],
-			'sid' => $sid,
-			'v' => '5.118'
+			'sid' => $sid
 		]);
 	}
 
