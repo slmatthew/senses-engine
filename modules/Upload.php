@@ -402,7 +402,7 @@ class AudioUpload extends UploadManager {
 		$server = call('audio.getUploadServer', $serverParams);
 		if(isset($server['response'])) {
 			$url = $server['response']['upload_url'];
-			$result = $this->upload($url, $files, 'file');
+			$result = $this->upload($url, $file, 'file');
 			if(isset($result['server'])) {
 				$saveParams['server'] = $result['server'];
 				$saveParams['audio'] = $result['audio'];
