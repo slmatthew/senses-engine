@@ -357,4 +357,129 @@ class PhotosUpload extends UploadManager {
 	}
 }
 
+/**
+ * Audios upload
+ * @author slmatthew
+ * @pacakge attachs
+ */
+class AudioUpload extends UploadManager {
+	/**
+	 * audio.getUploadServer
+	 * @param string $file Path to file
+	 * @param array $serverParams audio.getUploadServer parameters
+	 * @param array $saveParams audio.save parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function default(string $file, array $serverParams = [], array $saveParams = []) {
+		$server = call('audio.getUploadServer', $serverParams);
+		if(isset($server['response'])) {
+			$url = $server['response']['upload_url'];
+			$result = $this->upload($url, $files, 'file');
+			if(isset($result['server'])) {
+				$saveParams['server'] = $result['server'];
+				$saveParams['audio'] = $result['audio'];
+				$saveParams['hash'] = $result['hash'];
+
+				return call('audio.save', $saveParams);
+			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
+		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
+	}
+}
+
+/**
+ * Videos upload
+ * @author slmatthew
+ * @package attachs
+ */
+class VideoUpload extends UploadManager {
+	/**
+	 * video.save
+	 * @param string $file Path to file
+	 * @param array $params video.save parameters
+	 * @throws ParameterException
+	 * @return array
+	 */
+	public function default(string $file = '', array $params = []) {
+		$result = call('video.save', $params);
+		if(isset($params['link'])) {
+			return $result;
+		} elseif($file) {
+			$url = $result['response']['upload_url'];
+			return $this->upload($url, $file, 'video_file');
+		} else throw new ParameterException();
+	}
+}
+
+/**
+ * Documents upload
+ * @author slmatthew
+ * @package attachs
+ */
+class DocsUpload extends UploadManager {
+	/**
+	 * @param string $file Path to file
+	 * @param string $serverMethod getUploadServer method
+	 * @param array $serverParams
+	 * @param array $saveParams
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	protected function template(string $file, string $serverMethod, array $serverParams = [], array $saveParams = []) {
+		$server = call($serverMethod, $serverParams);
+		if(isset($server['response'])) {
+			$url = $server['response']['upload_url'];
+			$result = $this->upload($url, $file, 'file');
+			if(isset($result['server'])) {
+				$saveParams['file'] = $result['file'];
+
+				return call('docs.save', $saveParams);
+			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
+		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
+	}
+
+	/**
+	 * Upload document to
+	 * @param string $file Path to file
+	 * @param array $serverParams docs.getUploadServer parameters
+	 * @param array $saveParams docs.save parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function default(string $file, array $serverParams = [], array $saveParams = []) {
+		return $this->template($file, 'docs.getUploadServer', $serverParams, $saveParams);
+	}
+
+	/**
+	 * Upload document to
+	 * @param string $file Path to file
+	 * @param array $serverParams docs.getWallUploadServer parameters
+	 * @param array $saveParams docs.save parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function wall(string $file, array $serverParams = [], array $saveParams = []) {
+		return $this->template($file, 'docs.getWallUploadServer', $serverParams, $saveParams);
+	}
+
+	/**
+	 * Upload document to
+	 * @param string $file Path to file
+	 * @param string $type Document type: doc, graffiti or audio_message
+	 * @param array $serverParams docs.getMessagesUploadServer parameters
+	 * @param array $saveParams docs.save parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function messages(string $file, string $type = 'doc', array $serverParams = [], array $saveParams = []) {
+		$serverParams['type'] = $type;
+		return $this->template($file, 'docs.getMessagesUploadServer', $serverParams, $saveParams);
+	}
+}
+
 ?>
