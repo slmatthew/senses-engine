@@ -60,9 +60,4 @@ $dh = new DataHandler('lp', $be);
 
 <a name="rmap"></a>
 ## Roadmap
-- [x] Перевод событий User LP в нормальный вид
-- [x] Работа с audio.*
-- [x] Execute
-- [x] Работа с авторизацией
-- [ ] Мультиаккаунт
-- [ ] Удобная работа с вложениями
+План работы доступен [на вкладке Projects](https://github.com/slmatthew/senses-engine/projects/1).
