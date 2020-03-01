@@ -291,6 +291,70 @@ class PhotosUpload extends UploadManager {
 			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
 		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
 	}
+
+	/**
+	 * Upload photo for market item
+	 * @param string $file Path to file
+	 * @param bool $main_photo https://vk.com/dev/photos.getMarketUploadServer
+	 * @param array $serverParams photos.getMarketUploadServer parameters
+	 * @param array $saveParams photos.saveMarketPhoto parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function market(string $file, bool $main_photo = false, array $serverParams = [], array $saveParams = []) {
+		global $config;
+
+		if($config['type'] === 'community' && !isset($serverParams['group_id'])) $serverParams['group_id'] = $config['api_id'];
+
+		$serverParams['main_photo'] = (int)$main_photo;
+
+		$server = call('photos.getMarketUploadServer', $serverParams);
+		if(isset($server['response'])) {
+			$url = $server['response']['upload_url'];
+			$result = $this->upload($url, $file, 'file');
+			if(isset($result['server'])) {
+				$saveParams['server'] = $result['server'];
+				$saveParams['hash'] = $result['hash'];
+				$saveParams['photo'] = stripslashes($result['photo']);
+
+				if($main_photo) {
+					$saveParams['crop_data'] = $result['crop_data'];
+					$saveParams['crop_hash'] = $result['crop_hash'];
+				}
+
+				return call('photos.saveMarketPhoto', $saveParams);
+			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
+		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
+	}
+
+	/**
+	 * Upload photo for market album
+	 * @param string $file Path to file
+	 * @param int $group_id Community ID
+	 * @param array $serverParams photos.getMarketAlbumUploadServer parameters
+	 * @param array $saveParams photos.saveMarketAlbumPhoto parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function marketAlbum(string $file, int $group_id, array $serverParams = [], array $saveParams = []) {
+		$serverParams['group_id'] = $group_id;
+
+		$server = call('photos.getMarketAlbumUploadServer', $serverParams);
+		if(isset($server['response'])) {
+			$url = $server['response']['upload_url'];
+			$result = $this->upload($url, $file, 'file');
+			if(isset($result['server'])) {
+				$saveParams['group_id'] = $group_id;
+				$saveParams['server'] = $result['server'];
+				$saveParams['hash'] = $result['hash'];
+				$saveParams['photo'] = $result['photo'];
+
+				return call('photos.saveMarketAlbumPhoto', $saveParams);
+			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
+		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
+	}
 }
 
 ?>
