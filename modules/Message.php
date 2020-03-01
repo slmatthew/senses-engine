@@ -182,6 +182,10 @@ class Message {
 			$params['message'] = $text;
 		}
 
+		if(isset($params['keyboard']) && gettype($params['keyboard']) === 'array') {
+			$params['keyboard'] = json_encode($params['keyboard'], JSON_UNESCAPED_UNICODE);
+		}
+
 		return $for_execute ? ['messages.send', $params] : call('messages.send', $params, $config['type'] === 'user');
 	}
 

@@ -1,77 +1,10 @@
 <?php
 
-/**
- * Create, edit and get keyboard for VK
- * @author slmatthew
- * @package keyboard
- */
-
 class Keyboard {
-
-	/**
-	 * Should VK hide the keyboard after first use
-	 * @var bool
-	 */
-	public $one_time = false;
-
-	/**
-	 * Should keyboard be inline
-	 * @var bool
-	 */
-	public $inline = false;
-
-	/**
-	 * @ignore
-	 */
-	public $buttons = [];
-
-	/**
-	 * @ignore
-	 */
-	public $currentIndex = 0;
-
 	public const PRIMARY_BUTTON = 'primary';
 	public const SECONDARY_BUTTON = 'secondary';
 	public const NEGATIVE_BUTTON = 'negative';
 	public const POSITIVE_BUTTON = 'positive';
-
-	/**
-	 * Constructor
-	 * @param bool $one_time Should VK hide the keyboard after first use
-	 * @param bool $inline Should keyboard be inline
-	 * @return Keyboard
-	 * @since v0.3
-	 */
-	public function __construct(bool $one_time = false, bool $inline = false) {
-		$this->one_time = $one_time;
-		$this->inline = $inline;
-
-		return $this;
-	}
-
-	/**
-	 * Should VK hide the keyboard after first use
-	 * @param bool $enabled True or false
-	 * @return Keyboard
-	 * @since 0.6
-	 */
-	public function oneTime(bool $enabled) {
-		$this->one_time = $enabled;
-
-		return $this;
-	}
-
-	/**
-	 * Should keyboard be inline
-	 * @param bool $enabled True or false
-	 * @return Keyboard
-	 * @since 0.6
-	 */
-	public function inline(bool $enabled) {
-		$this->inline = $enabled;
-
-		return $this;
-	}
 
 	/**
 	 * Button constructor
@@ -80,21 +13,19 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since v0.3
 	 */
-	public function addButton(array $action, string $color = '') {
+	static function button(array $action, string $color = '') {
 		if(isset($action['payload'])) $action['payload'] = json_encode($action['payload'], JSON_UNESCAPED_UNICODE);
 
 		if(isset($action['type']) && $action['type'] === 'text') {
-			$this->buttons[$this->currentIndex][] = [
+			return [
 				'action' => $action,
 				'color' => $color
 			];
 		} else {
-			$this->buttons[$this->currentIndex][] = [
+			return [
 				'action' => $action
 			];
 		}
-
-		return $this;
 	}
 
 	/**
@@ -105,14 +36,12 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addTextButton(string $label, array $payload = [], string $color = self::PRIMARY_BUTTON) {
-		$this->addButton([
+	static function textButton(string $label, array $payload = [], string $color = Keyboard::PRIMARY_BUTTON) {
+		return Keyboard::button([
 			'type' => 'text',
 			'label' => $label,
-			'payload' => $this->toJson($payload)
+			'payload' => Keyboard::toJson($payload)
 		], $color);
-
-		return $this;
 	}
 
 	/**
@@ -121,13 +50,11 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addLocationButton(array $payload = []) {
-		$this->addButton([
+	static function locationButton(array $payload = []) {
+		return Keyboard::button([
 			'type' => 'location',
-			'payload' => $this->toJson($payload)
+			'payload' => Keyboard::toJson($payload)
 		]);
-
-		return $this;
 	}
 
 	/**
@@ -137,14 +64,12 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addPayButton(array $hash, array $payload = []) {
-		$this->addButton([
+	static function payButton(array $hash, array $payload = []) {
+		return Keyboard::button([
 			'type' => 'vkpay',
 			'hash' => http_build_query($hash),
-			'payload' => $this->toJson($payload)
+			'payload' => Keyboard::toJson($payload)
 		]);
-
-		return $this;
 	}
 
 	/**
@@ -157,50 +82,18 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []) {
-		$this->addButton([
+	static function appButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []) {
+		return Keyboard::button([
 			'type' => 'open_app',
 			'app_id' => $app_id,
 			'owner_id' => $owner_id,
 			'label' => $label,
 			'hash' => $hash,
-			'payload' => $this->toJson($payload)
+			'payload' => Keyboard::toJson($payload)
 		]);
-
-		return $this;
 	}
 
-	/**
-	 * Line constructor
-	 * @return Keyboard
-	 * @since v0.3
-	 */
-	public function row() {
-		$this->currentIndex = $this->currentIndex + 1;
-
-		return $this;
-	}
-
-	/**
-	 * Keyboard getter
-	 * @param bool $array Should function return json or array
-	 * @return array|string
-	 * @since v0.8
-	 */
-	public function get(bool $array = false) {
-		$kb = [
-			'one_time' => $this->one_time,
-			'buttons' => $this->buttons,
-			'inline' => $this->inline
-		];
-
-		return $array ? $kb : $this->toJson($kb);
-	}
-
-	/**
-	 * @ignore
-	 */
-	private function toJson(array $array) { return json_encode($array, JSON_UNESCAPED_UNICODE); }
+	static function toJson(array $array) { return json_encode($array, JSON_UNESCAPED_UNICODE); }
 }
 
 ?>
