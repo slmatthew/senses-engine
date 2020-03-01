@@ -11,6 +11,7 @@
 		* [LpDecoder — декодер событий](userlp/decoder.md)
 	* [VkAudio — аудиозаписи](modules/audio.md)
 	* [Auth — авторизация](auth/README.md)
+	* [Upload — загрузка вложений](upload/README.md)
 	* [Message — работа с сообщением](helpers/message.md)
 	* [Execute — упаковка методов](helpers/execute.md)
 	* [Keyboard — создание клавиатуры](helpers/keyboard.md)
