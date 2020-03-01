@@ -355,6 +355,32 @@ class PhotosUpload extends UploadManager {
 			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
 		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
 	}
+
+	/**
+	 * Upload cover
+	 * @param string $file Path to file
+	 * @param int $group_id Community ID
+	 * @param array $serverParams photos.getOwnerCoverPhotoUploadServer parameters
+	 * @param array $saveParams photos.saveOwnerCoverPhoto parameters
+	 * @throws UploadException
+	 * @throws ApiException
+	 * @return array
+	 */
+	public function cover(string $file, int $group_id, array $serverParams = [], array $saveParams = []) {
+		$serverParams['group_id'] = $group_id;
+
+		$server = call('photos.getOwnerCoverPhotoUploadServer', $serverParams);
+		if(isset($server['response'])) {
+			$url = $server['response']['upload_url'];
+			$result = $this->upload($url, $file, 'photo');
+			if(isset($result['hash'])) {
+				$saveParams['hash'] = $result['hash'];
+				$saveParams['photo'] = $result['photo'];
+
+				return call('photos.saveOwnerCoverPhoto', $saveParams);
+			} else throw new UploadException(json_encode($result, JSON_UNESCAPED_UNICODE));
+		} else throw new ApiException(json_encode($server, JSON_UNESCAPED_UNICODE));
+	}
 }
 
 /**
