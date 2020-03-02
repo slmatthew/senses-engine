@@ -19,7 +19,7 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, $agent);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, CURL_VERIFY);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // temp
 	if(!empty($postfields)) {
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
@@ -38,10 +38,8 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
  * @since v0.1
  */
 function call(string $method, array $params = [], bool $official = false) {
-	global $config;
-
-	if(!isset($params['access_token'])) $params['access_token'] = isset($config['token']) ? $config['token'] : '';
-	if(!isset($params['v'])) $params['v'] = isset($config['version']) ? $config['version'] : '5.118';
+	if(!isset($params['access_token'])) $params['access_token'] = isset(vkAuthStorage::get()['token']) ? vkAuthStorage::get()['token'] : '';
+	if(!isset($params['v'])) $params['v'] = isset(vkAuthStorage::get()['version']) ? vkAuthStorage::get()['version'] : '5.118';
 	if(isset($params['unsetToken']) && $params['unsetToken']) unset($params['access_token']);
 
 	$agent = $official ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/".SEV;
