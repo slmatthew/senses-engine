@@ -1,6 +1,5 @@
 # Документация
 * [Введение](introduction.md)
-* [Конфигурация](other/config.md)
 * [Исключения](modules/exceptions.md)
 * Классы
 	* [vk — главный класс для создания ботов](modules/vk.md)
