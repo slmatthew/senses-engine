@@ -1,5 +1,17 @@
 <?php
 
+class vkAuthStorage {
+	private static $auth_data = [];
+
+	public static function set(array $data) {
+		vkAuthStorage::$auth_data = $data;
+	}
+
+	public static function get() {
+		return vkAuthStorage::$auth_data;
+	}
+}
+
 class vk {
 	/**
 	 * @var BotEngine
@@ -69,12 +81,30 @@ class vk {
 		}
 		if(!isset($auth_data['secret'])) $auth_data['secret'] = '';
 
-		$this->auth_data = [
+		$auth_data_ready = [
 			'auth_type' => $auth_data['auth_type'],
 			'token' => $auth_data['token'],
 			'secret' => $auth_data['secret'],
 			'v' => $auth_data['v']
 		];
+		vkAuthStorage::set($auth_data_ready);
+
+		if($auth_data_ready['auth_type'] === 'bypass') {
+			$auth_data_ready['api_id'] = call('users.get')['response'][0]['id'];
+			$auth_data_ready['api_type'] = 'user';
+		} else {
+			$api_result = call('users.get');
+			if(isset($api_result['response']) && !empty($api_result['response'])) {
+				$auth_data_ready['api_id'] = $api_result['response'][0]['id'];
+				$auth_data_ready['api_type'] = 'user';
+			} else {
+				$auth_data_ready['api_id'] = call('groups.getById')['response'][0]['id'];
+				$auth_data_ready['api_type'] = 'community';
+			}
+		}
+
+		$this->auth_data = $auth_data_ready;
+		vkAuthStorage::set($auth_data_ready);
 
 		$this->init();
 		$this->newBot($needLowerCase);
