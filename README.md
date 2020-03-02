@@ -20,7 +20,6 @@
 ## Оглавление
 * [Начало](#senses-engine)
 * [Обзор](#present)
-	- [Старый способ подключения](#old-way)
 * [Roadmap](#rmap)
 
 <a name="present"></a>
@@ -31,7 +30,10 @@
 ```php
 include './loader.php';
 
-$vk = new vk('lp');
+$vk = new vk([
+  'token' => 'qwerty12345',
+  'type' => 'lp'
+]);
 
 $vk->bot->onCommands(['test'], function($data, $msg) {
   $msg->reply('Ответ на тестовую команду');
@@ -41,22 +43,6 @@ $vk->listen();
 ```
 
 Всё стало гораздо проще. Весь код для работы с VK API скрыт внутри функций библиотеки, вам остаётся лишь добавлять команды и модифицировать классы под себя.
-
-<a name="old-way"></a>
-### Старый способ подключения
-До версии `0.8` использовался другой способ создания ботов. Он используется под капотом нового класса `vk`. Рекомендуется использовать новый способ.
-
-```php
-include './loader.php';
-
-$be = new BotEngine();
-
-$be->onCommands(['test', 'тест', 'тестирование'], function($data, $msg) {
-  $msg->reply('Ответ на тестовую команду');
-});
-
-$dh = new DataHandler('lp', $be);
-```
 
 <a name="rmap"></a>
 ## Roadmap

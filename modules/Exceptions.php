@@ -1,6 +1,5 @@
 <?php
 
-class ConfigException extends \Exception { }
 class TypeException extends \Exception { }
 class RequestsException extends \Exception { }
 class LongpollException extends \Exception { }
@@ -11,6 +10,7 @@ class ClientException extends \Exception { }
 class TokenRefreshException extends \Exception { }
 class UploadException extends \Exception { }
 class MessageApiException extends \Exception { }
+class VkAuthException extends \Exception { }
 
 class AuthBannedException extends \Exception { }
 class AuthAppException extends \Exception { }
