@@ -1,8 +1,5 @@
 <?php
 
-if(!isset($config) || is_null($config) || empty($config))  throw new ConfigException('You need to set config');
-$GLOBALS['config'] = $config;
-
 /**
  * Heart of engine
  * @author slmatthew

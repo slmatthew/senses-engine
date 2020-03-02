@@ -6,10 +6,7 @@
  * @package datahandler
  */
 
-if(!isset($config) || is_null($config) || empty($config))  throw new ConfigException('You need to set config');
 if(!function_exists('request')) throw new RequestsException('Requests module is not loaded');
-
-$GLOBALS['config'] = $config;
 
 function terminal($text) {
 	if(NEED_LP_LOGS) echo "{$text}\n";
@@ -26,7 +23,7 @@ class DataHandler {
 	 * @since v0.1
 	 */
 	public function __construct(string $type, BotEngine $be, string $confirm_string = '') {
-		if($type === 'cb' && $GLOBALS['config']['type'] === 'community') {
+		if($type === 'cb' && vkAuthStorage::get()['api_type'] === 'community') {
 			// we need to handle request. Add in v0.2-alpha
 			ini_set('display_errors', 0);
 
@@ -34,15 +31,15 @@ class DataHandler {
 			if(!is_null($data)) {
 				$data = @json_decode($data, true);
 				if(!is_null($data)) {
-					if(isset($GLOBALS['config']['secret'])) {
-						if(isset($data['secret']) && $data['secret'] == $GLOBALS['config']['secret']) {
+					if(isset(vkAuthStorage::get()['secret']) && vkAuthStorage::get()['secret']) {
+						if(isset($data['secret']) && $data['secret'] == vkAuthStorage::get()['secret']) {
 							if($data['type'] === 'confirmation' && $confirm_string) {
 								echo $confirm_string;
 							} elseif($data['type'] !== 'confirmation') {
 								echo 'ok';
 							}
 
-							$be->onData($data, $GLOBALS['config']['type']);
+							$be->onData($data, vkAuthStorage::get()['api_type']);
 						} else exit('Invalid secret key');
 					} else {
 						if($data['type'] === 'confirmation' && $confirm_string) {
@@ -51,13 +48,13 @@ class DataHandler {
 							echo 'ok';
 						}
 						
-						$be->onData($data, $GLOBALS['config']['type']);
+						$be->onData($data, vkAuthStorage::get()['api_type']);
 					}
 				}
 			}
 		} elseif($type === 'lp') {
 			// we need to start longpoll
-			$this->startLp($be, $GLOBALS['config']['type']);
+			$this->startLp($be, vkAuthStorage::get()['api_type']);
 		} else throw new TypeException('Unknown type for DataHandler');
 	}
 
@@ -71,7 +68,7 @@ class DataHandler {
 	 */
 	public function startLp(BotEngine $be, string $type) {
 		if($type === 'community') {
-			$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
+			$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
 		} elseif($type === 'user') {
 			$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 		} else return false;
@@ -115,7 +112,7 @@ class DataHandler {
 
 						case 2: case 3:
 							if($type === 'community') {
-								$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
+								$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
 							} elseif($type === 'user') {
 								$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 							}
@@ -130,7 +127,7 @@ class DataHandler {
 								$url = sprintf($baseurl, $lp['ts']);
 							} else {
 								if($type === 'community') {
-									$lp = call('groups.getLongPollServer', ['group_id' => $GLOBALS['config']['api_id']])['response'];
+									$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
 								} elseif($type === 'user') {
 									$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 								}

@@ -89,8 +89,6 @@ class AuthPassword extends RequestExtended {
 	 * @return array
 	 */
 	public function auth(string $app, string $username, string $password, string $trusted_hash = '', array $params = []) {
-		global $config;
-
 		$app = mb_strtolower($app);
 		$apps = [
 			'android' => 0,
@@ -118,7 +116,7 @@ class AuthPassword extends RequestExtended {
 			'2fa_supported' => 1,
 			'grant_type' => 'password',
 			'lang' => 'ru',
-			'v' => $config['version'],
+			'v' => vkAuthStorage::get()['v'],
 			'trusted_hash' => $trusted_hash
 		];
 
@@ -236,8 +234,6 @@ class AuthImplictUser extends RequestExtended {
 	 * @param array $params Parameters
 	 */
 	public function __construct(int $client_id, string $redirect_uri, int $scope, array $params = []) {
-		global $config;
-
 		if(strlen($redirect_uri) == 0) $redirect_uri = self::DEFAULT_REDIRECT_URI;
 
 		$this->params = [
@@ -245,7 +241,7 @@ class AuthImplictUser extends RequestExtended {
 			'redirect_uri' => $redirect_uri,
 			'scope' => $scope,
 			'response_type' => 'token',
-			'v' => $config['version']
+			'v' => vkAuthStorage::get()['v']
 		] + $params; // [] + $params because by this you can't change common parameters
 	}
 
@@ -313,14 +309,12 @@ class AuthFlowUser extends RequestExtended {
 	 * @param array $params Parameters
 	 */
 	public function __construct(int $client_id, string $client_secret, string $redirect_uri, int $scope, array $params = []) {
-		global $config;
-
 		$this->params = [
 			'client_id' => $client_id,
 			'redirect_uri' => $redirect_uri,
 			'scope' => $scope,
 			'response_type' => 'code',
-			'v' => $config['version']
+			'v' => vkAuthStorage::get()['v']
 		] + $params; // [] + $params because by this you can't change common parameters
 	}
 

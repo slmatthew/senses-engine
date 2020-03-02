@@ -1,6 +1,5 @@
 <?php
 
-if(!isset($config) || is_null($config) || empty($config))  throw new ConfigException('You need to set config');
 if(!function_exists('request')) throw new RequestsException('Requests module is not loaded');
 
 /**
@@ -27,14 +26,12 @@ class VkAudio {
 	 * @since v0.6.1
 	 */
 	public function __construct(bool $needRefresh = false) {
-		global $config;
-
-		if($config['type'] != 'user') throw new ClientException('');
+		if(vkAuthStorage::get()['api_type'] != 'user') throw new ClientException('');
 
 		if($needRefresh) {
 			$this->refreshToken();
 		} else {
-			$this->audioToken = $config['token'];
+			$this->audioToken = vkAuthStorage::get()['token'];
 		}
 	}
 
@@ -57,9 +54,7 @@ class VkAudio {
 	 * @since v0.6.1
 	 */
 	public function get(array $params = []) {
-		global $config;
-
-		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['count'])) $params['count'] = 25;
 
 		return $this->request('audio.get', $params);
@@ -160,9 +155,7 @@ class VkAudio {
 	 * @since v0.6.1
 	 */
 	public function getPlaylists(array $params = []) {
-		global $config;
-
-		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['count'])) $params['count'] = 50;
 
 		return $this->request('audio.getPlaylists', $params);
@@ -330,9 +323,7 @@ class VkAudio {
 	 * @since v0.7
 	 */
 	public function getPlaylist(array $params = []) {
-		global $config;
-
-		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['need_playlists'])) $params['need_playlists'] = 1;
 
 		return $this->request('execute.getPlaylist', $params);
@@ -345,9 +336,7 @@ class VkAudio {
 	 * @since v0.7
 	 */
 	public function getMusicPage(array $params = []) {
-		global $config;
-
-		if(!isset($params['owner_id'])) $params['owner_id'] = $config['api_id'];
+		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['func_v'])) $params['func_v'] = 3;
 		if(!isset($params['need_playlists'])) $params['need_playlists'] = 1;
 

@@ -125,10 +125,8 @@ class Message {
 	 * @return bool
 	 */
 	public function isOut(): bool {
-		global $config;
-
 		if($this->message['data_source'] === 'comminuty') {
-			return $this->message['from_id'] == $config['api_id'];
+			return $this->message['from_id'] == vkAuthStorage::get()['api_id'];
 		} else {
 			return $this->message['flags'] & 2;
 		}
@@ -154,8 +152,6 @@ class Message {
 	 * @return array
 	 */
 	public function send(string $text, array $params = [], bool $for_execute = false): array {
-		global $config;
-
 		$params['peer_id'] = $this->message['peer_id'];
 		if(!isset($params['random_id'])) $params['random_id'] = 0;
 
@@ -186,7 +182,7 @@ class Message {
 			$params['keyboard'] = json_encode($params['keyboard'], JSON_UNESCAPED_UNICODE);
 		}
 
-		return $for_execute ? ['messages.send', $params] : call('messages.send', $params, $config['type'] === 'user');
+		return $for_execute ? ['messages.send', $params] : call('messages.send', $params, vkAuthStorage::get()['api_type'] === 'user');
 	}
 
 	/**
