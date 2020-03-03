@@ -13,38 +13,7 @@ class executeGetProfile {
 	 * @ignore
 	 */
 	public function __construct($profile, string $name_case = 'nom') {
-		$code = 'var profile = "'.$profile.'";
-var name_case = "'.$name_case.'";
-
-var user = API.users.get({"user_ids": profile,"fields": "screen_name","lang": "ru","v": "5.118"});
-
-if(user.length > 0) {
-	user = user[0];
-
-	var mainUser = {"id": user.id,"screen_name": user.screen_name,"fn": user.first_name,"ln": user.last_name,"full": user.first_name + " " + user.last_name,"full_push": "@id" + user.id + " (" + user.first_name + " " + user.last_name + ")","short_push": "@id" + user.id + " (" + user.first_name + ")","last_push": "@id" + user.id + " (" + user.last_name + ")","is_community": false,"success": true};
-	
-	return mainUser;
-} else {
-	if(parseInt(profile) != 0) {
-		profile = profile * -1;
-	}
-	
-	var group = API.groups.getById({"group_ids": profile,"fields": "screen_name","lang": "ru","v": "5.118"});
-	
-	if(group.length > 0) {
-		var cases = {"nom": "Сообщество","gen": "Сообщества","dat": "Сообществу","acc": "Сообщество","ins": "Сообществом","abl": "Сообществе"};
-		
-		if(!cases[name_case]) {
-			name_case = "nom";
-		}
-		
-		group = group[0];
-
-		var mainUser = {"id":group.id,"screen_name":group.screen_name,"fn":cases.nom,"ln":group.name,"full":cases[name_case]+" «"+group.name+"»","full_push":cases[name_case]+" «@club"+group.id+" ("+group.name+")»","short_push":cases[name_case]+" «@club"+group.id+" ("+group.name+")»","last_push":"«@club"+group.id+"("+group.name+")","is_community":true,"success":true};
-		return mainUser;
-	}
-}
-return {"success": false};';
+		$code = 'var profile="'.$profile.'";var name_case="'.$name_case.'";var user=API.users.get({"user_ids":profile,"fields":"screen_name","lang":"ru","v":"5.118"});if(user.length>0) {user=user[0];var mainUser={"id":user.id,"screen_name":user.screen_name,"fn":user.first_name,"ln":user.last_name,"full":user.first_name+" "+user.last_name,"full_push":"[id"+user.id+"|"+user.first_name+" "+user.last_name+"]","short_push":"[id"+user.id+"|"+user.first_name+"]","last_push":"[id"+user.id+"|"+user.last_name+"]","is_community":false,"success":true};return mainUser;}else{if(parseInt(profile)!=0){profile=profile*-1;}var group=API.groups.getById({"group_ids":profile,"fields":"screen_name","lang":"ru","v":"5.118"});if(group.length>0){var cases={"nom":"Сообщество","gen":"Сообщества","dat":"Сообществу","acc":"Сообщество","ins":"Сообществом","abl":"Сообществе"};if(!cases[name_case]){name_case="nom";}group=group[0];var mainUser={"id":group.id,"screen_name":group.screen_name,"fn":cases.nom,"ln":group.name,"full":cases[name_case]+" «"+group.name+"»","full_push":cases[name_case]+" «[club"+group.id+"|"+group.name+"]»","short_push":cases[name_case]+" «[club"+group.id+"|"+group.name+"]»","last_push":"«[club"+group.id+"|"+group.name+"]","is_community":true,"success":true};return mainUser;}}return {"success": false};';
 
 		$this->result = call('execute', ['code' => $code]);
 	}
