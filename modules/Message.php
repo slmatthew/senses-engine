@@ -112,19 +112,19 @@ class Message {
 	 * Get message sender id
 	 * @return int
 	 */
-	public function from(): int { return $this->message['from_id']; }
+	public function from() { return $this->message['from_id']; }
 
 	/**
 	 * Is current message from chat?
 	 * @return bool
 	 */
-	public function isChat(): bool { return $this->message['peer_id'] > 2000000000; }
+	public function isChat() { return $this->message['peer_id'] > 2000000000; }
 
 	/**
 	 * Is message from current user?
 	 * @return bool
 	 */
-	public function isOut(): bool {
+	public function isOut() {
 		if($this->message['data_source'] === 'comminuty') {
 			return $this->message['from_id'] == vkAuthStorage::get()['api_id'];
 		} else {
@@ -136,13 +136,13 @@ class Message {
 	 * Has current message attachments?
 	 * @return bool
 	 */
-	public function hasAttachs(): bool { return !empty($this->message['attachments_types']); }
+	public function hasAttachs() { return !empty($this->message['attachments_types']); }
 
 	/**
 	 * Has current message an id?
 	 * @return bool
 	 */
-	public function hasId(): bool { return $this->message['id'] > 0; }
+	public function hasId() { return $this->message['id'] > 0; }
 
 	/**
 	 * Send a message
@@ -151,7 +151,7 @@ class Message {
 	 * @param bool $for_execute Return array (for Execute class) or `call` function response
 	 * @return array
 	 */
-	public function send(string $text, array $params = [], bool $for_execute = false): array {
+	public function send(string $text, array $params = [], bool $for_execute = false) {
 		$params['peer_id'] = $this->message['peer_id'];
 		if(!isset($params['random_id'])) $params['random_id'] = 0;
 
@@ -192,7 +192,7 @@ class Message {
 	 * @param bool $for_execute Return array (for Execute class) or `call` function response
 	 * @return array
 	 */
-	public function reply(string $text, array $params = [], bool $for_execute = false): array {
+	public function reply(string $text, array $params = [], bool $for_execute = false) {
 		if($this->hasId()) $params['reply_to'] = $this->message['id'];
 		return $this->send($text, $params, $for_execute);
 	}
@@ -204,7 +204,7 @@ class Message {
 	 * @throws MessageApiException
 	 * @return array
 	 */
-	public function kickMember(int $member_id, array $params = []): array {
+	public function kickMember(int $member_id, array $params = []) {
 		if(!$this->isChat()) throw new MessageApiException();
 
 		$params['chat_id'] = $this->message['peer_id'] - 2e9;
@@ -219,7 +219,7 @@ class Message {
 	 * @throws MessageApiException
 	 * @return array
 	 */
-	public function pin(array $params = []): array {
+	public function pin(array $params = []) {
 		if(!$this->hasId()) throw new MessageApiException();
 
 		$params['peer_id'] = $this->message['peer_id'];
@@ -233,7 +233,7 @@ class Message {
 	 * @param array $params Additional parameters
 	 * @return array
 	 */
-	public function unpin(array $params = []): array {
+	public function unpin(array $params = []) {
 		$params['peer_id'] = $this->message['peer_id'];
 
 		return call('messages.unpin', $params);
