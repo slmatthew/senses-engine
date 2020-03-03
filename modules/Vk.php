@@ -12,6 +12,16 @@ class vkAuthStorage {
 	}
 }
 
+class vkApiWrapper {
+	public function __call(string $name, array $params) {
+		$method_name = implode('.', explode('_', $name));
+		$method_params = isset($params[0]) ? $params[0] : [];
+		$official = isset($params[1]) && gettype($params[1]) === 'bool' && $params[1];
+
+		return call($method_name, $method_params, $official);
+	}
+}
+
 class vk {
 	/**
 	 * @var BotEngine
@@ -27,6 +37,11 @@ class vk {
 	 * @var VkAudio
 	 */
 	public $audio = null;
+
+	/**
+	 * @var vkApiWrapper
+	 */
+	public $api = null;
 
 	/**
 	 * @var string Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API)
@@ -80,6 +95,8 @@ class vk {
 			$auth_data['v'] = '5.118';
 		}
 		if(!isset($auth_data['secret'])) $auth_data['secret'] = '';
+
+		$this->api = new vkApiWrapper();
 
 		$auth_data_ready = [
 			'auth_type' => $auth_data['auth_type'],
