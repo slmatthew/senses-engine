@@ -86,3 +86,11 @@ $vk->setConfirmation('1234abcd');
 
 ### audio
 Экземпляр класса [VkAudio](audio.md) (если используется токен пользователя) или `null`.
+
+### api
+Экземпляр класса `vkApiWrapper`.
+
+```php
+// $vk->api->METHOD_NAME(PARAMETERS, ?OFFICIAL);
+$vk->api->users_get(['user_ids' => implode(',', [1, 2, 'slmatthew'])]);
+```
