@@ -116,7 +116,7 @@ class AuthPassword extends RequestExtended {
 			'2fa_supported' => 1,
 			'grant_type' => 'password',
 			'lang' => 'ru',
-			'v' => vkAuthStorage::get()['v'],
+			'v' => isset(vkAuthStorage::get()['v']) ? vkAuthStorage::get()['v'] : '5.118',
 			'trusted_hash' => $trusted_hash
 		];
 
@@ -241,7 +241,7 @@ class AuthImplictUser extends RequestExtended {
 			'redirect_uri' => $redirect_uri,
 			'scope' => $scope,
 			'response_type' => 'token',
-			'v' => vkAuthStorage::get()['v']
+			'v' => isset(vkAuthStorage::get()['v']) ? vkAuthStorage::get()['v'] : '5.118'
 		] + $params; // [] + $params because by this you can't change common parameters
 	}
 
@@ -314,7 +314,7 @@ class AuthFlowUser extends RequestExtended {
 			'redirect_uri' => $redirect_uri,
 			'scope' => $scope,
 			'response_type' => 'code',
-			'v' => vkAuthStorage::get()['v']
+			'v' => isset(vkAuthStorage::get()['v']) ? vkAuthStorage::get()['v'] : '5.118'
 		] + $params; // [] + $params because by this you can't change common parameters
 	}
 
