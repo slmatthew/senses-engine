@@ -1,18 +1,97 @@
 <?php
 
+/**
+ * Storage for authorization data
+ * @author slmatthew
+ */
 class vkAuthStorage {
+	/**
+	 * @var array Aviable users
+	 */
 	private static $auth_data = [];
 
+	/**
+	 * @var int Active user id
+	 */
+	private static $active = 0;
+
+	/**
+	 * Add new auth data
+	 * @param array $data
+	 * - @var string auth_type
+	 * - @var int api_id
+	 * - @var string api_type
+	 * - @var string token
+	 * - @var string secret
+	 * - @var string v
+	 * @return void
+	 */
 	public static function set(array $data) {
-		vkAuthStorage::$auth_data = $data;
+		if(isset($data['api_id'])) {
+			vkAuthStorage::$auth_data["{$data['api_id']}"] = $data;
+			vkAuthStorage::$active = $data['api_id'];
+		} else {
+			vkAuthStorage::$auth_data['0'] = $data;
+			vkAuthStorage::$active = 0;
+		}
 	}
 
+	/**
+	 * Set active user
+	 * @param int $active User api_id
+	 * @return bool
+	 */
+	public static function setActive(int $active) {
+		if(isset(vkAuthStorage::$auth_data[$active])) {
+			vkAuthStorage::$active = $active;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get active user
+	 * @return array
+	 */
 	public static function get() {
-		return vkAuthStorage::$auth_data;
+		return isset(vkAuthStorage::$auth_data[vkAuthStorage::$active]) ? vkAuthStorage::$auth_data[vkAuthStorage::$active] : [];
+	}
+
+	/**
+	 * Get active user api_id
+	 * @return int
+	 */
+	public static function getActive() {
+		return vkAuthStorage::$active;
+	}
+
+	/**
+	 * Get aviable user api_ids
+	 * @return array
+	 */
+	public static function getAviableIds() {
+		return array_column(vkAuthStorage::$auth_data, 'api_id');
+	}
+
+	/**
+	 * @ignore
+	 */
+	public static function removeTemp() {
+		unset(vkAuthStorage::$auth_data[0]);
 	}
 }
 
+/**
+ * API Wrapper
+ * @author slmatthew
+ */
 class vkApiWrapper {
+	/**
+	 * @param string $name Method name. _ will be converted to . Example: users_get > users.get
+	 * @param array $params Function parameters. $params[0] - method params, $params[1] (bool) - $official
+	 * @return array
+	 */
 	public function __call(string $name, array $params) {
 		$method_name = implode('.', explode('_', $name));
 		$method_params = isset($params[0]) ? $params[0] : [];
@@ -121,6 +200,7 @@ class vk {
 		}
 
 		$this->auth_data = $auth_data_ready;
+		vkAuthStorage::removeTemp(); // not ready data from storage
 		vkAuthStorage::set($auth_data_ready);
 
 		$this->init();
