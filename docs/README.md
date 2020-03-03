@@ -3,6 +3,7 @@
 * [Исключения](modules/exceptions.md)
 * Классы
 	* [vk — главный класс для создания ботов](modules/vk.md)
+		* [vkAuthStorage — мультиаккаунт](helpers/authstorage.md)
 	* [BotEngine — движок команд](modules/botengine.md)
 	* [DataHandler — получение и обработка данных](modules/datahandler.md)
 	* User LP
