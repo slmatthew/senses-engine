@@ -21,6 +21,7 @@
 * [Начало](#senses-engine)
 * [Обзор](#present)
 * [Roadmap](#rmap)
+* [Новые версии](#latest)
 
 <a name="present"></a>
 ## Обзор
@@ -47,3 +48,9 @@ $vk->listen();
 <a name="rmap"></a>
 ## Roadmap
 План работы доступен [на вкладке Projects](https://github.com/slmatthew/senses-engine/projects/1).
+
+<a name="latest"></a>
+## Новые версии
+Самый последний функционал находится в ветке [dev](https://github.com/slmatthew/senses-engine/tree/dev). Обратите внимание: код в данной ветке может быть нестабилен.
+
+Вы можете скачать последний бета-релиз [здесь](https://github.com/slmatthew/senses-engine/releases).
