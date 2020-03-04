@@ -49,6 +49,11 @@ function call(string $method, array $params = [], bool $official = false) {
 	$agent = $official ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/".SEV;
 
 	$result = request("https://api.vk.com/method/{$method}", $params, $agent);
+	sensesDebugger::event(DebuggerEvents::API_CALL, [
+		'method' => $method,
+		'params' => $params,
+		'agent' => $agent
+	]);
 
 	if(vkAuthStorage::getErrorsPeer() != 0 && isset($result['error'])) {
 		$code = $result['error']['error_code'];
@@ -75,7 +80,25 @@ function call(string $method, array $params = [], bool $official = false) {
 		];
 
 		request("https://api.vk.com/method/messages.send", $sendParams, $agent);
+		sensesDebugger::event(DebuggerEvents::API_ERROR, [
+			'on' => [
+				'method' => $method,
+				'params' => $params,
+				'agent' => $agent
+			],
+			'error' => [
+				'code' => $code,
+				'msg' => $msg,
+				'other' => $result['error']
+			]
+		]);
 	}
+
+	sensesDebugger::event(DebuggerEvents::API_RESULT, [
+		'method' => $method,
+		'params' => http_build_query($params),
+		'result' => $result
+	]);
 
 	return $result;
 }

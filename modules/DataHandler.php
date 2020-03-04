@@ -81,7 +81,12 @@ class DataHandler {
 		$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 		$url = sprintf($baseurl, $lp['ts']);
 
-		terminal("Starting {$type} longpoll...");
+		terminal("Starting {$type} longpoll..."); // terminal() will be deleted
+		sensesDebugger::event(DebuggerEvents::LP_START, [
+			'lp_server' => $lp,
+			'url' => $url,
+			'type' => $type
+		]);
 
 		$li = 0;
 
@@ -91,6 +96,7 @@ class DataHandler {
 			if(!is_null($result)) {
 				if($li == 0) {
 					terminal("Longpoll successfuly started. Got first updates");
+					sensesDebugger::event(DebuggerEvents::LP_FIRST_UPDATES, []);
 					$li += 1;
 				}
 
@@ -105,6 +111,10 @@ class DataHandler {
 					}
 				} elseif(isset($result['failed'])) {
 					terminal("Request new data");
+					sensesDebugger::event(DebuggerEvents::LP_FAILED, [
+						'failed' => $result['failed'],
+						'result' => $result
+					]);
 					switch($result['failed']) {
 						case 1:
 							$url = sprintf($baseurl, $result['ts']);
@@ -125,6 +135,11 @@ class DataHandler {
 
 								$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
+
+								sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
+									'lp' => $lp,
+									'url' => $url
+								]);
 							} else {
 								if($type === 'community') {
 									$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
@@ -140,6 +155,11 @@ class DataHandler {
 
 									$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
+
+									sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
+										'lp' => $lp,
+										'url' => $url
+									]);
 								} else throw new LongpollException('Can\'t to get new Longpoll data');
 							}
 							break;
@@ -148,6 +168,10 @@ class DataHandler {
 					}
 				} elseif(isset($result['ts'])) {
 					$url = sprintf($baseurl, $result['ts']);
+					sensesDebugger::event(DebuggerEvents::LP_TS_UPDATED, [
+						'ts' => $result['ts'],
+						'url' => $url
+					]);
 				}
 			}
 		}
