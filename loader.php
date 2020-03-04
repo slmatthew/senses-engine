@@ -33,5 +33,6 @@ include_once __DIR__.'/modules/LpDecoder.php';
 include_once __DIR__.'/modules/Audio.php';
 include_once __DIR__.'/modules/Vk.php';
 include_once __DIR__.'/modules/Auth.php';
+include_once __DIR__.'/modules/Debugger.php';
 
 ?>
