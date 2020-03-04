@@ -16,6 +16,11 @@ class vkAuthStorage {
 	private static $active = 0;
 
 	/**
+	 * @var int peer_id for VK API errors
+	 */
+	private static $api_errors = 0;
+
+	/**
 	 * Add new auth data
 	 * @param array $data
 	 * - @var string auth_type
@@ -51,6 +56,15 @@ class vkAuthStorage {
 	}
 
 	/**
+	 * Set peer_id for VK API errors
+	 * @param int $peer_id
+	 * @return void
+	 */
+	public static function setErrorsPeer(int $peer_id) {
+		vkAuthStorage::$api_errors = $peer_id;
+	}
+
+	/**
 	 * Get active user
 	 * @return array
 	 */
@@ -72,6 +86,14 @@ class vkAuthStorage {
 	 */
 	public static function getAviableIds() {
 		return array_column(vkAuthStorage::$auth_data, 'api_id');
+	}
+
+	/**
+	 * Get current peer_id for VK API errors
+	 * @return int
+	 */
+	public static function getErrorsPeer() {
+		return vkAuthStorage::$api_errors;
 	}
 
 	/**

@@ -29,7 +29,7 @@ request('https://api.slmatthew.ru/someMethod', ['fromSenses' => 1], 'My user age
 |--------------|--------|-----------------------------------------------------------------------------------------------------------|
 | access_token | string | access_token для работы с VK API                                                                          |
 | v            | string | Версия VK API                                                                                             |
-| unsestToken  | bool   | Если указано это поле и выполняется `$params['unsestToken']`, при запросе не будет передан `access_token` |
+| unsestToken  | bool   | Если указано это поле и выполняется `$params['unsetToken']`, при запросе не будет передан `access_token` |
 
 ```php
 call('users.get', ['user_ids' => 305360617]);
