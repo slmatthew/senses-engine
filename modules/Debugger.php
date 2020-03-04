@@ -16,9 +16,12 @@ class sensesDebugger {
 	}
 }
 
-class Debugger {
+class DebuggerEvents {
 	public const API_CALL = 'api';
+	public const API_ERROR = 'api-error';
+}
 
+class Debugger {
 	private $types = [];
 	private $handlers = [];
 
