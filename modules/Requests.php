@@ -37,13 +37,47 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
  * @since v0.1
  */
 function call(string $method, array $params = [], bool $official = false) {
-	if(!isset($params['access_token'])) $params['access_token'] = isset(vkAuthStorage::get()['token']) ? vkAuthStorage::get()['token'] : '';
-	if(!isset($params['v'])) $params['v'] = isset(vkAuthStorage::get()['version']) ? vkAuthStorage::get()['version'] : '5.118';
+	$defaultParams = [
+		'access_token' => isset(vkAuthStorage::get()['token']) ? vkAuthStorage::get()['token'] : '',
+		'v' => isset(vkAuthStorage::get()['version']) ? vkAuthStorage::get()['version'] : '5.118'
+	];
+
+	if(!isset($params['access_token'])) $params['access_token'] = $defaultParams['access_token'];
+	if(!isset($params['v'])) $params['v'] = $defaultParams['v'];
 	if(isset($params['unsetToken']) && $params['unsetToken']) unset($params['access_token']);
 
 	$agent = $official ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/".SEV;
 
-	return request("https://api.vk.com/method/{$method}", $params, $agent);
+	$result = request("https://api.vk.com/method/{$method}", $params, $agent);
+
+	if(vkAuthStorage::getErrorsPeer() != 0 && isset($result['error'])) {
+		$code = $result['error']['error_code'];
+		$msg = $result['error']['error_msg'];
+		$req_params = [];
+
+		foreach($result['error']['request_params'] as $_ => $reqp) {
+			if($reqp['key'] === 'oauth') continue;
+
+			$req_params[] = "{$reqp['key']} = {$reqp['value']}";
+		}
+
+		$req_params[] = "\nUser-Agent: {$agent}";
+
+		$message = "VK API Error #{$code}: {$msg}";
+		if(!empty($req_params)) {
+			$message .= "\n\n".implode("\n", $req_params);
+		}
+
+		$sendParams = $defaultParams + [
+			'peer_id' => vkAuthStorage::getErrorsPeer(),
+			'random_id' => 0,
+			'message' => $message
+		];
+
+		request("https://api.vk.com/method/messages.send", $sendParams, $agent);
+	}
+
+	return $result;
 }
 
 ?>
