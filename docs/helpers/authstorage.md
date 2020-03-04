@@ -42,3 +42,24 @@ vkAuthStorage::getAviableIds(); // array
 ```
 
 > Возможна проблема с коллизией ID пользователей и сообществ. В будущем она будет исправлена.
+
+## setErrorsPeer
+Установить `peer_id`, куда будут отправляться ошибки VK API. Установите `0`, чтобы отключить эту функцию.
+
+Если при отправке сообщения возникнет ошибка, библиотека проигнорирует её, дабы не было рекурсии. Будьте внимательней с этой функцией при использовании нескольких аккаунтов.
+
+```php
+vkAuthStorage::setErrorsPeer(2e9 + 1); // void
+
+// disabling:
+vkAuthStorage::setErrorsPeer(0);
+```
+
+![image](https://user-images.githubusercontent.com/36668268/75895356-96dcdd00-5e46-11ea-8a59-81310415610a.png)
+
+## getErrorsPeer
+Получить `peer_id`, куда отправляются ошибки VK API.
+
+```php
+vkAuthStorage::getErrorsPeer(); // int
+```
