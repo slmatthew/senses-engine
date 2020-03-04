@@ -19,6 +19,13 @@ class sensesDebugger {
 class DebuggerEvents {
 	public const API_CALL = 'api';
 	public const API_ERROR = 'api-error';
+	public const API_RESULT = 'api-result';
+
+	public const LP_START = 'lp-start';
+	public const LP_FIRST_UPDATES = 'lp-started';
+	public const LP_FAILED = 'lp-failed';
+	public const LP_DATA_UPDATED = 'lp-server-updated';
+	public const LP_TS_UPDATED = 'lp-ts-updated';
 }
 
 class Debugger {
