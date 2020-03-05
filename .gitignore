@@ -2,6 +2,7 @@
 /output/
 /.idea/
 /noverify/
+/modules/.senses/
 
 config.php
 todo.txt
