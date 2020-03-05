@@ -79,7 +79,19 @@ class DataHandler {
 		$key = $lp['key'];
 
 		$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
-		$url = sprintf($baseurl, $lp['ts']);
+
+		@mkdir(__DIR__.'/.senses');
+
+		$cached_ts = @file_get_contents(__DIR__.'/.senses/ts');
+		if($cached_ts === false) {
+			$url = sprintf($baseurl, $lp['ts']);
+		} else {
+			$url = sprintf($baseurl, $cached_ts);
+
+			unlink(__DIR__.'/.senses/ts');
+		}
+
+		file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
 
 		terminal("Starting {$type} longpoll..."); // terminal() will be deleted
 		sensesDebugger::event(DebuggerEvents::LP_START, [
@@ -104,6 +116,9 @@ class DataHandler {
 					$url = sprintf($baseurl, $result['ts']);
 					$updates = $result['updates'];
 
+					unlink(__DIR__.'/.senses/ts');
+					file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+
 					terminal("Got updates");
 
 					foreach($updates as $key => $data) {
@@ -118,6 +133,9 @@ class DataHandler {
 					switch($result['failed']) {
 						case 1:
 							$url = sprintf($baseurl, $result['ts']);
+
+							unlink(__DIR__.'/.senses/ts');
+							file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
 							break;
 
 						case 2: case 3:
@@ -135,6 +153,9 @@ class DataHandler {
 
 								$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
+
+								unlink(__DIR__.'/.senses/ts');
+								file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
 
 								sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
 									'lp' => $lp,
@@ -156,6 +177,9 @@ class DataHandler {
 									$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
 
+									unlink(__DIR__.'/.senses/ts');
+									file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+
 									sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
 										'lp' => $lp,
 										'url' => $url
@@ -168,6 +192,10 @@ class DataHandler {
 					}
 				} elseif(isset($result['ts'])) {
 					$url = sprintf($baseurl, $result['ts']);
+
+					unlink(__DIR__.'/.senses/ts');
+					file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+
 					sensesDebugger::event(DebuggerEvents::LP_TS_UPDATED, [
 						'ts' => $result['ts'],
 						'url' => $url
