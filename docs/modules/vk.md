@@ -77,6 +77,8 @@ $vk->setConfirmation('1234abcd');
 ## listen
 Начать слушать события. Возвращает `$this->client`, содержащее экземпляр класса [DataHandler](datahandler.md).
 
+Принимает единственный аргумент `bool $cache`, отвечающий за [кеширование](datahandler.md#кеширование-ts) `ts`. По умолчанию `true`.
+
 ## Поля класса
 ### bot
 Экземпляр класса [BotEngine](botengine.md) или `null`.
