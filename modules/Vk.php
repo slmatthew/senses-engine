@@ -263,9 +263,7 @@ class vk {
 	 * @ignore
 	 */
 	protected function init() {
-		global $config;
-
-		if(!empty($config) && isset($config['type']) && $config['type'] === 'user') $this->audio = new VkAudio();
+		if(isset(vkAuthStorage::get()['api_type']) && vkAuthStorage::get()['api_type'] === 'user') $this->audio = new VkAudio();
 	}
 }
 
