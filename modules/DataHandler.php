@@ -18,11 +18,13 @@ class DataHandler {
 	 * Init DataHandler class
 	 * @param string $type Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API). Default: "cb"
 	 * @param BotEngine $be BotEngine class
+	 * @param string $confirm_string Confirmation string for CB API
+	 * @param bool $cache ts cache
 	 * @throws TypeException
 	 * @return void
 	 * @since v0.1
 	 */
-	public function __construct(string $type, BotEngine $be, string $confirm_string = '') {
+	public function __construct(string $type, BotEngine $be, string $confirm_string = '', bool $cache = true) {
 		if($type === 'cb' && vkAuthStorage::get()['api_type'] === 'community') {
 			// we need to handle request. Add in v0.2-alpha
 			ini_set('display_errors', 0);
@@ -54,7 +56,7 @@ class DataHandler {
 			}
 		} elseif($type === 'lp') {
 			// we need to start longpoll
-			$this->startLp($be, vkAuthStorage::get()['api_type']);
+			$this->startLp($be, vkAuthStorage::get()['api_type'], $cache);
 		} else throw new TypeException('Unknown type for DataHandler');
 	}
 
@@ -62,11 +64,12 @@ class DataHandler {
 	 * Longpolling
 	 * @param BotEngine $be BotEngine class
 	 * @param string $type Longpolling type: user or community
+	 * @param bool $cache ts cache
 	 * @throws LongpollException
 	 * @return void
 	 * @since v0.1
 	 */
-	public function startLp(BotEngine $be, string $type) {
+	public function startLp(BotEngine $be, string $type, bool $cache = true) {
 		if($type === 'community') {
 			$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
 		} elseif($type === 'user') {
@@ -79,7 +82,25 @@ class DataHandler {
 		$key = $lp['key'];
 
 		$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
-		$url = sprintf($baseurl, $lp['ts']);
+
+		if($cache) {
+			echo "cache\n";
+			@mkdir(__DIR__.'/.senses');
+
+			$cached_ts = @file_get_contents(__DIR__.'/.senses/ts');
+			if($cached_ts === false) {
+				$url = sprintf($baseurl, $lp['ts']);
+			} else {
+				$url = sprintf($baseurl, $cached_ts);
+
+				unlink(__DIR__.'/.senses/ts');
+			}
+
+			file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+		} else {
+			echo "no cache\n";
+			$url = sprintf($baseurl, $lp['ts']);
+		}
 
 		terminal("Starting {$type} longpoll..."); // terminal() will be deleted
 		sensesDebugger::event(DebuggerEvents::LP_START, [
@@ -104,6 +125,9 @@ class DataHandler {
 					$url = sprintf($baseurl, $result['ts']);
 					$updates = $result['updates'];
 
+					unlink(__DIR__.'/.senses/ts');
+					file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+
 					terminal("Got updates");
 
 					foreach($updates as $key => $data) {
@@ -118,6 +142,9 @@ class DataHandler {
 					switch($result['failed']) {
 						case 1:
 							$url = sprintf($baseurl, $result['ts']);
+
+							unlink(__DIR__.'/.senses/ts');
+							file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
 							break;
 
 						case 2: case 3:
@@ -135,6 +162,9 @@ class DataHandler {
 
 								$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
+
+								unlink(__DIR__.'/.senses/ts');
+								file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
 
 								sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
 									'lp' => $lp,
@@ -156,6 +186,9 @@ class DataHandler {
 									$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
 
+									unlink(__DIR__.'/.senses/ts');
+									file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+
 									sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
 										'lp' => $lp,
 										'url' => $url
@@ -168,6 +201,10 @@ class DataHandler {
 					}
 				} elseif(isset($result['ts'])) {
 					$url = sprintf($baseurl, $result['ts']);
+
+					unlink(__DIR__.'/.senses/ts');
+					file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+
 					sensesDebugger::event(DebuggerEvents::LP_TS_UPDATED, [
 						'ts' => $result['ts'],
 						'url' => $url

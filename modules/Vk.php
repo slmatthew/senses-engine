@@ -241,10 +241,11 @@ class vk {
 
 	/**
 	 * Create new DataHandler
+	 * @param bool $cache ts cache
 	 * @return DataHandler
 	 */
-	public function listen() {
-		$this->client = new DataHandler($this->client_type, $this->bot, $this->confirm_string);
+	public function listen(bool $cache = true) {
+		$this->client = new DataHandler($this->client_type, $this->bot, $this->confirm_string, $cache);
 		return $this->client;
 	}
 
