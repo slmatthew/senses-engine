@@ -12,6 +12,11 @@ function terminal($text) {
 	if(NEED_LP_LOGS) echo "{$text}\n";
 }
 
+function __replaceTsCache(int $ts) {
+	unlink(__DIR__.'/.senses/ts');
+	file_put_contents(__DIR__.'/.senses/ts', $ts);
+}
+
 class DataHandler {
 
 	/**
@@ -124,8 +129,7 @@ class DataHandler {
 					$updates = $result['updates'];
 
 					if($cache) {
-						unlink(__DIR__.'/.senses/ts');
-						file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+						__replaceTsCache($result['ts']);
 					}
 
 					terminal("Got updates");
@@ -144,8 +148,7 @@ class DataHandler {
 							$url = sprintf($baseurl, $result['ts']);
 
 							if($cache) {
-								unlink(__DIR__.'/.senses/ts');
-								file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+								__replaceTsCache($result['ts']);
 							}
 							break;
 
@@ -166,8 +169,7 @@ class DataHandler {
 								$url = sprintf($baseurl, $lp['ts']);
 
 								if($cache) {
-									unlink(__DIR__.'/.senses/ts');
-									file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+									__replaceTsCache($lp['ts']);
 								}
 
 								sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
@@ -191,8 +193,7 @@ class DataHandler {
 									$url = sprintf($baseurl, $lp['ts']);
 
 									if($cache) {
-										unlink(__DIR__.'/.senses/ts');
-										file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+										__replaceTsCache($lp['ts']);
 									}
 
 									sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
@@ -209,8 +210,7 @@ class DataHandler {
 					$url = sprintf($baseurl, $result['ts']);
 
 					if($cache) {
-						unlink(__DIR__.'/.senses/ts');
-						file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+						__replaceTsCache($result['ts']);
 					}
 
 					sensesDebugger::event(DebuggerEvents::LP_TS_UPDATED, [
