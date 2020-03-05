@@ -84,7 +84,6 @@ class DataHandler {
 		$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 
 		if($cache) {
-			echo "cache\n";
 			@mkdir(__DIR__.'/.senses');
 
 			$cached_ts = @file_get_contents(__DIR__.'/.senses/ts');
@@ -98,7 +97,6 @@ class DataHandler {
 
 			file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
 		} else {
-			echo "no cache\n";
 			$url = sprintf($baseurl, $lp['ts']);
 		}
 
@@ -125,8 +123,10 @@ class DataHandler {
 					$url = sprintf($baseurl, $result['ts']);
 					$updates = $result['updates'];
 
-					unlink(__DIR__.'/.senses/ts');
-					file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+					if($cache) {
+						unlink(__DIR__.'/.senses/ts');
+						file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+					}
 
 					terminal("Got updates");
 
@@ -143,8 +143,10 @@ class DataHandler {
 						case 1:
 							$url = sprintf($baseurl, $result['ts']);
 
-							unlink(__DIR__.'/.senses/ts');
-							file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+							if($cache) {
+								unlink(__DIR__.'/.senses/ts');
+								file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+							}
 							break;
 
 						case 2: case 3:
@@ -163,8 +165,10 @@ class DataHandler {
 								$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 								$url = sprintf($baseurl, $lp['ts']);
 
-								unlink(__DIR__.'/.senses/ts');
-								file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+								if($cache) {
+									unlink(__DIR__.'/.senses/ts');
+									file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+								}
 
 								sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
 									'lp' => $lp,
@@ -186,8 +190,10 @@ class DataHandler {
 									$baseurl = $type === 'community' ? "{$server}?act=a_check&key={$key}&wait=25&mode=2&ts=%d" : "https://{$server}?act=a_check&key={$key}&wait=25&mode={$userlp_mode}&version=10&ts=%d";
 									$url = sprintf($baseurl, $lp['ts']);
 
-									unlink(__DIR__.'/.senses/ts');
-									file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+									if($cache) {
+										unlink(__DIR__.'/.senses/ts');
+										file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+									}
 
 									sensesDebugger::event(DebuggerEvents::LP_DATA_UPDATED, [
 										'lp' => $lp,
@@ -202,8 +208,10 @@ class DataHandler {
 				} elseif(isset($result['ts'])) {
 					$url = sprintf($baseurl, $result['ts']);
 
-					unlink(__DIR__.'/.senses/ts');
-					file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+					if($cache) {
+						unlink(__DIR__.'/.senses/ts');
+						file_put_contents(__DIR__.'/.senses/ts', $result['ts']);
+					}
 
 					sensesDebugger::event(DebuggerEvents::LP_TS_UPDATED, [
 						'ts' => $result['ts'],
