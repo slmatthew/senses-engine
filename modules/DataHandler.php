@@ -12,9 +12,22 @@ function terminal($text) {
 	if(NEED_LP_LOGS) echo "{$text}\n";
 }
 
+function __getTsFileName() {
+	$user = vkAuthStorage::get();
+	if(isset($user['api_id'])) {
+		if($user['api_type'] === 'user') {
+			return 'ts'.$user['api_id'];
+		} else {
+			return 'ts'.$user['api_id'] * -1;
+		}
+	}
+
+	return 0;
+}
+
 function __replaceTsCache(int $ts) {
-	unlink(__DIR__.'/.senses/ts');
-	file_put_contents(__DIR__.'/.senses/ts', $ts);
+	unlink(__DIR__.'/.senses/'.__getTsFileName());
+	file_put_contents(__DIR__.'/.senses/'.__getTsFileName(), $ts);
 }
 
 class DataHandler {
@@ -91,16 +104,16 @@ class DataHandler {
 		if($cache) {
 			@mkdir(__DIR__.'/.senses');
 
-			$cached_ts = @file_get_contents(__DIR__.'/.senses/ts');
+			$cached_ts = @file_get_contents(__DIR__.'/.senses/'.__getTsFileName());
 			if($cached_ts === false) {
 				$url = sprintf($baseurl, $lp['ts']);
 			} else {
 				$url = sprintf($baseurl, $cached_ts);
 
-				unlink(__DIR__.'/.senses/ts');
+				unlink(__DIR__.'/.senses/'.__getTsFileName());
 			}
 
-			file_put_contents(__DIR__.'/.senses/ts', $lp['ts']);
+			file_put_contents(__DIR__.'/.senses/'.__getTsFileName(), $lp['ts']);
 		} else {
 			$url = sprintf($baseurl, $lp['ts']);
 		}
