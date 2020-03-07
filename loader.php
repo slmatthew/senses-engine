@@ -16,8 +16,6 @@ define("SEV", "0.8");
  */
 define("NEED_LP_LOGS", false);
 
-include_once __DIR__.'/config.php';
-
 if(isset($config['dev'])) define("CURL_VERIFY", false);
 else define("CURL_VERIFY", true);
 
