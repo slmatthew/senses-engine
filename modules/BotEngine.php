@@ -57,7 +57,10 @@ class BotEngine {
 	public function onCommands(array $names, callable $handler) {
 		foreach($names as $_ => $name) {
 			if(strlen($name) == 0) continue;
-			if($this->needLowerCase) $name = mb_strtolower($name);
+
+			if(!preg_match('/\/(.*)\/(.*)/i', $name)) {
+				$name = "/^{$name}$/i";
+			}
 
 			$this->commands[$name] = $handler;
 		}
@@ -69,25 +72,19 @@ class BotEngine {
 	 * Payload commands constructor (handle payload param from message object: {"command": "start"})
 	 * @param array $names Name of command
 	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
-	 * @return bool
+	 * @return void
 	 * @since v0.8
 	 */
 	public function onPayload(array $names, callable $handler) {
-		if(count($names) == 1) {
-			if(strlen($names[0]) == 0) return false;
-			if($this->needLowerCase) $names[0] = mb_strtolower($names[0]);
+		foreach($names as $_ => $name) {
+			if(strlen($name) == 0) continue;
 
-			$this->payloadCommands[$names[0]] = $handler;
-		} else {
-			foreach($names as $_ => $name) {
-				if(strlen($name) == 0) continue;
-				if($this->needLowerCase) $name = mb_strtolower($name);
-
-				$this->payloadCommands[$name] = $handler;
+			if(!preg_match('/\/(.*)\/(.*)/i', $name)) {
+				$name = "/^{$name}$/i";
 			}
-		}
 
-		return true;
+			$this->payloadCommands[$name] = $handler;
+		}
 	}
 
 	/**
@@ -181,7 +178,16 @@ class BotEngine {
 	protected function checkPayloadCommand(string $name) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
-		return isset($this->payloadCommands[$name]);
+		$regexps = array_keys($this->payloadCommands);
+		foreach($regexps as $i => $exp) {
+			if($exp === 'default') continue;
+
+			if(preg_match($exp, $name)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -195,7 +201,14 @@ class BotEngine {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if($this->checkPayloadCommand($name)) {
-			return $this->payloadCommands[$name]($data, $some);
+			$regexps = array_keys($this->payloadCommands);
+			foreach($regexps as $i => $exp) {
+				if($exp === 'default') continue; // ???
+
+				if(preg_match($exp, $name, $match)) {
+					return $this->payloadCommands[$exp]($data, $some, $match);
+				}
+			}
 		}
 
 		return -1;
@@ -210,7 +223,16 @@ class BotEngine {
 	protected function checkCommand(string $name) {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
-		return isset($this->commands[$name]);
+		$regexps = array_keys($this->commands);
+		foreach($regexps as $i => $exp) {
+			if($exp === 'default') continue;
+
+			if(preg_match($exp, $name)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -224,7 +246,14 @@ class BotEngine {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		if($this->checkCommand($name)) {
-			return $this->commands[$name]($data, $some);
+			$regexps = array_keys($this->commands);
+			foreach($regexps as $i => $exp) {
+				if($exp === 'default') continue; // ???
+
+				if(preg_match($exp, $name, $match)) {
+					return $this->commands[$exp]($data, $some, $match);
+				}
+			}
 		}
 
 		return -1;
@@ -239,21 +268,21 @@ class BotEngine {
 				if($data[0] == 4) {
 					if($this->checkDataHandler('4') && $this->runDataHandler('4', $data) === false) return;
 
-					$text = mb_strtolower($data[5]);
+					$text = $this->needLowerCase ? mb_strtolower($data[5]) : $data[5];
 					$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
 					$some = new Message($data, false);
 
 					if($some->isOut()) return;
 
-					$this->checkAllCommands('', $exp[0], $data, $some);
+					$this->checkAllCommands('', $text, $data, $some);
 				} elseif($this->checkDataHandler("{$data[0]}")) {
 					$this->runDataHandler("{$data[0]}", $data);
 				}
 			} elseif($data['type'] === 'message_new') {
 				if($this->checkDataHandler('message_new') && $this->runDataHandler('message_new', $data) === false) return;
 				
-				$text = mb_strtolower($data['object']['message']['text']);
+				$text = $this->needLowerCase ? mb_strtolower($data['object']['message']['text']) : $data['object']['message']['text'];
 				$exp = strlen($text) > 0 ? explode(' ', $text) : [''];
 
 				$some = new Message($data);
@@ -263,7 +292,7 @@ class BotEngine {
 				if($check) {
 					$this->checkAllCommands(json_decode(json_decode($data['object']['message']['payload'], true), true)['command'], $exp[0], $data, $some);
 				} else {
-					$this->checkAllCommands('', $exp[0], $data, $some);
+					$this->checkAllCommands('', $text, $data, $some);
 				}
 			} elseif($this->checkDataHandler($data['type'])) {
 				$this->runDataHandler($data['type'], $data);
