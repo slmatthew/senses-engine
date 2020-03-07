@@ -12,23 +12,23 @@ class Keyboard {
 	 * Should VK hide the keyboard after first use
 	 * @var bool
 	 */
-	public $one_time = false;
+	public bool $one_time = false;
 
 	/**
 	 * Should keyboard be inline
 	 * @var bool
 	 */
-	public $inline = false;
+	public bool $inline = false;
 
 	/**
 	 * @ignore
 	 */
-	public $buttons = [];
+	public array $buttons = [];
 
 	/**
 	 * @ignore
 	 */
-	public $currentIndex = 0;
+	public int $currentIndex = 0;
 
 	public const PRIMARY_BUTTON = 'primary';
 	public const SECONDARY_BUTTON = 'secondary';
@@ -45,8 +45,6 @@ class Keyboard {
 	public function __construct(bool $one_time = false, bool $inline = false) {
 		$this->one_time = $one_time;
 		$this->inline = $inline;
-
-		return $this;
 	}
 
 	/**
@@ -55,7 +53,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function oneTime(bool $enabled) {
+	public function oneTime(bool $enabled): Keyboard {
 		$this->one_time = $enabled;
 
 		return $this;
@@ -67,7 +65,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function inline(bool $enabled) {
+	public function inline(bool $enabled): Keyboard {
 		$this->inline = $enabled;
 
 		return $this;
@@ -80,7 +78,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since v0.3
 	 */
-	public function addButton(array $action, string $color = '') {
+	public function addButton(array $action, string $color = ''): Keyboard {
 		if(isset($action['payload'])) $action['payload'] = json_encode($action['payload'], JSON_UNESCAPED_UNICODE);
 
 		if(isset($action['type']) && $action['type'] === 'text') {
@@ -105,7 +103,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addTextButton(string $label, array $payload = [], string $color = self::PRIMARY_BUTTON) {
+	public function addTextButton(string $label, array $payload = [], string $color = self::PRIMARY_BUTTON): Keyboard {
 		$this->addButton([
 			'type' => 'text',
 			'label' => $label,
@@ -121,7 +119,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addLocationButton(array $payload = []) {
+	public function addLocationButton(array $payload = []): Keyboard {
 		$this->addButton([
 			'type' => 'location',
 			'payload' => $this->toJson($payload)
@@ -137,7 +135,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addPayButton(array $hash, array $payload = []) {
+	public function addPayButton(array $hash, array $payload = []): Keyboard {
 		$this->addButton([
 			'type' => 'vkpay',
 			'hash' => http_build_query($hash),
@@ -157,7 +155,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since 0.6
 	 */
-	public function addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []) {
+	public function addAppButton(int $app_id, int $owner_id, string $label, string $hash = '', array $payload = []): Keyboard {
 		$this->addButton([
 			'type' => 'open_app',
 			'app_id' => $app_id,
@@ -175,7 +173,7 @@ class Keyboard {
 	 * @return Keyboard
 	 * @since v0.3
 	 */
-	public function row() {
+	public function row(): Keyboard {
 		$this->currentIndex = $this->currentIndex + 1;
 
 		return $this;
@@ -200,7 +198,7 @@ class Keyboard {
 	/**
 	 * @ignore
 	 */
-	private function toJson(array $array) { return json_encode($array, JSON_UNESCAPED_UNICODE); }
+	private function toJson(array $array): string { return json_encode($array, JSON_UNESCAPED_UNICODE); }
 }
 
 ?>

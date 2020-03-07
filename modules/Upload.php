@@ -7,7 +7,7 @@ class UploadRequests {
 	/**
 	 * @ignore
 	 */
-	protected function plainRequest(string $url, array $fields) {
+	protected function plainRequest(string $url, array $fields): string {
 		$ch = curl_init($url);
 
 		curl_setopt($ch, CURLOPT_POST, true);
@@ -26,7 +26,7 @@ class UploadRequests {
 	/**
 	 * @ignore
 	 */
-	protected function request(string $url, array $fields) {
+	protected function request(string $url, array $fields): array {
 		return json_decode($this->plainRequest($url, $fields), true);
 	}
 }
@@ -38,15 +38,16 @@ class UploadHeart extends UploadRequests {
 
 	/**
 	 * Files data
+	 * @var array
 	 * @ignore
 	 */
-	private $files = null;
+	private array $files = [];
 
 	/**
 	 * Upload url
 	 * @ignore
 	 */
-	private $url = '';
+	private string $url = '';
 
 	/**
 	 * @param mixed[] $files Path to files. Must be like ['path1', 'path2', ..., 'path5'] or 'path'
@@ -70,7 +71,7 @@ class UploadHeart extends UploadRequests {
 	 * @throws ParameterException
 	 * @return array
 	 */
-	public function upload(string $name = 'file', array $fields = []) {
+	public function upload(string $name = 'file', array $fields = []): array {
 		if((gettype($this->files) === 'array' && (count($this->files) > 5 || empty($this->files))) || (gettype($this->files) === 'string' && strlen($this->url) == 0)) throw new ParameterException('Invalid files count');
 
 		if(gettype($this->files) === 'string') $count = 1;
@@ -106,7 +107,7 @@ class UploadManager {
 	 * @throws ParameterException
 	 * @return array
 	 */
-	public function upload(string $url, $files, string $name = 'file', array $fields = []) {
+	public function upload(string $url, $files, string $name = 'file', array $fields = []): array {
 		$uh = new UploadHeart($files, $url);
 		return $uh->upload($name, $fields);
 	}
@@ -116,7 +117,7 @@ class UploadManager {
 	 * @param string $path Path to folder. By default it is __DIR__.'/senses-tmp'
 	 * @return string
 	 */
-	public function download(string $url, string $path = '/senses-tmp') {
+	public function download(string $url, string $path = '/senses-tmp'): string {
 		$ch = curl_init($url);
 		curl_setopt_array($ch, [
 			CURLOPT_RETURNTRANSFER => true,
@@ -141,7 +142,7 @@ class UploadManager {
 	 * @throws ParameterException
 	 * @return array
 	 */
-	public function reUpload(string $save_url, string $upload_url, string $save_path = '/senses-tmp') {
+	public function reUpload(string $save_url, string $upload_url, string $save_path = '/senses-tmp'): array {
 		$path = $this->download($save_url, $save_path);
 		return $this->upload($upload_url, $path);
 	}
@@ -164,7 +165,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function default($files, int $album_id = -1, int $group_id = -1, array $serverParams = [], array $saveParams = []) {
+	public function default($files, int $album_id = -1, int $group_id = -1, array $serverParams = [], array $saveParams = []): array {
 		if($album_id != -1) $serverParams['album_id'] = $album_id;
 		if($group_id != -1) $serverParams['group_id'] = $group_id;
 
@@ -194,7 +195,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function wall(string $file, int $group_id = -1, array $serverParams = [], array $saveParams = []) {
+	public function wall(string $file, int $group_id = -1, array $serverParams = [], array $saveParams = []): array {
 		if($group_id != -1) $serverParams['group_id'] = $group_id;
 
 		$server = call('photos.getWallUploadServer', $serverParams);
@@ -223,7 +224,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function main(string $file, int $owner_id = -1, array $serverParams = [], array $uploadFields = [], array $saveParams = []) {
+	public function main(string $file, int $owner_id = -1, array $serverParams = [], array $uploadFields = [], array $saveParams = []): array {
 		if($owner_id == -1) $serverParams['owner_id'] = vkAuthStorage::get()['api_type'] === 'user' ? vkAuthStorage::get()['api_id'] : vkAuthStorage::get()['api_id'] * -1;
 		else $serverParams['owner_id'] = $owner_id;
 
@@ -251,7 +252,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function message(string $file, int $peer_id = -1, array $serverParams = [], array $saveParams = []) {
+	public function message(string $file, int $peer_id = -1, array $serverParams = [], array $saveParams = []): array {
 		if($peer_id != -1) $serverParams['peer_id'] = $peer_id;
 
 		$server = call('photos.getMessagesUploadServer', $serverParams);
@@ -277,7 +278,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return string
 	 */
-	public function chat(string $file, int $chat_id, array $serverParams = []) {
+	public function chat(string $file, int $chat_id, array $serverParams = []): string {
 		$serverParams['chat_id'] = $chat_id;
 
 		$server = call('photos.getChatUploadServer', $serverParams);
@@ -300,7 +301,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function market(string $file, bool $main_photo = false, array $serverParams = [], array $saveParams = []) {
+	public function market(string $file, bool $main_photo = false, array $serverParams = [], array $saveParams = []): array {
 		if(vkAuthStorage::get()['api_type'] === 'community' && !isset($serverParams['group_id'])) $serverParams['group_id'] = vkAuthStorage::get()['api_id'];
 
 		$serverParams['main_photo'] = (int)$main_photo;
@@ -334,7 +335,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function marketAlbum(string $file, int $group_id, array $serverParams = [], array $saveParams = []) {
+	public function marketAlbum(string $file, int $group_id, array $serverParams = [], array $saveParams = []): array {
 		$serverParams['group_id'] = $group_id;
 
 		$server = call('photos.getMarketAlbumUploadServer', $serverParams);
@@ -362,7 +363,7 @@ class PhotosUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function cover(string $file, int $group_id, array $serverParams = [], array $saveParams = []) {
+	public function cover(string $file, int $group_id, array $serverParams = [], array $saveParams = []): array {
 		$serverParams['group_id'] = $group_id;
 
 		$server = call('photos.getOwnerCoverPhotoUploadServer', $serverParams);
@@ -394,7 +395,7 @@ class AudioUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function default(string $file, array $serverParams = [], array $saveParams = []) {
+	public function default(string $file, array $serverParams = [], array $saveParams = []): array {
 		$server = call('audio.getUploadServer', $serverParams);
 		if(isset($server['response'])) {
 			$url = $server['response']['upload_url'];
@@ -423,7 +424,7 @@ class VideoUpload extends UploadManager {
 	 * @throws ParameterException
 	 * @return array
 	 */
-	public function default(string $file = '', array $params = []) {
+	public function default(string $file = '', array $params = []): array {
 		$result = call('video.save', $params);
 		if(isset($params['link'])) {
 			return $result;
@@ -449,7 +450,7 @@ class DocsUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	protected function template(string $file, string $serverMethod, array $serverParams = [], array $saveParams = []) {
+	protected function template(string $file, string $serverMethod, array $serverParams = [], array $saveParams = []): array {
 		$server = call($serverMethod, $serverParams);
 		if(isset($server['response'])) {
 			$url = $server['response']['upload_url'];
@@ -471,7 +472,7 @@ class DocsUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function default(string $file, array $serverParams = [], array $saveParams = []) {
+	public function default(string $file, array $serverParams = [], array $saveParams = []): array {
 		return $this->template($file, 'docs.getUploadServer', $serverParams, $saveParams);
 	}
 
@@ -484,7 +485,7 @@ class DocsUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function wall(string $file, array $serverParams = [], array $saveParams = []) {
+	public function wall(string $file, array $serverParams = [], array $saveParams = []): array {
 		return $this->template($file, 'docs.getWallUploadServer', $serverParams, $saveParams);
 	}
 
@@ -498,7 +499,7 @@ class DocsUpload extends UploadManager {
 	 * @throws ApiException
 	 * @return array
 	 */
-	public function messages(string $file, string $type = 'doc', array $serverParams = [], array $saveParams = []) {
+	public function messages(string $file, string $type = 'doc', array $serverParams = [], array $saveParams = []): array {
 		$serverParams['type'] = $type;
 		return $this->template($file, 'docs.getMessagesUploadServer', $serverParams, $saveParams);
 	}

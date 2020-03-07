@@ -14,7 +14,7 @@ if(!defined("SEV")) define("SEV", "unknown");
  * @return array
  * @since v0.1
  */
-function request(string $url, array $postfields = [], string $agent = 'Senses Bot Engine/'.SEV) {
+function request(string $url, array $postfields = [], string $agent = 'Senses Bot Engine/'.SEV): array {
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, $agent);
@@ -36,7 +36,7 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
  * @return array
  * @since v0.1
  */
-function call(string $method, array $params = [], bool $official = false) {
+function call(string $method, array $params = [], bool $official = false): array {
 	$defaultParams = [
 		'access_token' => isset(vkAuthStorage::get()['token']) ? vkAuthStorage::get()['token'] : '',
 		'v' => isset(vkAuthStorage::get()['version']) ? vkAuthStorage::get()['version'] : '5.118'

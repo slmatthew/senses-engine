@@ -11,29 +11,29 @@ class BotEngine {
 	/**
 	 * @ignore
 	 */
-	public $commands = [];
+	public array $commands = [];
 
 	/**
 	 * @ignore
 	 */
-	public $payloadCommands = []; // This commands will be detected from payload
+	public array $payloadCommands = []; // This commands will be detected from payload
 
 	/**
 	 * @ignore
 	 */
-	public $aliases = [];
+	public array $aliases = [];
 
 	/**
 	 * @ignore
 	 */
-	public $dataHandlers = [];
+	public array $dataHandlers = [];
 
 	/**
 	 * Commands will be handled in lower case
 	 * @var bool
 	 * @since v0.1
 	 */
-	public $needLowerCase = true;
+	public bool $needLowerCase = true;
 
 	/**
 	 * BotEngine constructor
@@ -61,15 +61,13 @@ class BotEngine {
 
 			$this->commands[$name] = $handler;
 		}
-
-		return true;
 	}
 
 	/**
 	 * Payload commands constructor (handle payload param from message object: {"command": "start"})
 	 * @param array $names Name of command
 	 * @param callable $handler Function-handler of command. This construction will be used when command is called: $handler($data)
-	 * @return bool
+	 * @return void
 	 * @since v0.8
 	 */
 	public function onPayload(array $names, callable $handler) {
@@ -86,8 +84,6 @@ class BotEngine {
 				$this->payloadCommands[$name] = $handler;
 			}
 		}
-
-		return true;
 	}
 
 	/**
@@ -95,9 +91,9 @@ class BotEngine {
 	 * @param array $names Commands names
 	 * @param callable $handler Function-handler
 	 * @param bool $is_payload Register payload command?
-	 * @return bool
+	 * @return void
 	 */
-	public function hear(array $names, callable $handler, bool $is_payload = false): bool {
+	public function hear(array $names, callable $handler, bool $is_payload = false) {
 		return $is_payload ? $this->onPayload($names, $handler) : $this->onCommands($names, $handler);
 	}
 
@@ -108,7 +104,7 @@ class BotEngine {
 	 * @return bool
 	 * @since v0.8
 	 */
-	public function registerAlias(string $payloadName, string $textName) {
+	public function registerAlias(string $payloadName, string $textName): bool {
 		if($this->needLowerCase) {
 			$payloadName = mb_strtolower($payloadName);
 			$textName = mb_strtolower($textName);
@@ -178,7 +174,7 @@ class BotEngine {
 	 * @return bool
 	 * @since v0.4
 	 */
-	protected function checkPayloadCommand(string $name) {
+	protected function checkPayloadCommand(string $name): bool {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		return isset($this->payloadCommands[$name]);
@@ -207,7 +203,7 @@ class BotEngine {
 	 * @return bool
 	 * @since v0.1
 	 */
-	protected function checkCommand(string $name) {
+	protected function checkCommand(string $name): bool {
 		if($this->needLowerCase) $name = mb_strtolower($name);
 
 		return isset($this->commands[$name]);
@@ -290,7 +286,7 @@ class BotEngine {
 	 * @return bool
 	 * @since v0.1
 	 */
-	protected function checkDataHandler(string $name) {
+	protected function checkDataHandler(string $name): bool {
 		$name = mb_strtolower($name);
 
 		return isset($this->dataHandlers[$name]);

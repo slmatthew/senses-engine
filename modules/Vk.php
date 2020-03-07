@@ -8,17 +8,17 @@ class vkAuthStorage {
 	/**
 	 * @var array Aviable users
 	 */
-	private static $auth_data = [];
+	private static array $auth_data = [];
 
 	/**
 	 * @var int Active user id
 	 */
-	private static $active = 0;
+	private static int $active = 0;
 
 	/**
 	 * @var int peer_id for VK API errors
 	 */
-	private static $api_errors = 0;
+	private static int $api_errors = 0;
 
 	/**
 	 * Add new auth data
@@ -46,7 +46,7 @@ class vkAuthStorage {
 	 * @param int $active User api_id
 	 * @return bool
 	 */
-	public static function setActive(int $active) {
+	public static function setActive(int $active): bool {
 		if(isset(vkAuthStorage::$auth_data[$active])) {
 			vkAuthStorage::$active = $active;
 			return true;
@@ -68,7 +68,7 @@ class vkAuthStorage {
 	 * Get active user
 	 * @return array
 	 */
-	public static function get() {
+	public static function get(): array {
 		return isset(vkAuthStorage::$auth_data[vkAuthStorage::$active]) ? vkAuthStorage::$auth_data[vkAuthStorage::$active] : [];
 	}
 
@@ -76,7 +76,7 @@ class vkAuthStorage {
 	 * Get active user api_id
 	 * @return int
 	 */
-	public static function getActive() {
+	public static function getActive(): int {
 		return vkAuthStorage::$active;
 	}
 
@@ -84,7 +84,7 @@ class vkAuthStorage {
 	 * Get aviable user api_ids
 	 * @return array
 	 */
-	public static function getAviableIds() {
+	public static function getAviableIds(): array {
 		return array_column(vkAuthStorage::$auth_data, 'api_id');
 	}
 
@@ -92,7 +92,7 @@ class vkAuthStorage {
 	 * Get current peer_id for VK API errors
 	 * @return int
 	 */
-	public static function getErrorsPeer() {
+	public static function getErrorsPeer(): int {
 		return vkAuthStorage::$api_errors;
 	}
 
@@ -114,7 +114,7 @@ class vkApiWrapper {
 	 * @param array $params Function parameters. $params[0] - method params, $params[1] (bool) - $official
 	 * @return array
 	 */
-	public function __call(string $name, array $params) {
+	public function __call(string $name, array $params): array {
 		$method_name = implode('.', explode('_', $name));
 		$method_params = isset($params[0]) ? $params[0] : [];
 		$official = isset($params[1]) && gettype($params[1]) === 'bool' && $params[1];
@@ -127,37 +127,37 @@ class vk {
 	/**
 	 * @var BotEngine
 	 */
-	public $bot = null;
+	public ?BotEngine $bot = null;
 
 	/**
 	 * @var DataHandler
 	 */
-	public $client = null;
+	public ?DataHandler $client = null;
 
 	/**
 	 * @var VkAudio
 	 */
-	public $audio = null;
+	public ?VkAudio $audio = null;
 
 	/**
 	 * @var vkApiWrapper
 	 */
-	public $api = null;
+	public ?vkApiWrapper $api = null;
 
 	/**
 	 * @var string Type of data handling: "cb" (if you use Callback API) or "lp" (if you use Longpoll API)
 	 */
-	public $client_type = 'lp';
+	public string $client_type = 'lp';
 
 	/**
 	 * @var string Confirmation string
 	 */
-	private $confirm_string = '';
+	private string $confirm_string = '';
 
 	/**
 	 * @var array
 	 */
-	private $auth_data = [];
+	private array $auth_data = [];
 
 	/**
 	 * @param array $auth_data Authorization data
@@ -234,7 +234,7 @@ class vk {
 	 * @param bool $needLowerCase Commands will be handled in lower case
 	 * @return BotEngine
 	 */
-	public function newBot(bool $needLowerCase = true) {
+	public function newBot(bool $needLowerCase = true): BotEngine {
 		$this->bot = new BotEngine($needLowerCase);
 		return $this->bot;
 	}
@@ -244,7 +244,7 @@ class vk {
 	 * @param bool $cache ts cache
 	 * @return DataHandler
 	 */
-	public function listen(bool $cache = true) {
+	public function listen(bool $cache = true): DataHandler {
 		$this->client = new DataHandler($this->client_type, $this->bot, $this->confirm_string, $cache);
 		return $this->client;
 	}

@@ -7,7 +7,7 @@ class sensesDebugger {
 	/**
 	 * @ignore
 	 */
-	private static $debugger = null;
+	private static ?Debugger $debugger = null;
 
 	/**
 	 * @ignore
@@ -19,7 +19,7 @@ class sensesDebugger {
 	/**
 	 * @ignore
 	 */
-	public static function get() {
+	public static function get(): Debugger {
 		return sensesDebugger::$debugger;
 	}
 
@@ -81,12 +81,12 @@ class Debugger {
 	/**
 	 * @var array
 	 */
-	private $types = [];
+	private array $types = [];
 
 	/**
 	 * @var array
 	 */
-	private $handlers = [];
+	private array $handlers = [];
 
 	/**
 	 * @param array $types Events types

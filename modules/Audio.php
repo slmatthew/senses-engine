@@ -17,7 +17,7 @@ class VkAudio {
 	/**
 	 * @ignore
 	 */
-	private $audioToken = '';
+	private string $audioToken = '';
 
 	/**
 	 * Constructor
@@ -53,7 +53,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function get(array $params = []) {
+	public function get(array $params = []): array {
 		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['count'])) $params['count'] = 25;
 
@@ -68,7 +68,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function add(int $audio_id, int $owner_id, array $params = []) {
+	public function add(int $audio_id, int $owner_id, array $params = []): array {
 		$params['audio_id'] = $audio_id;
 		$params['owner_id'] = $owner_id;
 
@@ -82,7 +82,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function addPlaylist(string $title, array $params = []) {
+	public function addPlaylist(string $title, array $params = []): array {
 		$params['title'] = $title;
 
 		return $this->request('audio.addPlaylist', $params);
@@ -96,7 +96,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function delete(int $audio_id, int $owner_id, array $params = []) {
+	public function delete(int $audio_id, int $owner_id, array $params = []): array {
 		$params['audio_id'] = $audio_id;
 		$params['owner_id'] = $owner_id;
 
@@ -111,7 +111,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function deletePlaylist(int $owner_id, int $playlist_id, array $params = []) {
+	public function deletePlaylist(int $owner_id, int $playlist_id, array $params = []): array {
 		$params['owner_id'] = $owner_id;
 		$params['playlist_id'] = $playlist_id;
 
@@ -126,7 +126,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function edit(int $owner_id, int $audio_id, array $params = []) {
+	public function edit(int $owner_id, int $audio_id, array $params = []): array {
 		$params['owner_id'] = $owner_id;
 		$params['audio_id'] = $audio_id;
 
@@ -141,7 +141,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function editPlaylist(int $owner_id, int $playlist_id, array $params = []) {
+	public function editPlaylist(int $owner_id, int $playlist_id, array $params = []): array {
 		$params['owner_id'] = $owner_id;
 		$params['playlist_id'] = $playlist_id;
 
@@ -154,7 +154,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getPlaylists(array $params = []) {
+	public function getPlaylists(array $params = []): array {
 		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['count'])) $params['count'] = 50;
 
@@ -167,7 +167,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getBroadcastList(array $params = []) {
+	public function getBroadcastList(array $params = []): array {
 		if(!isset($params['filter'])) $params['filter'] = 'all';
 
 		return $this->request('audio.getBroadcastList', $params);
@@ -180,7 +180,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getById(array $audios, array $params = []) {
+	public function getById(array $audios, array $params = []): array {
 		$params['audios'] = implode(',', $audios);
 
 		return $this->request('audio.getById', $params);
@@ -193,7 +193,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getCount(int $owner_id, array $params = []) {
+	public function getCount(int $owner_id, array $params = []): array {
 		$params['owner_id'] = $owner_id;
 
 		return $this->request('audio.getCount', $params);
@@ -206,7 +206,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getLyrics(int $lyrics_id, array $params = []) {
+	public function getLyrics(int $lyrics_id, array $params = []): array {
 		$params['lyrics_id'] = $lyrics_id;
 
 		return $this->request('audio.getLyrics', $params);
@@ -218,7 +218,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getPopular(array $params = []) {
+	public function getPopular(array $params = []): array {
 		if(!isset($params['count'])) $params['count'] = 100;
 
 		return $this->request('audio.getPopular', $params);
@@ -230,7 +230,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getRecommendations(array $params = []) {
+	public function getRecommendations(array $params = []): array {
 		if(!isset($params['count'])) $params['count'] = 100;
 
 		return $this->request('audio.getRecommendations', $params);
@@ -242,7 +242,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function getUploadServer(array $params = []) { return $this->request('audio.getUploadServer', $params); }
+	public function getUploadServer(array $params = []): array { return $this->request('audio.getUploadServer', $params); }
 
 	/**
 	 * audio.addToPlaylist
@@ -252,7 +252,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function addToPlaylist(int $owner_id, array $audio_ids, array $params = []) {
+	public function addToPlaylist(int $owner_id, array $audio_ids, array $params = []): array {
 		$params['owner_id'] = $owner_id;
 		$params['audio_ids'] = implode(',', $audio_ids);
 
@@ -266,7 +266,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function reorder(int $audio_id, array $params = []) {
+	public function reorder(int $audio_id, array $params = []): array {
 		$params['audio_id'] = $audio_id;
 
 		return $this->request('audio.reorder', $params);
@@ -279,7 +279,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function restore(int $audio_id, array $params = []) {
+	public function restore(int $audio_id, array $params = []): array {
 		$params['audio_id'] = $audio_id;
 
 		return $this->request('audio.restore', $params);
@@ -293,7 +293,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function save(int $server, string $audio, array $params = []) {
+	public function save(int $server, string $audio, array $params = []): array {
 		$params['server'] = $server;
 		$params['audio'] = $audio;
 
@@ -306,7 +306,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function search(array $params = []) { return $this->request('audio.search', $params); }
+	public function search(array $params = []): array { return $this->request('audio.search', $params); }
 
 	/**
 	 * audio.setBroadcast
@@ -314,7 +314,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.6.1
 	 */
-	public function setBroadcast(array $params = []) { return $this->request('audio.setBroadcast', $params); }
+	public function setBroadcast(array $params = []): array { return $this->request('audio.setBroadcast', $params); }
 
 	/**
 	 * execute.getPlaylist
@@ -322,7 +322,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.7
 	 */
-	public function getPlaylist(array $params = []) {
+	public function getPlaylist(array $params = []): array {
 		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['need_playlists'])) $params['need_playlists'] = 1;
 
@@ -335,7 +335,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.7
 	 */
-	public function getMusicPage(array $params = []) {
+	public function getMusicPage(array $params = []): array {
 		if(!isset($params['owner_id'])) $params['owner_id'] = vkAuthStorage::get()['api_id'];
 		if(!isset($params['func_v'])) $params['func_v'] = 3;
 		if(!isset($params['need_playlists'])) $params['need_playlists'] = 1;
@@ -349,17 +349,17 @@ class VkAudio {
 	 * @return array
 	 * @since v0.8
 	 */
-	public function getCatalog(array $params = []) { return $this->request('audio.getCatalog', $params); }
+	public function getCatalog(array $params = []): array { return $this->request('audio.getCatalog', $params); }
 
 	/* end API methods */
 
 	/**
 	 * Get mp3 link from audio object
 	 * @param array $audio Audio from audio.get or other method
-	 * @return bool|string
+	 * @return string
 	 * @since v0.7
 	 */
-	public function getMp3Link(array $audio) {
+	public function getMp3Link(array $audio): string {
 		$url = $audio['url'];
 		if(mb_substr($url, 0, 10) === 'https://cs' && stripos($url, '/audios/') === false) {
 			if(preg_match('/https:\/\/(.*)\/(.*)\/(.*)\/index\.m3u8\?extra=(.*)/i', $url, $m)) {
@@ -371,7 +371,7 @@ class VkAudio {
 			}
 		}
 
-		return false;
+		return 'https://vk.com/mp3/audio_api_unavailable.mp3';
 	}
 
 	/**
@@ -381,7 +381,7 @@ class VkAudio {
 	 * @return array
 	 * @since v0.8
 	 */
-	public function request(string $method, array $params) { return call($method, $params, true); }
+	public function request(string $method, array $params): array { return call($method, $params, true); }
 }
 
 ?>

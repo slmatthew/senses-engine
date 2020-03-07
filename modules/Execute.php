@@ -10,7 +10,7 @@ class Execute {
 	 * Array with methods in format: ['method.name', ['name' => 'value']]
 	 * @ignore
 	 */
-	protected $code = [];
+	protected array $code = [];
 
 	/**
 	 * @param array $methods Array with arrays like this: ['method.name', ['name' => 'value']]. $methods in this case will be [['method.name', ['name' => 'value']]]
@@ -23,7 +23,7 @@ class Execute {
 	 * Get `code` parameter for `execute` method
 	 * @return string
 	 */
-	public function getCode() {
+	public function getCode(): string {
 		$code = [];
 		foreach($this->code as $_ => $val) {
 			$code[] = "API.{$val[0]}(".json_encode($val[1], JSON_UNESCAPED_UNICODE).")";
@@ -37,7 +37,7 @@ class Execute {
 	 * @param bool $official Use Android app user-agent or no
 	 * @return array
 	 */
-	public function exec(bool $official = false) { return call('execute', ['code' => $this->getCode()], $official); }
+	public function exec(bool $official = false): array { return call('execute', ['code' => $this->getCode()], $official); }
 }
 
 ?>

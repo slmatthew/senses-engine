@@ -11,12 +11,12 @@ class Template {
 	/**
 	 * @ignore
 	 */
-	private $type = 'carousel';
+	private string $type = 'carousel';
 
 	/**
 	 * @ignore
 	 */
-	private $elements = [];
+	private array $elements = [];
 
 	/**
 	 * Template constructor
@@ -37,7 +37,7 @@ class Template {
 	 * @param array $action Docs: https://vk.cc/a8hzdu
 	 * @return void
 	 */
-	public function addCarouselElement(array $buttons, string $title = '', string $description = '', string $photo_id = '', array $action = []) {
+	public function addCarouselElement(array $buttons, string $title = '', string $description = '', string $photo_id = '', array $action = []): Template {
 		if($this->type !== 'carousel') throw new ParameterException();
 
 		if(empty($buttons) || (!$photo_id && !$title) || ($title && !$description)) throw new ParameterException();
@@ -51,6 +51,8 @@ class Template {
 		if($action) $element['action'] = $action;
 
 		$this->elements[] = $element;
+
+		return $this;
 	}
 
 	/**
@@ -85,7 +87,7 @@ class TemplateButtons {
 	/**
 	 * @ignore
 	 */
-	public $buttons = [];
+	public array $buttons = [];
 
 	public const PRIMARY_BUTTON = 'primary';
 	public const SECONDARY_BUTTON = 'secondary';

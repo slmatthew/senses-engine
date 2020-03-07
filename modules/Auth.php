@@ -7,7 +7,7 @@ class RequestExtended {
 	/**
 	 * @ignore
 	 */
-	protected function request(string $url, array $postfields = [], string $agent = 'Senses Bot Engine/'.SEV) {
+	protected function request(string $url, array $postfields = [], string $agent = 'Senses Bot Engine/'.SEV): array {
 		$ch = curl_init($url);
 		$headers = [];
 
@@ -74,7 +74,7 @@ class AuthPassword extends RequestExtended {
 	/**
 	 * @ignore
 	 */
-	private $oauth_host = 'oauth.vk.com';
+	private string $oauth_host = 'oauth.vk.com';
 
 	/**
 	 * Start auth
@@ -88,7 +88,7 @@ class AuthPassword extends RequestExtended {
 	 * @throws AuthBannedException
 	 * @return array
 	 */
-	public function auth(string $app, string $username, string $password, string $trusted_hash = '', array $params = []) {
+	public function auth(string $app, string $username, string $password, string $trusted_hash = '', array $params = []): array {
 		$app = mb_strtolower($app);
 		$apps = [
 			'android' => 0,
@@ -159,7 +159,7 @@ class AuthPassword extends RequestExtended {
 	 * @throws AuthAppException
 	 * @return array
 	 */
-	public function validatePhone(string $app, string $sid) {
+	public function validatePhone(string $app, string $sid): array {
 		$app = mb_strtolower($app);
 		$apps = [
 			'android' => 0,
@@ -200,7 +200,7 @@ class AuthPassword extends RequestExtended {
 	/**
 	 * @ignore
 	 */
-	private function oauthToken(array $params) { return $this->request("https://{$this->oauth_host}/token?".http_build_query($params), [], self::UA); }
+	private function oauthToken(array $params): array { return $this->request("https://{$this->oauth_host}/token?".http_build_query($params), [], self::UA); }
 }
 
 /**
@@ -219,13 +219,13 @@ class AuthImplictUser extends RequestExtended {
 	 * Auth parameters
 	 * @ignore
 	 */
-	private $params = [];
+	private array $params = [];
 
 	/**
 	 * OAuth host
 	 * @ignore
 	 */
-	private $oauth_host = 'oauth.vk.com';
+	private string $oauth_host = 'oauth.vk.com';
 
 	/**
 	 * @param int $client_id Your API_ID
@@ -250,7 +250,7 @@ class AuthImplictUser extends RequestExtended {
 	 * @throws AuthEmptyParamsException
 	 * @return string
 	 */
-	public function link() {
+	public function link(): string {
 		if(empty($this->params)) throw new AuthEmptyParamsException();
 
 		return "https://{$this->oauth_host}/authorize?".http_build_query($this->params);
@@ -294,12 +294,12 @@ class AuthFlowUser extends RequestExtended {
 	/**
 	 * @ignore
 	 */
-	private $params = [];
+	private array $params = [];
 
 	/**
 	 * @ignore
 	 */
-	private $oauth_host = 'oauth.vk.com';
+	private string $oauth_host = 'oauth.vk.com';
 
 	/**
 	 * @param int $client_id client_id of your app
@@ -323,7 +323,7 @@ class AuthFlowUser extends RequestExtended {
 	 * @throws AuthEmptyParamsException
 	 * @return string
 	 */
-	public function link() {
+	public function link(): string {
 		if(empty($this->params)) throw new AuthEmptyParamsException();
 
 		return "https://{$this->oauth_host}/authorize?".http_build_query($this->params);

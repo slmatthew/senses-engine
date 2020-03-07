@@ -10,17 +10,17 @@ class LpDecoder {
 	/**
 	 * @ignore
 	 */
-	private $id = 0;
+	private int $id = 0;
 
 	/**
 	 * @ignore
 	 */
-	private $event = [];
+	private array $event = [];
 
 	/**
 	 * @ignore
 	 */
-	private $success = false;
+	private bool $success = false;
 
 	/**
 	 * Constructor
@@ -41,7 +41,7 @@ class LpDecoder {
 	 * @return array|bool
 	 * @since v0.6
 	 */
-	public function decode() {
+	public function decode(): array {
 		if($this->success) {
 			$e = $this->event;
 
@@ -206,7 +206,7 @@ class LpDecoder {
 			return $data;
 		}
 
-		return false;
+		return ['decoded' => false];
 	}
 
 	/**
@@ -214,7 +214,7 @@ class LpDecoder {
 	 * @return array
 	 * @since v0.6
 	 */
-	public function getAttachments() {
+	public function getAttachments(): array {
 		if(!$this->success) return [];
 
 		$data = $this->event;
