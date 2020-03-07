@@ -33,6 +33,8 @@ class vkAuthStorage {
 	 */
 	public static function set(array $data) {
 		if(isset($data['api_id'])) {
+			$data['api_id'] = $data['api_type'] === 'user' ? $data['api_id'] : $data['api_id'] * -1;
+
 			vkAuthStorage::$auth_data["{$data['api_id']}"] = $data;
 			vkAuthStorage::$active = $data['api_id'];
 		} else {

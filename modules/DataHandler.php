@@ -15,11 +15,7 @@ function terminal($text) {
 function __getTsFileName() {
 	$user = vkAuthStorage::get();
 	if(isset($user['api_id'])) {
-		if($user['api_type'] === 'user') {
-			return 'ts'.$user['api_id'];
-		} else {
-			return 'ts'.$user['api_id'] * -1;
-		}
+		return 'ts'.$user['api_id'];
 	}
 
 	return 0;
@@ -89,7 +85,7 @@ class DataHandler {
 	 */
 	public function startLp(BotEngine $be, string $type, bool $cache = true) {
 		if($type === 'community') {
-			$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
+			$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id'] * -1])['response'];
 		} elseif($type === 'user') {
 			$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 		} else return false;
@@ -167,7 +163,7 @@ class DataHandler {
 
 						case 2: case 3:
 							if($type === 'community') {
-								$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
+								$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id'] * -1])['response'];
 							} elseif($type === 'user') {
 								$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 							}
@@ -191,7 +187,7 @@ class DataHandler {
 								]);
 							} else {
 								if($type === 'community') {
-									$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id']])['response'];
+									$lp = call('groups.getLongPollServer', ['group_id' => vkAuthStorage::get()['api_id'] * -1])['response'];
 								} elseif($type === 'user') {
 									$lp = call('messages.getLongPollServer', ['lp_version' => 10])['response'];
 								}

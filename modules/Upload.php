@@ -224,7 +224,7 @@ class PhotosUpload extends UploadManager {
 	 * @return array
 	 */
 	public function main(string $file, int $owner_id = -1, array $serverParams = [], array $uploadFields = [], array $saveParams = []) {
-		if($owner_id == -1) $serverParams['owner_id'] = vkAuthStorage::get()['api_type'] === 'user' ? vkAuthStorage::get()['api_id'] : vkAuthStorage::get()['api_id'] * -1;
+		if($owner_id == -1) $serverParams['owner_id'] = vkAuthStorage::get()['api_id'];
 		else $serverParams['owner_id'] = $owner_id;
 
 		$server = call('photos.getOwnerPhotoUploadServer', $serverParams);
@@ -301,7 +301,7 @@ class PhotosUpload extends UploadManager {
 	 * @return array
 	 */
 	public function market(string $file, bool $main_photo = false, array $serverParams = [], array $saveParams = []) {
-		if(vkAuthStorage::get()['api_type'] === 'community' && !isset($serverParams['group_id'])) $serverParams['group_id'] = vkAuthStorage::get()['api_id'];
+		if(vkAuthStorage::get()['api_type'] === 'community' && !isset($serverParams['group_id'])) $serverParams['group_id'] = vkAuthStorage::get()['api_id'] * -1;
 
 		$serverParams['main_photo'] = (int)$main_photo;
 
