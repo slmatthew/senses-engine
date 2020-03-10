@@ -7,9 +7,6 @@
 * [TypeException](exceptions.md#type)
 * [LongpollException](exceptions.md#lp)
 
-## Логирование
-В `loader.php` есть константа `NEED_LP_LOGS`. Если вы установите ее значение на `true`, в консоли будут появляться _(не очень информативные)_ логи работы LP.
-
 ## Конструктор
 Обрабатывает данные от Callback API или начинает делать запросы к LP-серверу.
 
