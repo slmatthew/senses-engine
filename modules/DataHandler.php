@@ -8,10 +8,6 @@
 
 if(!function_exists('request')) throw new RequestsException('Requests module is not loaded');
 
-function terminal($text) {
-	if(NEED_LP_LOGS) echo "{$text}\n";
-}
-
 function __getTsFileName() {
 	$user = vkAuthStorage::get();
 	if(isset($user['api_id'])) {
@@ -114,7 +110,6 @@ class DataHandler {
 			$url = sprintf($baseurl, $lp['ts']);
 		}
 
-		terminal("Starting {$type} longpoll..."); // terminal() will be deleted
 		sensesDebugger::event(DebuggerEvents::LP_START, [
 			'lp_server' => $lp,
 			'url' => $url,
@@ -128,7 +123,6 @@ class DataHandler {
 
 			if(!is_null($result)) {
 				if($li == 0) {
-					terminal("Longpoll successfuly started. Got first updates");
 					sensesDebugger::event(DebuggerEvents::LP_FIRST_UPDATES, []);
 					$li += 1;
 				}
@@ -141,13 +135,10 @@ class DataHandler {
 						__replaceTsCache($result['ts']);
 					}
 
-					terminal("Got updates");
-
 					foreach($updates as $key => $data) {
 						$be->onData($data, $type);
 					}
 				} elseif(isset($result['failed'])) {
-					terminal("Request new data");
 					sensesDebugger::event(DebuggerEvents::LP_FAILED, [
 						'failed' => $result['failed'],
 						'result' => $result

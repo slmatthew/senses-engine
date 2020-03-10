@@ -12,11 +12,6 @@ if(!extension_loaded('curl')) exit('I need curl extension to run');
 define("SEV", "0.9");
 
 /**
- * @var bool Should engine show LP logs
- */
-define("NEED_LP_LOGS", false);
-
-/**
  * @var bool
  */
 define("CURL_VERIFY", true);
