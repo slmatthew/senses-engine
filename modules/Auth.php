@@ -69,7 +69,7 @@ class AuthPassword extends RequestExtended {
 	/**
 	 * @ignore
 	 */
-	private const UA = "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)";
+	private const UA = "VKAndroidApp/5.55-4758 (Android 9; SDK 28; arm64-v8a; SM-G960F; ru; 1920x1080)";
 
 	/**
 	 * @ignore

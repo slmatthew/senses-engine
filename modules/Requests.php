@@ -46,7 +46,7 @@ function call(string $method, array $params = [], bool $official = false) {
 	if(!isset($params['v'])) $params['v'] = $defaultParams['v'];
 	if(isset($params['unsetToken']) && $params['unsetToken']) unset($params['access_token']);
 
-	$agent = $official ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/".SEV;
+	$agent = $official ? "VKAndroidApp/5.55-4758 (Android 9; SDK 28; arm64-v8a; SM-G960F; ru; 1920x1080)" : "Senses Bot Engine/".SEV;
 
 	$result = request("https://api.vk.com/method/{$method}", $params, $agent);
 	sensesDebugger::event(DebuggerEvents::API_CALL, [
