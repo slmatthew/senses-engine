@@ -356,22 +356,20 @@ class VkAudio {
 	/**
 	 * Get mp3 link from audio object
 	 * @param array $audio Audio from audio.get or other method
-	 * @return bool|string
+	 * @return string
 	 * @since v0.7
 	 */
 	public function getMp3Link(array $audio) {
 		$url = $audio['url'];
-		if(mb_substr($url, 0, 10) === 'https://cs' && stripos($url, '/audios/') === false) {
-			if(preg_match('/https:\/\/(.*)\/(.*)\/(.*)\/index\.m3u8\?extra=(.*)/i', $url, $m)) {
-				return "https://{$m[1]}/{$m[3]}.mp3?extra={$m[4]}";
-			}
-		} elseif(mb_substr($url, 0, 10) === 'https://ps' && stripos($url, '/audios/') !== false) {
-			if(preg_match('/https:\/\/(.*)\/(.*)\/(.*)\/(.*)\/index\.m3u8\?extra=(.*)/i', $url, $m)) {
-				return "https://{$m[1]}/{$m[3]}/{$m[4]}.mp3?extra={$m[5]}";
-			}
+		
+		if(stripos($url, '.mp3?') !== false) {
+			return $url;
 		}
 
-		return false;
+		$regexp = mb_substr($url, 0, 10) == 'https://ps' ? '/(https:\/\/.+)\/.+?\/audios\/(.+?)\/index\.m3u8\?extra=(.+)/i' : '/(https:\/\/.+)\/.+?\/(.+?)\/index.m3u8\?extra=(.+)/';
+		preg_match($regexp, $url, $m);
+
+		return "{$m[1]}/{$m[2]}.mp3?extra={$m[3]}";
 	}
 
 	/**
