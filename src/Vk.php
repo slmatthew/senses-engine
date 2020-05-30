@@ -21,6 +21,8 @@ class __vkAuthStorage implements IVkAuthStorage {
 
 			return null;
 		}
+
+		return self::$clients[self::$currentClient];
 	}
 
 	public static function getCurrentClient(): int {
