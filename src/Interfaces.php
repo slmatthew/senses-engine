@@ -7,6 +7,11 @@ interface IRequests {
 	public static function api(string $method, array $params = [], bool $android = false): ?array;
 }
 
+interface IVk {
+	public function token(string $token);
+	public function auth(string $username, string $password, array $params = []): array;
+}
+
 /* internal */
 interface IVkAuthStorage {
 	public static function addClient(string $token, int $ownerId, bool $changeClient = true);
