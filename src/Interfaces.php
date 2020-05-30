@@ -9,9 +9,6 @@ interface IRequests {
 
 /* internal */
 interface IVkAuthStorage {
-	private static array $clients;
-	private static int $currentClient;
-
 	public static function addClient(string $token, int $ownerId, bool $changeClient = true);
 
 	public static function getClient(): ?array;
