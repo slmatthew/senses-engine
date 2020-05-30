@@ -59,7 +59,7 @@ class Request implements IRequests {
 		if(!isset($params['v'])) $params['v'] = $defaultParams['v'];
 		if(isset($params['unsetToken']) && $params['unsetToken']) unset($params['access_token']);
 
-		$agent = $official ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/1.0";
+		$agent = $android ? "VKAndroidApp/5.50-4431 (1; 1; 1; 1; 1; 1)" : "Senses Bot Engine/1.0";
 
 		$result = self::make("https://api.vk.com/method/{$method}", $params, $agent);
 
