@@ -73,6 +73,9 @@ class vk implements IVk {
 		if(!is_null($result)) {
 			if(isset($result['access_token'])) {
 				__vkAuthStorage::addClient($result['access_token'], $result['user_id']);
+				return [
+					'success' => true
+				];
 			} elseif(isset($result['error'])) {
 				if($result['error'] == 'need_validation') {
 					return [
