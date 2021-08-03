@@ -195,7 +195,7 @@ class vk {
 		if(isset($auth_data['v'])) {
 			if((int)$auth_data['v'] < 5) throw new ParameterException('Library does not support VK API version < 5', 2);
 		} else {
-			$auth_data['v'] = '5.118';
+			$auth_data['v'] = '5.131';
 		}
 		if(!isset($auth_data['secret'])) $auth_data['secret'] = '';
 

@@ -39,7 +39,7 @@ function request(string $url, array $postfields = [], string $agent = 'Senses Bo
 function call(string $method, array $params = [], bool $official = false) {
 	$defaultParams = [
 		'access_token' => isset(vkAuthStorage::get()['token']) ? vkAuthStorage::get()['token'] : '',
-		'v' => isset(vkAuthStorage::get()['version']) ? vkAuthStorage::get()['version'] : '5.118'
+		'v' => isset(vkAuthStorage::get()['version']) ? vkAuthStorage::get()['version'] : '5.131'
 	];
 
 	if(!isset($params['access_token'])) $params['access_token'] = $defaultParams['access_token'];
