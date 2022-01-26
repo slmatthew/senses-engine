@@ -1,9 +1,3 @@
-/test/
-/output/
-/.idea/
-/noverify/
-
-config.php
-todo.txt
-phpDocumentor.phar
-senses.rar
+.idea
+.senses
+ignore
