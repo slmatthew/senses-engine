@@ -262,9 +262,19 @@ class BotEngine {
 				$some = new Message($data);
 				// I need not use $some->isOut() check because it is message_new event
 
-				$check = isset($data['object']['message']['payload']) && isset(json_decode(json_decode($data['object']['message']['payload'], true), true)['command']);
+				$check = false;
+				if (isset($data['object']['message']['payload']))
+				{
+					// Fix for button start
+					$v1 = json_decode($data['object']['message']['payload'], true);
+					if (is_string($v1))
+						$v2 = json_decode($v1, true);
+					else
+						$v2 = $v1;
+					$check = isset($v2['command']);
+				}
 				if($check) {
-					$this->checkAllCommands(json_decode(json_decode($data['object']['message']['payload'], true), true)['command'], $exp[0], $data, $some);
+					$this->checkAllCommands($v2['command'], $exp[0], $data, $some);
 				} else {
 					$this->checkAllCommands('', $exp[0], $data, $some);
 				}
